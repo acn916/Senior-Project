@@ -1,59 +1,39 @@
-# Senior-Project
-Getting Started with Create React App
+# Team Entrecodeurs CSC Senior Project
 
-This project was bootstrapped with Create React App.
+This repository contains the codebase for an online scheduling system designed for beauty salons. To scheduling appointments, the system allows clients to select their preferred service, choose a stylist, and pick a date of their choosing. The system allows stylists to set their schedule and whether or not to approve or disapprove an appointment.
 
-Available Scripts
-In the project directory, you can run:
+## Repository Structure
 
-npm start
-Runs the app in the development mode.
-Open http://localhost:3000 to view it in your browser.
+This repository consists of two main directories:
 
-The page will reload when you make changes.
-You may also see any lint errors in the console.
+- `frontend/` - Contains the ReactJS code for the client-facing part of the application.
+- `backend/` - Contains the code for the server-side part of the application.
 
-npm test
-Launches the test runner in the interactive watch mode.
-See the section about running tests for more information.
+## Project Architecture
 
-npm run build
-Builds the app for production to the build folder.
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Frontend
 
-The build is minified and the filenames include the hashes.
-Your app is ready to be deployed!
+Our frontend is constructed using ReactJS, an efficient and flexible JavaScript library. The frontend assets are hosted and served using Amazon S3, an AWS service renowned for its scalability and robustness.
 
-See the section about deployment for more information.
+### Backend
 
-npm run eject
-Note: this is a one-way operation. Once you eject, you can't go back!
+The backend architecture is serverless, built around AWS services. It's exposed through the AWS API Gateway, which triggers events to AWS Lambda. Our Lambda functions are written in Python, providing a responsive and efficient service. The database is handled by AWS Aurora, a cloud-based relational database service compatible with MySQL. This architecture ensures scalability, maintainability, and resilience.
 
-If you aren't satisfied with the build tool and configuration choices, you can eject at any time. This command will remove the single build dependency from your project.
+## Contributing
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except eject will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Please note that unsolicited pull requests are not allowed for this repository. 
 
-You don't have to ever use eject. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Team Members
 
-Learn More
-You can learn more in the Create React App documentation.
+- [Your Name] AD
+- [Your Name] AN
+- [Your Name] BV
+- [Your Name] BD
+- [Your Name] LK
+- [Michael Tang](mailto:mtang@csus.edu) 
+- [Your Name] NC
+- [Your Name] VN
 
-To learn React, check out the React documentation.
+## Contact
 
-Code Splitting
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-Analyzing the Bundle Size
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-Making a Progressive Web App
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-Advanced Configuration
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-Deployment
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-npm run build fails to minify
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+If you have any questions or need further clarification, feel free to reach out to any of the team members.
