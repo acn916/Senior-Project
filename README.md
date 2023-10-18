@@ -26,7 +26,7 @@ Please note that unsolicited pull requests are not allowed for this repository.
 ## Team Members
 
 - [Andrew Desrochers](mailto:andrewdesrochers@csus.edu)
-- [Your Name] AN
+- [Austin Nguyen](mailto:austinnguyen3@csus.edu)
 - [Your Name] BV
 - [Your Name] BD
 - [Your Name] LK
