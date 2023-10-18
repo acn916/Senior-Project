@@ -29,7 +29,7 @@ Please note that unsolicited pull requests are not allowed for this repository.
 - [Austin Nguyen](mailto:austinnguyen3@csus.edu)
 - [Your Name] BV
 - [Your Name] BD
-- [Your Name] LK
+- [Laura Kay](mailto:laurakay2@csus.edu)
 - [Michael Tang](mailto:mtang@csus.edu) 
 - [Your Name] NC
 - [Your Name] VN
