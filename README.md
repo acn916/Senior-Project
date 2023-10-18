@@ -1,6 +1,6 @@
 # Team Entrecodeurs CSC Senior Project
 
-This repository contains the codebase for an online scheduling system designed for beauty salons. To scheduling appointments, the system allows clients to select their preferred service, choose a stylist, and pick a date of their choosing. The system allows stylists to set their schedule and whether or not to approve or disapprove an appointment.
+This repository contains the codebase for an online scheduling system designed for beauty salons. To schedule appointments, the system allows clients to select their preferred service, choose a stylist, and pick a date of their choosing. The system allows stylists to set their schedule and whether or not to approve or disapprove an appointment.
 
 ## Repository Structure
 
