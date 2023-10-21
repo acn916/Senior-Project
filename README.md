@@ -28,7 +28,7 @@ Please note that unsolicited pull requests are not allowed for this repository.
 - [Andrew Desrochers](mailto:andrewdesrochers@csus.edu)
 - [Austin Nguyen](mailto:austinnguyen3@csus.edu)
 - [Benjamin Tran Vo](mailto:benjamintranvo@csus.edu)
-- [Your Name] BD
+- [Brandon Dam](mailto:bdam@csus.edu)
 - [Laura Kay](mailto:laurakay2@csus.edu)
 - [Michael Tang](mailto:mtang@csus.edu) 
 - [Your Name] NC
