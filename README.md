@@ -32,7 +32,7 @@ Please note that unsolicited pull requests are not allowed for this repository.
 - [Laura Kay](mailto:laurakay2@csus.edu)
 - [Michael Tang](mailto:mtang@csus.edu) 
 - [Your Name] NC
-- [Your Name] VN
+- [Vivian Nguyen](mailto:viviannguyen5@csus.edu)
 
 ## Contact
 
