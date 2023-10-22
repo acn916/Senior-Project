@@ -31,7 +31,7 @@ Please note that unsolicited pull requests are not allowed for this repository.
 - [Brandon Dam](mailto:bdam@csus.edu)
 - [Laura Kay](mailto:laurakay2@csus.edu)
 - [Michael Tang](mailto:mtang@csus.edu) 
-- [Your Name] NC
+- [Nikita Cherepanov](mailto:ncherepanov@csus.edu)
 - [Vivian Nguyen](mailto:viviannguyen5@csus.edu)
 
 ## Contact
