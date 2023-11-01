@@ -1,0 +1,59 @@
+/* Home.css */
+
+.home-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-width: 80vw;
+    margin: 0 auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a box shadow for a card-like effect */
+
+  }
+  
+  .description-box {
+    padding: 5px; /* Add padding as needed */
+    background-color: #fff; /* Add a background color if desired */
+  }
+
+  @media (max-width: 600px) {
+    .description-box {
+        padding-left: 20px;
+    }
+  }
+
+  .left-column {
+    max-width: 100%;
+    width: 100%;
+    padding-top: 20px;
+    
+  }
+
+  /* Add a media query for mobile view (maximum width 600px) */
+@media (max-width: 600px) {
+    .left-column {
+      padding-left: 20px; /* Add left padding in mobile view */
+      padding-right: 20px;
+    }
+  }
+  .right-column {
+    max-width: 100%;
+    width: 100%;
+    padding-left: 20px;
+    padding-top: 10px;
+    
+  }
+
+  .business-hours {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px 0;
+    
+  }
+
+  .time {
+    margin-right: 100px;
+  }
+  
+  /* You can define additional styles as needed for other elements within the component */
+  
