@@ -1,69 +1,63 @@
-CREATE TABLE USER_PROFILE (
-	
-    UserID int AUTO_INCREMENT,
-    First_Name varchar(255),
-    Last_Name varchar(255),
-    Email varchar(255),
-    Phone varchar(255),
-    UserRole varchar(255),
+CREATE TABLE User_Profile (
+    id INT AUTO_INCREMENT NOT NULL,
+    cognito_user_id VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    user_role VARCHAR(20) NOT NULL,
 
-    PRIMARY KEY(UserID)
+    PRIMARY KEY(id),
+    UNIQUE (email),
+    UNIQUE (cognito_user_id),
+
+    CHECK (user_role IN ('Client', 'Staff', 'Admin'))
 );
 
-CREATE TABLE SERVICE (
-	ServiceID INT AUTO_INCREMENT,
-    ServiceName varchar(255),
-    ServiceDescription varchar(255),
-    ServiceDuration INT,
-    Price INT,
+CREATE TABLE Service (
+	id INT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    description VARCHAR(500) NOT NULL,
+    duration TIME NOT NULL,
+    price DECIMAL(6, 2) NOT NULL,
     
-    PRIMARY KEY(ServiceID)
+    PRIMARY KEY(id)
 );
 
-CREATE TABLE STAFF_SERVICE (
-	
-    StaffServiceID INT AUTO_INCREMENT,
-	UserID INT NOT NULL,
-    ServiceID INT NOT NULL,
-    
-    PRIMARY KEY(StaffServiceID),
-    FOREIGN KEY (UserID) REFERENCES USER_PROFILE(UserID),
-    FOREIGN KEY (ServiceID) REFERENCES SERVICE(ServiceID)
+CREATE TABLE Staff_Service (
+    staff_id INT NOT NULL,
+	service_id INT NOT NULL,
+
+    PRIMARY KEY(staff_id, service_id),
+    FOREIGN KEY (staff_id) REFERENCES User_Profile(id),
+    FOREIGN KEY (service_id) REFERENCES Service(id)
     
 );
 
-CREATE TABLE APPOINTMENT (
-	
-    AppointmentID INT AUTO_INCREMENT,
-    ClientID INT NOT NULL,
-    StaffID INT NOT NULL,
-    ServiceID INT NOT NULL,
-    AppointmentTime varchar(255),
-    AppointmentStatus varchar(255),
-    AppointmentDate varchar(255),
-    Notes varchar(255),
-    ConfirmationTimeStamp varchar(255),
-    CancelationReason varchar(255),
+CREATE TABLE Appointment (
+    id INT AUTO_INCREMENT NOT NULL,
+    client_id INT NOT NULL,
+    staff_id INT NOT NULL,
+    service_id INT NOT NULL,
+    scheduled_at DATETIME NOT NULL,
+    status VARCHAR(255) NOT NULL,
+    notes VARCHAR(500),
+    confirmation_timestamp DATETIME,
+    cancellation_reason VARCHAR(255),
     
-    
-    PRIMARY KEY(AppointmentID),
-    FOREIGN KEY(ClientID) REFERENCES USER_PROFILE(UserID),
-    FOREIGN KEY(StaffID) REFERENCES USER_PROFILE(UserID),
-    FOREIGN KEY(ServiceID) REFERENCES SERVICE(ServiceID)
+    PRIMARY KEY(id),
+    FOREIGN KEY(client_id) REFERENCES User_Profile(id),
+    FOREIGN KEY(staff_id) REFERENCES User_Profile(id),
+    FOREIGN KEY(service_id) REFERENCES Service(id),
 
+    CHECK (status IN ('Pending', 'Confirmed', 'Cancelled', 'No-Show'))
 );
 
-CREATE TABLE USER_AUTH (
+CREATE TABLE Staff_Availability (
+    staff_id INT NOT NULL,
+    start DATETIME NOT NULL,
+    end DATETIME Not NULL,
 
-	UserAuthID INT AUTO_INCREMENT,
-    UserID INT NOT NULL,
-    PassHash varchar(255),
-    Pass_Reset_Token_Expiration varchar(255),
-    Pass_Reset_Token_Expiration_Date varchar(255),
-    Password_Reset_Token varchar(255),
-    
-    PRIMARY KEY(UserAuthID),
-    FOREIGN KEY(UserID) REFERENCES USER_PROFILE(UserID)
- 
+    PRIMARY KEY(staff_id, start, end),
+    FOREIGN KEY(staff_id) REFERENCES User_Profile(id)
 );
-
