@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Box, Container } from '@mui/material';
+import { Grid, Box, Container, Button, Typography } from '@mui/material';
 import HomePicture from '../../pictures/home.jpg';
 import MapPicture from '../../pictures/Maps.png';
 import './Home.css'
@@ -8,13 +8,36 @@ function Home() {
   return (
     <Container>
       <Grid container>
-        <Grid item xs={12}>
-
+        <Grid item xs={12} style={{position: 'relative'}}>
+          
+            
           <img
             src={HomePicture}
             alt="Red Salon Art"
             className='home-image'
           />
+
+          <Button
+
+            style={{
+              
+              position: 'absolute',
+              backgroundColor:'#E95252',
+              color: '#FFFFFF',
+              top: '20px',
+              right: '10%'
+
+            }}  
+
+          >
+            Book Now
+
+          </Button>
+
+            
+          
+
+
         </Grid>
         <Grid item xs={12}>
 
