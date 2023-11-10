@@ -1,8 +1,5 @@
 import './App.css';
 import * as React from 'react';
-
-import { styled } from '@mui/material/styles';
-
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -12,6 +9,7 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
+import { styled } from '@mui/material/styles';
 
 const style = {
   position: 'absolute',
