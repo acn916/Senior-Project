@@ -24,7 +24,7 @@ export default function Passwordreset() {
                 <Typography align='center'>Enter your email to get a link to get back into your account.</Typography>
 
                 <TextField
-                    required id="outlined-required"
+                    required id="email-pwreset"
                     label="Email Address"
                     margin="normal"
                     fullWidth
