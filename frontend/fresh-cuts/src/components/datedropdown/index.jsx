@@ -1,4 +1,3 @@
-import './App.css';
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -25,17 +24,12 @@ function Datedropdown() {
   const handleClose = () => setOpen(false);
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <div className="App">
-        <header className="App-header">
-          <Button onClick={handleOpen}>Open date</Button>
-          <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-            <Box sx={style}>
-              <StaticDatePicker disablePast/>
-            </Box>
-          </Modal>
-        </header>
-        
-      </div>
+      <Button onClick={handleOpen}>Open date</Button>
+      <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+        <Box sx={style}>
+          <StaticDatePicker disablePast/>
+        </Box>
+      </Modal> 
     </LocalizationProvider>
   );
 }

@@ -1,4 +1,3 @@
-import './App.css';
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
@@ -47,95 +46,93 @@ function Servicesdropdown() {
     setStylist(event.target.value);
   };
   return (
-      <div className="App">
-        <header className="App-header">
-          <Button onClick={handleOpen}>Open selection</Button>
-          <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-            <Box sx={style}>
+    <header>
+      <Button onClick={handleOpen}>Open selection</Button>
+      <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+        <Box sx={style}>
 
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <FormControl fullWidth>
-                    <InputLabel id="service-select-label">Service</InputLabel>
-                    <Select
-                      labelId="service-select-label"
-                      id="service-select"
-                      value={service}
-                      label="Services"
-                      onChange={handleServiceChange}
-                    >
-                      <MenuItem value={1}>Baby Color</MenuItem>
-                      <MenuItem value={2}>Bang Trim</MenuItem>
-                      <MenuItem value={3}>Base Bump</MenuItem>
-                      <MenuItem value={4}>Bleach Wash</MenuItem>
-                      <MenuItem value={5}>Brazilian Blowout</MenuItem>
-                      <MenuItem value={6}>Clean Up</MenuItem>
-                      <MenuItem value={7}>Color</MenuItem>
-                      <MenuItem value={8}>Color Touch Up</MenuItem>
-                      <MenuItem value={9}>Color & Cut</MenuItem>
-                      <MenuItem value={10}>Color Correction</MenuItem>
-                      <MenuItem value={11}>Extension Fixed</MenuItem>
-                      <MenuItem value={12}>Extension Installation</MenuItem>
-                      <MenuItem value={13}>Highlights</MenuItem>
-                      <MenuItem value={14}>Men's Haircut</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={6}>
-                  <FormControl fullWidth>
-                    <InputLabel id="stylist-select-label">Stylist</InputLabel>
-                    <Select
-                      labelId="stylist-select-label"
-                      id="stylist-select"
-                      value={stylist}
-                      label="Stylists"
-                      onChange={handleStylistChange}
-                    >
-                      <MenuItem value={1}>Kayla Nguyen</MenuItem>
-                      <MenuItem value={2}>Nicole Mata</MenuItem>
-                      <MenuItem value={3}>Victoria Saeturn</MenuItem>
-                      <MenuItem value={4}>Sil Baron</MenuItem>
-                      <MenuItem value={5}>Starrie Le</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={10}>
-                  
-                </Grid>
-                <Grid item xs={2}>
-                  <Button variant="contained" size="large" color="warning">Add +</Button>
-                </Grid>
-                <Grid item xs={6}>
-                  <Item>Added Services</Item>
-                </Grid>
-                <Grid item xs={6}>
-                  
-                </Grid>
-                <Grid item xs={3}>
-                  <Item>Sample Service 1</Item>
-                  <Item>2 Employees Selected</Item>
-                </Grid>
-                <Grid item xs={3}>
-                  <Item>Sample Service 2</Item>
-                  <Item>Victoria Saeturn</Item>
-                </Grid>
-                <Grid item xs={18}>
-                  
-                </Grid>
-                <Grid item xs={8}>
-                  
-                </Grid>
-                <Grid item xs={2}>
-                  <Button variant="outlined" size="large" color="warning">Cancel</Button>
-                </Grid>
-                <Grid item xs={2}>
-                  <Button variant="contained" size="large" color="warning">Confirm</Button>
-                </Grid>
-              </Grid>
-            </Box>
-          </Modal>
-        </header>
-      </div>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <FormControl fullWidth>
+                <InputLabel id="service-select-label">Service</InputLabel>
+                <Select
+                  labelId="service-select-label"
+                  id="service-select"
+                  value={service}
+                  label="Services"
+                  onChange={handleServiceChange}
+                >
+                  <MenuItem value={1}>Baby Color</MenuItem>
+                  <MenuItem value={2}>Bang Trim</MenuItem>
+                  <MenuItem value={3}>Base Bump</MenuItem>
+                  <MenuItem value={4}>Bleach Wash</MenuItem>
+                  <MenuItem value={5}>Brazilian Blowout</MenuItem>
+                  <MenuItem value={6}>Clean Up</MenuItem>
+                  <MenuItem value={7}>Color</MenuItem>
+                  <MenuItem value={8}>Color Touch Up</MenuItem>
+                  <MenuItem value={9}>Color & Cut</MenuItem>
+                  <MenuItem value={10}>Color Correction</MenuItem>
+                  <MenuItem value={11}>Extension Fixed</MenuItem>
+                  <MenuItem value={12}>Extension Installation</MenuItem>
+                  <MenuItem value={13}>Highlights</MenuItem>
+                  <MenuItem value={14}>Men's Haircut</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={6}>
+              <FormControl fullWidth>
+                <InputLabel id="stylist-select-label">Stylist</InputLabel>
+                <Select
+                  labelId="stylist-select-label"
+                  id="stylist-select"
+                  value={stylist}
+                  label="Stylists"
+                  onChange={handleStylistChange}
+                >
+                  <MenuItem value={1}>Kayla Nguyen</MenuItem>
+                  <MenuItem value={2}>Nicole Mata</MenuItem>
+                  <MenuItem value={3}>Victoria Saeturn</MenuItem>
+                  <MenuItem value={4}>Sil Baron</MenuItem>
+                  <MenuItem value={5}>Starrie Le</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={10}>
+              
+            </Grid>
+            <Grid item xs={2}>
+              <Button variant="contained" size="large" color="warning">Add +</Button>
+            </Grid>
+            <Grid item xs={6}>
+              <Item>Added Services</Item>
+            </Grid>
+            <Grid item xs={6}>
+              
+            </Grid>
+            <Grid item xs={3}>
+              <Item>Sample Service 1</Item>
+              <Item>2 Employees Selected</Item>
+            </Grid>
+            <Grid item xs={3}>
+              <Item>Sample Service 2</Item>
+              <Item>Victoria Saeturn</Item>
+            </Grid>
+            <Grid item xs={18}>
+              
+            </Grid>
+            <Grid item xs={8}>
+              
+            </Grid>
+            <Grid item xs={2}>
+              <Button variant="outlined" size="large" color="warning">Cancel</Button>
+            </Grid>
+            <Grid item xs={2}>
+              <Button variant="contained" size="large" color="warning">Confirm</Button>
+            </Grid>
+          </Grid>
+        </Box>
+      </Modal>
+    </header>
   );
 }
 
