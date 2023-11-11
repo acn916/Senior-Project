@@ -101,7 +101,7 @@ function Servicesdropdown() {
               
             </Grid>
             <Grid item xs={2}>
-              <Button variant="contained" size="large" color="warning">Add +</Button>
+              <Button variant="contained" size="large" style={{backgroundColor:'#E95252'}}>Add +</Button>
             </Grid>
             <Grid item xs={6}>
               <Item>Added Services</Item>
@@ -124,10 +124,10 @@ function Servicesdropdown() {
               
             </Grid>
             <Grid item xs={2}>
-              <Button variant="outlined" size="large" color="warning">Cancel</Button>
+              <Button variant="outlined" size="large" style={{borderColor: '#E95252', color: '#E95252'}}>Cancel</Button>
             </Grid>
             <Grid item xs={2}>
-              <Button variant="contained" size="large" color="warning">Confirm</Button>
+              <Button variant="contained" size="large" style={{backgroundColor:'#E95252'}}>Confirm</Button>
             </Grid>
           </Grid>
         </Box>
