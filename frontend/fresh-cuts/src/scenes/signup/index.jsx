@@ -37,21 +37,21 @@ export default function Signup() {
                 </Grid>
 
                 <TextField
-                    required id="outlined-required"
+                    required id="first-name-signup"
                     label="First Name"
                     margin="normal"
                     fullWidth
                 />
 
                 <TextField
-                    required id="outlined-required"
+                    required id="last-name-signup"
                     label="Last Name"
                     margin="normal"
                     fullWidth
                 />
 
                 <TextField
-                    required id="outlined-required"
+                    required id="phone-number-signup"
                     label="Phone Number"
                     margin="normal"
                     onInput={(e) => { e.target.value = phoneFormat(e.target.value); }}
@@ -59,14 +59,14 @@ export default function Signup() {
                 />
 
                 <TextField
-                    required id="outlined-required"
+                    required id="email-address-signup"
                     label="Email Address"
                     margin="normal"
                     fullWidth
                 />
 
                 <TextField
-                    id="outlined-password-input"
+                    id="password-signup"
                     margin="normal"
                     label="Password"
                     type="password"
