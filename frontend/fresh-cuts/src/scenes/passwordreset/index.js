@@ -1,7 +1,6 @@
 import React from 'react'
-import {
-Grid, Paper, TextField, Button, Typography
-} from '@mui/material'
+import { Grid, Paper, TextField, Button, Typography } from '@mui/material'
+import { Link } from 'react-router-dom'
 
 export default function Passwordreset() {
     const paperStyle={padding:20, height:'300px', width:350, margin:"10px auto"}
@@ -10,10 +9,14 @@ export default function Passwordreset() {
         <>
         <Grid margin="70px">
             <Paper elevation={2} style={paperStyle}>
-                 <Button variant='Contained' size='small'
-                        style={{
+                 <Button 
+                    variant='Contained' 
+                    size='small'
+                    component={Link}
+                    to="/Login"
+                    style={{
                         padding: "5px 5px"
-                        }}>
+                    }}>
                     <Typography variant='caption'>Back to Login</Typography>
                 </Button>
                 

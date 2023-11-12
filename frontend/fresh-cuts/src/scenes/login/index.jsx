@@ -2,6 +2,7 @@ import React from 'react'
 import {
 Grid, Paper, TextField, FormControlLabel, FormGroup, Checkbox, Button, Typography, Stack
 } from '@mui/material'
+import { Link } from 'react-router-dom'
 
 
 export default function Login() {
@@ -10,14 +11,18 @@ export default function Login() {
     return (
         <>
         <Grid container direction="row" justifyContent="right" alignItems="right">
-            <Button variant='outlined' style={{
-                        color: "#000000",
-                        borderColor: "#000000",
-                        borderWidth: "2px",
-                        borderRadius: 0,
-                        padding: "12px 48px",
-                        margin: "20px 20px 20px 20px"
-                        }}>
+            <Button 
+                variant='outlined'
+                component={Link}
+                to="/Signup" 
+                style={{
+                    color: "#000000",
+                    borderColor: "#000000",
+                    borderWidth: "2px",
+                    borderRadius: 0,
+                    padding: "12px 48px",
+                    margin: "20px 20px 20px 20px"
+                }}>
                 Sign Up
             </Button>
         </Grid>
@@ -50,10 +55,15 @@ export default function Login() {
                                       label={<Typography variant='caption'>Remember Me</Typography>}/>
                 </FormGroup>
 
-                <Button href="#text-buttons" style={{
-                    textTransform: 'none',
-                    color: "#a2a2a2"
-                }}>
+                <Button 
+                    href="#text-buttons" 
+                    component={Link}
+                    to="/Passwordreset"
+                    style={{
+                        textTransform: 'none',
+                        color: "#a2a2a2"
+                    }}
+                >
                     <Typography variant='caption'>Forgot Password</Typography></Button>
                 </Stack>
 
