@@ -34,14 +34,14 @@ export default function Login() {
                 </Grid>
 
                 <TextField
-                    required id="outlined-required"
+                    required id="email-login"
                     label="Email Address"
                     margin="normal"
                     fullWidth
                 />
 
                 <TextField
-                    id="outlined-password-input"
+                    id="password-login"
                     margin="normal"
                     label="Password"
                     type="password"

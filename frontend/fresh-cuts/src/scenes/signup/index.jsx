@@ -39,43 +39,43 @@ export default function Signup() {
                         <h2>Sign Up</h2>
                     </Grid>
 
-                    <TextField
-                        required id="firstname-required"
-                        label="First Name"
-                        margin="normal"
-                        fullWidth
-                    />
+                <TextField
+                    required id="first-name-signup"
+                    label="First Name"
+                    margin="normal"
+                    fullWidth
+                />
 
-                    <TextField
-                        required id="lastname-required"
-                        label="Last Name"
-                        margin="normal"
-                        fullWidth
-                    />
+                <TextField
+                    required id="last-name-signup"
+                    label="Last Name"
+                    margin="normal"
+                    fullWidth
+                />
 
-                    <TextField
-                        required id="outlined-required"
-                        label="Phone Number"
-                        margin="normal"
-                        onInput={(e) => { e.target.value = phoneFormat(e.target.value); }}
-                        fullWidth
-                    />
+                <TextField
+                    required id="phone-number-signup"
+                    label="Phone Number"
+                    margin="normal"
+                    onInput={(e) => { e.target.value = phoneFormat(e.target.value); }}
+                    fullWidth
+                />
 
-                    <TextField
-                        required id="email-required"
-                        label="Email Address"
-                        margin="normal"
-                        fullWidth
-                    />
+                <TextField
+                    required id="email-address-signup"
+                    label="Email Address"
+                    margin="normal"
+                    fullWidth
+                />
 
-                    <TextField
-                        id="outlined-password-input"
-                        margin="normal"
-                        label="Password"
-                        type="password"
-                        autoComplete="current-password"
-                        fullWidth required
-                    />
+                <TextField
+                    id="password-signup"
+                    margin="normal"
+                    label="Password"
+                    type="password"
+                    autoComplete="current-password"
+                    fullWidth required
+                />
 
                     <FormGroup>
                         <FormControlLabel control={<Checkbox defaultChecked color='default' size='small'/>}
