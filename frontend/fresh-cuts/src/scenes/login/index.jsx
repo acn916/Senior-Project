@@ -1,10 +1,30 @@
-import React from 'react'
+import React, { useState, useContext} from 'react'
+import { AccountContext } from "./Account";
+
 import {
 Grid, Paper, TextField, FormControlLabel, FormGroup, Checkbox, Button, Typography, Stack
 } from '@mui/material'
 
 
 export default function Login() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+   
+    const { authenticate } = useContext(AccountContext)
+
+    const onSubmit = (event) => {
+        event.preventDefault(); 
+
+        authenticate(email, password)
+        .then((data) => {
+            console.log("Logged in!", data);
+        })
+        .catch((err) => {
+            console.error("Failed to login", err);
+        });
+    };
+
+
     const paperStyle={padding:20, height:'350px', width:350, margin:"10px auto"}
 
     return (
@@ -22,6 +42,8 @@ export default function Login() {
             </Button>
         </Grid>
         
+<div>
+    <form onSubmit={onSubmit}>
         <Grid>
             <Paper elevation={2} style={paperStyle}>
                 <Grid container direction="row" justifyContent="center" alignItems="center">
@@ -33,7 +55,9 @@ export default function Login() {
                     label="Email Address"
                     margin="normal"
                     fullWidth
-                />
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                    />
 
                 <TextField
                     id="password-login"
@@ -42,7 +66,9 @@ export default function Login() {
                     type="password"
                     autoComplete="current-password"
                     fullWidth required
-                />
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                    />
 
                 <Stack direction='row' spacing={12} margin="normal">
                 <FormGroup>
@@ -59,14 +85,18 @@ export default function Login() {
 
                 <Button variant='Contained'
                         style={{
-                        backgroundColor: "#e95252",
-                        padding: "12px 24px"
+                            backgroundColor: "#e95252",
+                            padding: "12px 24px"
                         }}
-                        fullWidth required>
+                        fullWidth required type="submit">
                     <Typography color='white'>Proceed</Typography>
                 </Button>
             </Paper>
         </Grid>
+    </form>
+    </div>
         </>
     )
 }
+
+
