@@ -11,6 +11,8 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import {Link} from "react-router-dom"
 import Image from "../../pictures/redsalonart.png"
+import Login from "../login/index";
+
 
 const pages = ['Home', 'Staff', 'Services'];
 
@@ -29,8 +31,17 @@ const ResponsiveAppBar = () => {
     <AppBar style={{background: "white" }} position="static"> {/*Appbar creates the physical header */}
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-
-          <Box component="img" sx={{display: {xs: 'none', md: 'flex'}, mr: 1, height: 100, width: 140, marginLeft: 5}} src={Image}></Box> {/*For Red Salon Art image */}
+          <Link to="/">
+            <Box 
+              component="img" 
+              sx={{display: {xs: 'none', md: 'flex'}, 
+              mr: 1, height: 100, 
+              width: 140, marginLeft: 5}} 
+              src={Image}
+            />
+          </Link>
+          
+          
           {/*<AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />*/}
 
           {/*This is when the screen is smaller*/}
@@ -110,7 +121,7 @@ const ResponsiveAppBar = () => {
             ))}
           </Box>
 
-          <Button style={{color: "black"}}> Login </Button>
+          <Button component={Link} to="/Login" style={{color: "black"}}> Login </Button>
         </Toolbar>
       </Container>
     </AppBar>

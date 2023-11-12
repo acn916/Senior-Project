@@ -10,8 +10,10 @@ function Home() {
     <Container style={{marginTop: '30px', marginBottom: '30px'}}>
       <Grid container>
         <Grid item xs={12} style={{position: 'relative'}}>
-           
+          
+          
           <img
+            
             src={HomePicture}
             alt="Red Salon Art"
             className='home-image'
