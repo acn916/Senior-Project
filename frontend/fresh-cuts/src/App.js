@@ -7,7 +7,7 @@ import {Route, Routes} from "react-router";
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <ResponsiveAppBar />
       <div style={{minHeight:"700px"}}>
         <h1/>
@@ -19,6 +19,7 @@ function App() {
         <Route path="/Booking" element={<Booking />} />
       </Routes>
       </div>
+      <h1/>
       <Footer />
     </div>
   );
