@@ -11,7 +11,6 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import {Link} from "react-router-dom"
 import Image from "../../pictures/redsalonart.png"
-import Login from "../login/index";
 
 
 const pages = ['Home', 'Staff', 'Services'];
@@ -31,6 +30,7 @@ const ResponsiveAppBar = () => {
     <AppBar style={{background: "white" }} position="static"> {/*Appbar creates the physical header */}
       <Container maxWidth="xl">
         <Toolbar disableGutters>
+          
           <Link to="/">
             <Box 
               component="img" 
