@@ -23,19 +23,19 @@ const Booking = () => {
 
               <Grid item xs={4}>
                 <Button
-                  sx={{marginLeft: 5, marginTop: 5.5, display: 'block', padding: '13px 35px',
+                  sx={{marginLeft: 5, marginTop: 6, display: 'block',
                       color: 'white', bgcolor: '#E95252', ':hover': {bgcolor: '#E95252'}}}> 
-                  + Add new
+                  + Service
                 </Button>
               </Grid>
             </Grid>
 
-            <div style={{borderTop: "2px solid", color: "black", marginLeft: 50, maxWidth:"80%"}}></div>
+            <div style={{borderTop: "2px solid", color: "black", marginLeft: 50, maxWidth:"80%"}}/>
           </Grid>
 
           <Grid item xs={6}>
             <h1 align="left" style={{marginLeft: 20, marginTop: 50}}> Select Date </h1>
-            <div style={{borderTop: "2px solid", color: "black", marginLeft: 20, maxWidth:"80%"}}></div>
+            <div style={{borderTop: "2px solid", color: "black", marginLeft: 20, maxWidth:"80%"}}/>
             <div style={{width: 230, marginLeft: 20, marginTop: 20}}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker 

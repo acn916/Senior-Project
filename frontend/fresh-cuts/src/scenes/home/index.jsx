@@ -7,11 +7,10 @@ import {Link} from "react-router-dom";
 
 function Home() {
   return (
-    <Container>
+    <Container style={{marginTop: '30px', marginBottom: '30px'}}>
       <Grid container>
         <Grid item xs={12} style={{position: 'relative'}}>
-          
-            
+           
           <img
             src={HomePicture}
             alt="Red Salon Art"

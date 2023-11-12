@@ -24,7 +24,7 @@ const Services = () => {
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <Container>
+        <Container style={{marginTop: '20px', marginBottom: '20px'}}>
           <Box mt={3}>
             <Typography variant="h4" component="h2" gutterBottom>
               Our Services

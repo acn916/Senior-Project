@@ -10,17 +10,19 @@ function App() {
     <div>
       <ResponsiveAppBar />
       <div style={{minHeight:"700px"}}>
-        <h1/>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/Home" element={<Home />} />
-        {/*<Route path="/Staff" element={<Staff />} />*/}
-        <Route path="/Services" element={<Services />} />
-        <Route path="/Booking" element={<Booking />} />
-      </Routes>
-      </div>
-      <h1/>
+        
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/Home" element={<Home />} />
+            {/*<Route path="/Staff" element={<Staff />} />*/}
+            <Route path="/Services" element={<Services />} />
+            <Route path="/Booking" element={<Booking />} />
+          </Routes>
+          </div>
+        
       <Footer />
+
+
     </div>
   );
 }
