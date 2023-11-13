@@ -14,15 +14,10 @@
     background-color: #fff; 
   }
 
-  @media (max-width: 600px) {
-    
-  }
-
   .left-column {
     max-width: 100%;
     width: 100%;
     padding-top: 20px;
-    
   }
 
   @media (max-width: 600px) {
@@ -34,9 +29,8 @@
       .description-box {
         padding-left: 20px;
       }
-
-      
     }
+
   .right-column {
     max-width: 100%;
     width: 100%;
@@ -55,25 +49,4 @@
 
   .time {
     margin-right: 100px;
-  }
-
-  .button-container {
-    position: relative;
-  }
-
-
-  .frame-container {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .button {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-  }
-  
- 
-  
+  }  
