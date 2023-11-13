@@ -47,7 +47,18 @@ function Servicesdropdown() {
   };
   return (
     <header>
-      <Button onClick={handleOpen}>Open selection</Button>
+      <Button 
+        onClick={handleOpen} 
+        sx={{
+          marginLeft: 5, 
+          marginTop: 6, 
+          display: 'block',
+          color: 'white', 
+          bgcolor: '#E95252', 
+          ':hover': {bgcolor: '#E95252'}}}
+      >
+        + Service
+      </Button>
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <Box sx={style}>
 

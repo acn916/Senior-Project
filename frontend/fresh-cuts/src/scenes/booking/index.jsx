@@ -5,6 +5,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import Servicedropdown from '../../components/servicesdropdown/index.jsx';
 
 const Booking = () => {
 
@@ -22,11 +23,7 @@ const Booking = () => {
               </Grid>
 
               <Grid item xs={4}>
-                <Button
-                  sx={{marginLeft: 5, marginTop: 6, display: 'block',
-                      color: 'white', bgcolor: '#E95252', ':hover': {bgcolor: '#E95252'}}}> 
-                  + Service
-                </Button>
+                <Servicedropdown/>
               </Grid>
             </Grid>
 
