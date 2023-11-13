@@ -3,6 +3,7 @@ import {
 Grid, Paper, TextField, FormControlLabel, FormGroup, Checkbox, Button, Typography
 } from '@mui/material';
 import UserPool from "./UserPool.js";
+import { Link } from 'react-router-dom';
 
 function phoneFormat(input) {
     input = input.replace(/\D/g,'').substring(0,10);
@@ -41,7 +42,7 @@ export default function Signup() {
                 Name: "custom:user_role", // Custom role attribute
                 Value: isStylist ? "Stylist" : "Customer",
             },
-            // Add more attributes as needed
+            
         ];
         UserPool.signUp(email, password, attributes, null, (err, data) => {
             if (err) {
@@ -54,26 +55,30 @@ export default function Signup() {
 
     return (
         <>
-        <Grid container direction="row" justifyContent="right" alignItems="right">
-            <Button variant='outlined' style={{
-                        color: "#000000",
-                        borderColor: "#000000",
-                        borderWidth: "2px",
-                        borderRadius: 0,
-                        padding: "12px 48px",
-                        margin: "20px 20px 20px 20px"
-                        }}>
-                Sign In
-            </Button>
-        </Grid>
-
-        <div>
+            <Grid container direction="row" justifyContent="right" alignItems="right">
+                <Button 
+                component={Link}
+                to="/Login"
+                variant='outlined' 
+                style={{
+                    color: "#000000",
+                    borderColor: "#000000",
+                    borderWidth: "2px",
+                    borderRadius: 0,
+                    padding: "12px 48px",
+                    margin: "20px 20px 20px 20px"
+                }}>
+                    Sign In
+                </Button>
+            </Grid>
+    
+            <div>
             <form onSubmit={onSubmit}>
             <Grid container direction="row" justifyContent="right" alignItems="right">
-            <Paper elevation={2} style={paperStyle}>
-                <Grid container direction="row" justifyContent="center" alignItems="center">
-                    <h2>Sign Up</h2>
-                </Grid>
+                <Paper elevation={2} style={paperStyle}>
+                    <Grid container direction="row" justifyContent="center" alignItems="center">
+                        <h2>Sign Up</h2>
+                    </Grid>
                 
                 <TextField
                     required id="first-name-signup"
@@ -123,13 +128,27 @@ export default function Signup() {
                 />
 
                 <FormGroup>
-                    <FormControlLabel control={<Checkbox defaultChecked color='default' size='small'/>}
-                                      label={<Typography variant='caption'>I agree to the Terms of Service and Privacy Policy.</Typography>}/>
+                    <FormControlLabel 
+                        control={
+                            <Checkbox color='default' size='small'/>
+                        }
+                        label={
+                            <Typography variant='caption'>I agree to the Terms of Service and Privacy Policy.</Typography>
+                        }
+                    />
                     
-                    <FormControlLabel control={<Checkbox type="checkbox" checked={isStylist}
-                                      onChange={(event) => setIsStylist(event.target.checked)}
-                                      defaultChecked color='default' size='small'/>}
-                                      label={<Typography variant='caption'>I am a stylist.</Typography>}/>
+                    <FormControlLabel 
+                        control={
+                            <Checkbox 
+                                type="checkbox" 
+                                checked={isStylist}
+                                onChange={(event) => setIsStylist(event.target.checked)}
+                                color='default' 
+                                size='small'
+                            />
+                        }
+                            label={<Typography variant='caption'>I am a stylist.</Typography>}
+                    />
                 </FormGroup>
 
                 <Button variant='Contained'

@@ -3,36 +3,36 @@ import { Grid, Box, Container, Button, Typography } from '@mui/material';
 import HomePicture from '../../pictures/home.jpg';
 import MapPicture from '../../pictures/Maps.png';
 import './Home.css'
+import {Link} from "react-router-dom";
 
 function Home() {
   return (
-    <Container>
+    <Container style={{marginTop: '30px', marginBottom: '30px'}}>
       <Grid container>
         <Grid item xs={12} style={{position: 'relative'}}>
           
-            
+          
           <img
+            
             src={HomePicture}
             alt="Red Salon Art"
             className='home-image'
           />
 
-          <Button
-
-            style={{
-              
-              position: 'absolute',
-              backgroundColor:'#E95252',
-              color: '#FFFFFF',
-              top: '20px',
-              right: '10%'
-
-            }}  
-
-          >
-            Book Now
-
-          </Button>
+          {['Booking'].map((page) => (
+            <Button
+              key={page}
+              style={{
+                position: 'absolute',
+                backgroundColor:'#E95252',
+                color: '#FFFFFF',
+                top: '20px',
+                right: '10%'
+              }}
+            >
+              <Link style={{textDecoration: "none", color: "white"}} to={`/${page}`}> Book Now</Link>
+            </Button>
+          ))} 
 
             
           
