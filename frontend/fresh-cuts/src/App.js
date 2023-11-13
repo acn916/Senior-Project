@@ -7,6 +7,7 @@ import {Route, Routes} from "react-router";
 import Login from "./scenes/login/index.jsx";
 import Signup from "./scenes/signup/index.jsx";
 import Passwordreset from "./scenes/passwordreset/index.js";
+import { Account } from "./scenes/login/Account.js";
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
             <Route path="/Services" element={<Services />} />
             <Route path="/Booking" element={<Booking />} />
             <Route path="/Signup" element={<Signup/>}/>
-            <Route path="/Login" element={<Login/>}/>
+            <Route path="/Login" element={<Account><Login/></Account>}/>
             <Route path="/Passwordreset" element={<Passwordreset/>}/>
             
           </Routes>
