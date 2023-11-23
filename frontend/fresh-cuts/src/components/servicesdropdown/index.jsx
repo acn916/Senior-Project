@@ -12,6 +12,16 @@ import Checkbox from '@mui/material/Checkbox';
 import ListItemText from '@mui/material/ListItemText';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { styled } from '@mui/material/styles';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+
+function createData(number, service, stylists, date) {
+  return { number, service, stylists, date };
+}
 
 const style = {
   position: 'absolute',
@@ -19,7 +29,7 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 1000,
-  height: 320,
+  height: 480,
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
@@ -42,6 +52,13 @@ const names = [
   'Starrie Le',
 ];
 
+const rows = [
+  createData(1, 'Brazillian Blowout', 'Starrie Le'),
+  createData(2, 'Brazillian Blowout', 'Starrie Le'),
+  createData(3, 'Brazillian Blowout', 'Starrie Le'),
+  createData(4, 'Brazillian Blowout', 'Starrie Le'),
+];
+
 function Servicesdropdown() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -59,6 +76,7 @@ function Servicesdropdown() {
     } = event;
     setStylist(typeof value === 'string' ? value.split(',') : value,);
   };
+
   return (
     <header>
       <Button 
@@ -130,31 +148,50 @@ function Servicesdropdown() {
             <Grid item xs={10}>
               
             </Grid>
+
             <Grid item xs={2}>
-              <Button variant="contained" size="large" style={{backgroundColor:'#E95252'}}>Add +</Button>
+              <Button 
+              variant="contained" 
+              size="large" 
+              style={{backgroundColor:'#E95252'}}>
+              Add +
+              </Button>
             </Grid>
             <Grid item xs={6}>
-              <Item>Added Services</Item>
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 300 }} size="Small" aria-label="selected services table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Number</TableCell>
+                    <TableCell align="center">Service</TableCell>
+                    <TableCell align="center">Stylist(s)</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {rows.map((row) => (
+                    <TableRow
+                      key={row.name}
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {row.number}
+                      </TableCell>
+                      <TableCell align="center">{row.service}</TableCell>
+                      <TableCell align="center">{row.stylists}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
             </Grid>
-            <Grid item xs={6}>
-              
-            </Grid>
-            <Grid item xs={3}>
-              <Item>Sample Service 1</Item>
-              <Item></Item>
-            </Grid>
-            <Grid item xs={3}>
-              <Item>Sample Service 2</Item>
-              <Item>Victoria Saeturn</Item>
-            </Grid>
-            <Grid item xs={18}>
+            <Grid item xs={12}>
               
             </Grid>
             <Grid item xs={8}>
               
             </Grid>
             <Grid item xs={2}>
-              <Button variant="outlined" size="large" style={{borderColor: '#E95252', color: '#E95252'}}>Cancel</Button>
+              <Button onClick = {handleClose} variant="outlined" size="large" style={{borderColor: '#E95252', color: '#E95252'}}>Cancel</Button>
             </Grid>
             <Grid item xs={2}>
               <Button variant="contained" size="large" style={{backgroundColor:'#E95252'}}>Confirm</Button>
