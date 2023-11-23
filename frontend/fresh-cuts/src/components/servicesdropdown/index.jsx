@@ -8,6 +8,9 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
+import Checkbox from '@mui/material/Checkbox';
+import ListItemText from '@mui/material/ListItemText';
+import OutlinedInput from '@mui/material/OutlinedInput';
 import { styled } from '@mui/material/styles';
 
 const style = {
@@ -31,6 +34,14 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
+const names = [
+  'Kayla Nguyen',
+  'Nicole Mata',
+  'Victoria Saeturn',
+  'Sil Baron',
+  'Starrie Le',
+];
+
 function Servicesdropdown() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -41,9 +52,12 @@ function Servicesdropdown() {
     setService(event.target.value);
   };
 
-  const [stylist, setStylist] = React.useState('');
+  const [stylist, setStylist] = React.useState([]);
   const handleStylistChange = (event) => {
-    setStylist(event.target.value);
+    const {
+      target: { value },
+    } = event;
+    setStylist(typeof value === 'string' ? value.split(',') : value,);
   };
   return (
     <header>
@@ -87,6 +101,7 @@ function Servicesdropdown() {
                   <MenuItem value={12}>Extension Installation</MenuItem>
                   <MenuItem value={13}>Highlights</MenuItem>
                   <MenuItem value={14}>Men's Haircut</MenuItem>
+                  <MenuItem value={15}>None</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -96,15 +111,19 @@ function Servicesdropdown() {
                 <Select
                   labelId="stylist-select-label"
                   id="stylist-select"
+                  multiple
                   value={stylist}
                   label="Stylists"
                   onChange={handleStylistChange}
+                  input={<OutlinedInput label="Tag" />}
+                  renderValue={(selected) => selected.join(', ')}
                 >
-                  <MenuItem value={1}>Kayla Nguyen</MenuItem>
-                  <MenuItem value={2}>Nicole Mata</MenuItem>
-                  <MenuItem value={3}>Victoria Saeturn</MenuItem>
-                  <MenuItem value={4}>Sil Baron</MenuItem>
-                  <MenuItem value={5}>Starrie Le</MenuItem>
+                  {names.map((name) => (
+                    <MenuItem key={name} value={name}>
+                      <Checkbox checked={stylist.indexOf(name) > -1} />
+                      <ListItemText primary={name} />
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </Grid>
@@ -122,7 +141,7 @@ function Servicesdropdown() {
             </Grid>
             <Grid item xs={3}>
               <Item>Sample Service 1</Item>
-              <Item>2 Employees Selected</Item>
+              <Item></Item>
             </Grid>
             <Grid item xs={3}>
               <Item>Sample Service 2</Item>
