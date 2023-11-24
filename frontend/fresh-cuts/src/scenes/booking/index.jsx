@@ -6,6 +6,23 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Servicedropdown from '../../components/servicesdropdown/index.jsx';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+
+function createData(number, service, stylists, date) {
+  return { number, service, stylists, date };
+}
+
+const rows = [
+  createData(1, 'Brazillian Blowout', 'Starrie Le'),
+  createData(2, 'Cleanup', 'Sil Baron, Nicole Mata, Starrie Le'),
+  createData(3, 'Color', 'Starrie Le'),
+  createData(4, 'Color Touch Up', 'Victoria Saeturn, Nicole Mata'),
+];
 
 const Booking = () => {
 
@@ -28,6 +45,31 @@ const Booking = () => {
             </Grid>
 
             <div style={{borderTop: "2px solid", color: "black", marginLeft: 50, maxWidth:"80%"}}/>
+            <TableContainer>
+              <Table sx={{marginLeft: 6, maxWidth:"80%"}} size="Small" aria-label="selected services table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Number</TableCell>
+                    <TableCell align="center">Service</TableCell>
+                    <TableCell align="center">Stylist(s)</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {rows.map((row) => (
+                    <TableRow
+                      key={row.name}
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {row.number}
+                      </TableCell>
+                      <TableCell align="center">{row.service}</TableCell>
+                      <TableCell align="center">{row.stylists}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
           </Grid>
 
           <Grid item xs={6}>

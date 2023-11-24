@@ -36,14 +36,6 @@ const style = {
   p: 4,
 };
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
-
 const names = [
   'Kayla Nguyen',
   'Nicole Mata',
@@ -54,9 +46,9 @@ const names = [
 
 const rows = [
   createData(1, 'Brazillian Blowout', 'Starrie Le'),
-  createData(2, 'Brazillian Blowout', 'Starrie Le'),
-  createData(3, 'Brazillian Blowout', 'Starrie Le'),
-  createData(4, 'Brazillian Blowout', 'Starrie Le'),
+  createData(2, 'Cleanup', 'Sil Baron, Nicole Mata, Starrie Le'),
+  createData(3, 'Color', 'Starrie Le'),
+  createData(4, 'Color Touch Up', 'Victoria Saeturn, Nicole Mata'),
 ];
 
 function Servicesdropdown() {
@@ -70,11 +62,14 @@ function Servicesdropdown() {
   };
 
   const [stylist, setStylist] = React.useState([]);
+  const [addDisabled, setAddDisabled] = React.useState(true);
   const handleStylistChange = (event) => {
     const {
       target: { value },
     } = event;
     setStylist(typeof value === 'string' ? value.split(',') : value,);
+    console.log(!value.length)
+    setAddDisabled(!value.length)
   };
 
   return (
@@ -119,7 +114,6 @@ function Servicesdropdown() {
                   <MenuItem value={12}>Extension Installation</MenuItem>
                   <MenuItem value={13}>Highlights</MenuItem>
                   <MenuItem value={14}>Men's Haircut</MenuItem>
-                  <MenuItem value={15}>None</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -129,6 +123,7 @@ function Servicesdropdown() {
                 <Select
                   labelId="stylist-select-label"
                   id="stylist-select"
+                  name="stylist_select"
                   multiple
                   value={stylist}
                   label="Stylists"
@@ -145,18 +140,20 @@ function Servicesdropdown() {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={10}>
-              
-            </Grid>
+            <Grid item xs={10}></Grid>
+
 
             <Grid item xs={2}>
               <Button 
+              disabled={addDisabled}
               variant="contained" 
               size="large" 
               style={{backgroundColor:'#E95252'}}>
               Add +
               </Button>
             </Grid>
+
+
             <Grid item xs={6}>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 300 }} size="Small" aria-label="selected services table">
