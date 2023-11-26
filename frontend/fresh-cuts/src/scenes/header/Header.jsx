@@ -31,16 +31,13 @@ const ResponsiveAppBar = () => {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           
-          <Link to="/">
-            <Box 
-              component="img" 
-              sx={{display: {xs: 'none', md: 'flex'}, 
-              mr: 1, height: 100, 
-              width: 140, marginLeft: 5}} 
-              src={Image}
-            />
-          </Link>
-          
+          <Box 
+            component="img" 
+            sx={{display: {xs: 'none', md: 'flex'}, 
+            mr: 1, height: 100, 
+            width: 140, marginLeft: 5}} 
+            src={Image}
+          />
           
           {/*<AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />*/}
 
@@ -113,10 +110,9 @@ const ResponsiveAppBar = () => {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 4, color: 'white', marginLeft: 7, display: 'block', ':hover': {bgcolor: 'white'}}}
+                sx={{ my: 4, marginLeft: 7, display: 'block'}}
               >
-                <Link style={{textDecoration: "none", color: "black"}} to={`/${page}`}> {page}</Link>
+                <Link style={{textDecoration: "none", color: "black"}} to={`/${page}`}>{page}</Link>
               </Button>
             ))}
           </Box>

@@ -1,0 +1,18 @@
+button.mobile {
+    margin-left: 50px;
+    font-size: 14px;
+}
+
+@media (max-width: 1105px){
+    button.mobile{
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 750px){
+    button.mobile{
+        margin-left: 0px;
+        margin-top: 80px;
+        font-size: 8px;
+    }
+}

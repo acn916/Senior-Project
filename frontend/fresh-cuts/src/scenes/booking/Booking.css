@@ -1,0 +1,153 @@
+.selected-services{
+    margin-left: 50px;
+    margin-top: 50px;
+}
+
+.selected-services-line{
+    border-top: 2px solid;
+    color: black;
+    margin-left: 50px;
+    max-width: 80%;
+}
+
+.drop-down{
+    margin-left: 20px;
+}
+
+.select-date{
+    margin-left: 20px;
+    margin-top: 50px;
+}
+
+.select-date-line{
+    border-top: 2px solid;
+    color: black;
+    margin-left: 20px;
+    max-width: 80%;
+}
+
+.date-picker{
+    width: 230px;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+.schedules{
+    margin-left: 50px;
+}
+
+.schedules-line{
+    border-top: 2px solid;
+    color: black;
+    margin-left: 50px;
+    max-width: 90%;
+}
+
+@media(max-width: 1053px){
+    .selected-services{
+        font-size: 26px;
+        margin-left: 30px;
+        margin-top: 80px;
+    }
+
+    .selected-services-line{
+        border-top: 2px solid;
+        color: black;
+        margin-left: 30px;
+        max-width: 85%;
+    }
+
+    .drop-down{
+        margin-left: 10px;
+        margin-top: 70px;
+    }
+    
+    .select-date{
+        font-size: 26px;
+        margin-left: 20px;
+        margin-top: 80px;
+    }
+    
+    .select-date-line{
+        border-top: 2px solid;
+        color: black;
+        margin-left: 20px;
+        max-width: 85%;
+    }
+    
+    .date-picker{
+        width: 50%;
+        margin-left: 20px;
+        margin-top: 20px;
+    }
+    
+    .schedules{
+        font-size: 26px;
+        margin-left: 20px;
+    }
+    
+    .schedules-line{
+        border-top: 2px solid;
+        color: black;
+        margin-left: 20px;
+        max-width: 92%;
+    }
+}
+
+@media(max-width: 835px){
+    .selected-services{
+        font-size: 26px;
+        margin-left: 30px;
+        margin-top: 50px;
+    }
+
+    .selected-services-line{
+        border-top: 2px solid;
+        color: black;
+        margin-left: 30px;
+        max-width: 90%;
+    }
+
+    .drop-down{
+        margin-left: 10px;
+    }
+    
+    .select-date{
+        font-size: 26px;
+        margin-left: 20px;
+        margin-top: 80px;
+    }
+    
+    .select-date-line{
+        border-top: 2px solid;
+        color: black;
+        margin-left: 20px;
+        max-width: 90%;
+    }
+    
+    .date-picker{
+        width: 80%;
+        margin-left: 20px;
+        margin-top: 20px;
+    }
+    
+    .schedules{
+        font-size: 26px;
+        margin-left: 20px;
+    }
+    
+    .schedules-line{
+        border-top: 2px solid;
+        color: black;
+        margin-left: 20px;
+        max-width: 95%;
+    }
+}
+
+@media(max-width: 400px){
+    .selected-services{
+        font-size: 24px;
+        margin-left: 30px;
+        margin-top: 55px;
+    }
+}

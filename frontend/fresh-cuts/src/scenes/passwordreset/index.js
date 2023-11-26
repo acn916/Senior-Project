@@ -7,7 +7,7 @@ export default function Passwordreset() {
 
     return (
         <>
-        <Grid margin="70px">
+        <Grid marginTop="105px" marginLeft="30px" marginRight="70px" marginBottom="70px">
             <Paper elevation={2} style={paperStyle}>
                  <Button 
                     variant='Contained' 

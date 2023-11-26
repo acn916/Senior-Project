@@ -20,23 +20,29 @@
     padding-top: 20px;
   }
 
-  @media (max-width: 600px) {
-      .left-column {
-        padding-left: 20px; 
-        padding-right: 20px;
-      }
-
-      .description-box {
-        padding-left: 20px;
-      }
-    }
-
   .right-column {
     max-width: 100%;
     width: 100%;
     padding-left: 20px;
-    padding-top: 10px;
-    
+    padding-top: 10px; 
+  }
+
+  @media (max-width: 600px) {
+    .left-column {
+      padding-left: 10px; 
+    }
+
+    .description-box {
+      padding-left: 10px;
+    }
+
+    .right-column {
+      padding-left: 10px;
+    }
+
+    .home-image {
+      max-width: 85vw;
+    }
   }
 
   .business-hours {

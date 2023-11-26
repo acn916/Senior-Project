@@ -9,6 +9,7 @@ import Signup from "./scenes/signup/index.jsx";
 import Passwordreset from "./scenes/passwordreset/index.js";
 import { Account } from "./scenes/login/Account.js";
 import ErrorPage from "./scenes/404/index.jsx";
+import PrivateRoutes from "./PrivateRoutes.js";
 
 function App() {
   return (
@@ -17,11 +18,13 @@ function App() {
       <div style={{minHeight:"700px"}}>
         
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/Home" element={<Home />} />
-            {/*<Route path="/Staff" element={<Staff />} />*/}
-            <Route path="/Services" element={<Services />} />
-            <Route path="/Booking" element={<Booking />} />
+            <Route element = {<PrivateRoutes />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/Home" element={<Home />} />
+              {/*<Route path="/Staff" element={<Staff />} />*/}
+              <Route path="/Services" element={<Services />} />
+              <Route path="/Booking" element={<Booking />} />
+            </Route>
             <Route path="/Signup" element={<Signup/>}/>
             <Route path="/Login" element={<Account><Login/></Account>}/>
             <Route path="/Passwordreset" element={<Passwordreset/>}/>

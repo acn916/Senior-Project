@@ -13,6 +13,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import PlaceIcon from '@mui/icons-material/Place';
+import "./Footer.css";
 
 import {Link} from "react-router-dom"
 
@@ -25,7 +26,7 @@ const Footer = () => {
 				<Row>
 					<Column>
 						
-                        <img src={Image} width="170px" height="125px"/>
+                        <img className="picture" src={Image}/>
 						
 						<FooterLinkYear>
 							&copy;{new Date().getFullYear()} <br/> All right reserved.
@@ -35,11 +36,11 @@ const Footer = () => {
 
 					<Column>
 						<Heading>About</Heading>
-						<FooterLink href="/" style={{fontSize: "22px"}}>
+						<FooterLink href="/">
 							Profile
 						</FooterLink>
 
-						<FooterLink href="/Services" style={{fontSize: "22px"}}>
+						<FooterLink href="/Services">
 							Services
 						</FooterLink>
 					</Column>
