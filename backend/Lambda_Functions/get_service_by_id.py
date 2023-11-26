@@ -41,7 +41,7 @@ def lambda_handler(event, context):
         cursor.execute(query, (service_id,))
         
         # store results 
-        result = cursor.fetchall()
+        result = cursor.fetchone()
 
         # end connections
         cursor.close()
