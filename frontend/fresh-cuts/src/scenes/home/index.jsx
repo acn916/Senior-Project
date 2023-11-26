@@ -22,9 +22,11 @@ function Home() {
           {['Booking'].map((page) => (
             <Button
               key={page}
+              size="large"
               style={{
                 position: 'absolute',
                 backgroundColor:'#E95252',
+                borderRadius: '50px',
                 color: '#FFFFFF',
                 top: '20px',
                 right: '10%'

@@ -8,6 +8,7 @@ import Login from "./scenes/login/index.jsx";
 import Signup from "./scenes/signup/index.jsx";
 import Passwordreset from "./scenes/passwordreset/index.js";
 import { Account } from "./scenes/login/Account.js";
+import ErrorPage from "./scenes/404/index.jsx";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Route path="/Signup" element={<Signup/>}/>
             <Route path="/Login" element={<Account><Login/></Account>}/>
             <Route path="/Passwordreset" element={<Passwordreset/>}/>
+            <Route path="/Error" element={<ErrorPage/>}/>
             
           </Routes>
       </div>
