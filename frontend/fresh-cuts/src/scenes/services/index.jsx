@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Container, Typography, Grid, Card, CardContent, Button, Box } from "@mui/material";
 import axios from "axios";
+import { Link } from "react-router-dom";
+
 
 const Services = () => {
   const [services, setServices] = useState([]);
@@ -51,16 +53,18 @@ const Services = () => {
                     )}
                   </CardContent>
                   <div style={{ marginTop: 'auto', textAlign: 'right', padding: '15px' }}>
-                    <Button
-                      variant="contained"
-                      style={{
-                        backgroundColor: "#E95252",
-                        color: "white",
-                        transition: "background-color 0.3s",
-                      }}
-                    >
-                      Request
-                    </Button>
+                  <Link to="/booking">
+                      <Button
+                        variant="contained"
+                        style={{
+                          backgroundColor: "#E95252",
+                          color: "white",
+                          transition: "background-color 0.3s",
+                        }}
+                      >
+                        Request
+                      </Button>
+                    </Link>
                   </div>
                 </Card>
               </Grid>
