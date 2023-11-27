@@ -10,8 +10,6 @@ function Home() {
     <Container style={{marginTop: '30px', marginBottom: '30px'}}>
       <Grid container>
         <Grid item xs={12} style={{position: 'relative'}}>
-          
-          
           <img
             
             src={HomePicture}
@@ -33,10 +31,6 @@ function Home() {
               <Link style={{textDecoration: "none", color: "white"}} to={`/${page}`}> Book Now</Link>
             </Button>
           ))} 
-
-            
-          
-
 
         </Grid>
         <Grid item xs={12}>
