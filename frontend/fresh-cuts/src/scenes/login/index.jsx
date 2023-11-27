@@ -1,5 +1,5 @@
-import React, { useState, useContext} from 'react'
-import { AccountContext } from "./Account";
+import React, { useState, useContext } from 'react'
+import { AccountContext } from './Account.js';
 
 import {
 Grid, Paper, TextField, FormControlLabel, FormGroup, Checkbox, Button, Typography, Stack
@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom'
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [loginError, setLoginError] = useState(false);
    
     const { authenticate } = useContext(AccountContext)
 
@@ -19,9 +20,11 @@ export default function Login() {
         authenticate(email, password)
         .then((data) => {
             console.log("Logged in!", data);
+            setLoginError(false);
         })
         .catch((err) => {
             console.error("Failed to login", err);
+            setLoginError(true);
         });
     };
 
@@ -54,6 +57,12 @@ export default function Login() {
                             <Grid container direction="row" justifyContent="center" alignItems="center">
                                 <h2>Log In</h2>
                             </Grid>
+
+                            {loginError && (
+                            <Typography color="error" variant="body2">
+                                Incorrect Email or Password, please try again
+                            </Typography>
+                            )}
 
                             <TextField
                                 required id="email-login"
@@ -108,5 +117,3 @@ export default function Login() {
         </>
     )
 }
-
-
