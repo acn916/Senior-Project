@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Container, Typography, Grid, Card, CardContent, Button, Box } from "@mui/material";
 import axios from "axios";
+import {Link} from "react-router-dom";
 
 const Services = () => {
   const [services, setServices] = useState([]);
@@ -59,7 +60,7 @@ const Services = () => {
                         transition: "background-color 0.3s",
                       }}
                     >
-                      Request
+                      <Link style={{textDecoration: "none", color: "white"}} to="/booking">Request</Link>
                     </Button>
                   </div>
                 </Card>
