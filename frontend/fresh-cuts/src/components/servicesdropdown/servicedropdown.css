@@ -13,6 +13,12 @@ button.mobile {
     button.mobile{
         margin-left: 0px;
         margin-top: 80px;
-        font-size: 8px;
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 600px){
+    button.mobile{
+        margin-top: 0px;
     }
 }

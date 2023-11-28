@@ -15,16 +15,16 @@ const Booking = () => {
   return (
     <Container maxWidth="95%">
 
-        <Grid container spacing={2} style={{minHeight: "500px"}}>
-          <Grid item xs={6}>
+        <Grid container style={{minHeight: "500px"}}>
+          <Grid item xs={12} sm={6} style={{minHeight:"100px"}}>
 
-            <Grid container spacing={2}>
+            <Grid container>
               <Grid item xs={7}>
                 <h1 align="left" className= "selected-services"> Selected Services </h1>
               </Grid>
 
               <Grid item xs={4}>
-                <div className="drop-down">
+                <div className="service">
                   <Servicedropdown/>
                 </div>
               </Grid>
@@ -33,7 +33,7 @@ const Booking = () => {
             <div className="selected-services-line"/>
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item xs={12} sm={6}>
             <h1 className="select-date" align="left"> Select Date </h1>
             <div className="select-date-line"/>
             <div className="date-picker">
@@ -48,7 +48,7 @@ const Booking = () => {
           </Grid>
         </Grid>
 
-        <Grid container spacing={2} style={{minHeight: "500px"}}>
+        <Grid container style={{minHeight: "500px"}}>
           <Grid item xs={12}>
             <h1 className="schedules" align="left"> Schedules </h1>
             <div className="schedules-line"></div>

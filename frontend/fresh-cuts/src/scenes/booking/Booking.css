@@ -10,7 +10,7 @@
     max-width: 80%;
 }
 
-.drop-down{
+.service{
     margin-left: 20px;
 }
 
@@ -43,7 +43,7 @@
     max-width: 90%;
 }
 
-@media(max-width: 1053px){
+@media(max-width: 1015px){
     .selected-services{
         font-size: 26px;
         margin-left: 30px;
@@ -57,7 +57,7 @@
         max-width: 85%;
     }
 
-    .drop-down{
+    .service{
         margin-left: 10px;
         margin-top: 70px;
     }
@@ -94,7 +94,7 @@
     }
 }
 
-@media(max-width: 835px){
+@media(max-width: 797px){
     .selected-services{
         font-size: 26px;
         margin-left: 30px;
@@ -108,7 +108,7 @@
         max-width: 90%;
     }
 
-    .drop-down{
+    .service{
         margin-left: 10px;
     }
     
@@ -144,10 +144,34 @@
     }
 }
 
+@media(max-width: 600px){
+    .selected-services{
+        margin-left: 20px;
+        margin-top: 70px;
+    }
+
+    .selected-services-line{
+        margin-left: 20px;
+        max-width: 90%;
+    }
+    
+    .date-picker{
+        width: 40%;
+    }
+    
+    .schedules-line{
+        max-width: 90%;
+    }
+}
+
 @media(max-width: 400px){
     .selected-services{
         font-size: 24px;
-        margin-left: 30px;
-        margin-top: 55px;
+    }
+    .select-date{
+        font-size: 24px;
+    }
+    .schedules{
+        font-size: 24px;
     }
 }

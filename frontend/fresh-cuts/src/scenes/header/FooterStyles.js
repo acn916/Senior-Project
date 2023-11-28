@@ -47,7 +47,23 @@ export const Row = styled.div`
 		grid-gap: 0px;
 	}
 
-	@media (max-width: 421px) {
+	@media (max-width: 842px) {
+		grid-template-columns: repeat(
+			auto-fill,
+			minmax(23%, 0fr)
+		);
+		grid-gap: 10px;
+	}
+
+	@media (max-width: 599px) {
+		grid-template-columns: repeat(
+			auto-fill,
+			minmax(170px, 12fr)
+		);
+		grid-gap: 31px;
+	}
+
+  @media (max-width: 410px) {
 		grid-template-columns: repeat(
 			auto-fill,
 			minmax(170px, 12fr)
@@ -73,6 +89,18 @@ export const FooterLink = styled.a`
 		font-size: 15px;
 	}
 
+	@media (max-width: 787px) {
+		font-size: 10px;
+	}
+
+	@media (max-width: 599px) {
+		font-size: 15px;
+	}
+
+	@media (max-width: 375px) {
+		font-size: 12px;
+	}
+  
 `;
 
 export const FooterLinkYear = styled.a`
@@ -83,6 +111,10 @@ export const FooterLinkYear = styled.a`
 
 	@media (max-width: 1000px) {
 		font-size: 15px;
+	}
+
+	@media (max-width: 375px) {
+		font-size: 12px;
 	}
 `;
 
@@ -95,5 +127,9 @@ export const Heading = styled.p`
 	@media (max-width: 1000px) {
 		margin-bottom: 13px;
 		font-size: 20px;
+	}
+
+	@media (max-width: 375px) {
+		font-size: 16px;
 	}
 `;
