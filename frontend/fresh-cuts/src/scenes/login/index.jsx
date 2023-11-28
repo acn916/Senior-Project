@@ -29,7 +29,7 @@ export default function Login() {
     };
 
 
-    const paperStyle={padding:20, height:'350px', width:350, margin:"10px auto"}
+    const paperStyle={padding:20, height:'350px', width:'90%', maxWidth:'350px', margin:"10px auto"}
 
     return (
         <>
@@ -84,7 +84,7 @@ export default function Login() {
                                 onChange={(event) => setPassword(event.target.value)}
                                 />
 
-                            <Stack direction='row' spacing={12} margin="normal">
+                            <Stack direction='row' justifyContent='space-between' margin='normal'>
                             <FormGroup>
                                 <FormControlLabel control={<Checkbox defaultChecked color='default' size='small'/>}
                                                 label={<Typography variant='caption'>Remember Me</Typography>}/>
