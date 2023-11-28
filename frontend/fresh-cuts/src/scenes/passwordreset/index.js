@@ -3,11 +3,11 @@ import { Grid, Paper, TextField, Button, Typography } from '@mui/material'
 import { Link } from 'react-router-dom'
 
 export default function Passwordreset() {
-    const paperStyle={padding:20, height:'350px', width:'90%', maxWidth:'350px', margin:"10px auto"}
+    const paperStyle={padding:20, height:'350px', width:'90%', maxWidth:'350px', margin:"30px auto"}
 
     return (
         <>
-        <Grid margin="70px">
+        <Grid>
             <Paper elevation={2} style={paperStyle}>
                  <Button 
                     variant='Contained' 
