@@ -1,17 +1,12 @@
 import React from 'react';
 import {useState} from "react";
-import { Grid, Box, Container, Button, Typography } from '@mui/material';
+import { Grid, Box, Container, Button, Typography, Card, CardContent } from '@mui/material';
 import 'react-datepicker/dist/react-datepicker.css';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Servicedropdown from '../../components/servicesdropdown/index.jsx';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
+import Editdropdown from '../../components/editdropdown/index.jsx';
 
 function createData(number, service, stylists, date) {
   return { number, service, stylists, date };
@@ -30,10 +25,8 @@ const Booking = () => {
 
   return (
     <Container maxWidth="95%">
-
         <Grid container spacing={2} style={{minHeight: "500px"}}>
           <Grid item xs={6}>
-
             <Grid container spacing={2}>
               <Grid item xs={7}>
                 <h1 align="left" style={{marginLeft: 50, marginTop: 50}}> Selected Services </h1>
@@ -43,34 +36,45 @@ const Booking = () => {
                 <Servicedropdown/>
               </Grid>
             </Grid>
-
             <div style={{borderTop: "2px solid", color: "black", marginLeft: 50, maxWidth:"80%"}}/>
-            <TableContainer>
-              <Table sx={{marginLeft: 6, maxWidth:"80%"}} size="Small" aria-label="selected services table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Number</TableCell>
-                    <TableCell align="center">Service</TableCell>
-                    <TableCell align="center">Stylist(s)</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map((row) => (
-                    <TableRow
-                      key={row.name}
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        {row.number}
-                      </TableCell>
-                      <TableCell align="center">{row.service}</TableCell>
-                      <TableCell align="center">{row.stylists}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <Grid container>
+              <Card style={{ height: "38%", maxWidth: "15%", marginLeft: 50, marginTop: 10, backgroundColor: "#f2f2f2", display: 'flex', flexDirection: 'column' }}>
+                <CardContent>
+                  <Typography variant="h5" component="div">
+                    Men's Haircut
+                  </Typography>
+                  <Typography variant="h6" component="div">
+                      Victoria Saeturn
+                  </Typography>
+                  <Editdropdown/>
+                  <Button 
+                    variant="contained" 
+                    size="small" 
+                    style={{width: 80, marginTop: "5%", borderColor: '#E95252', color: "white", backgroundColor: '#E95252'}}>
+                    Cancel
+                  </Button>
+                </CardContent>
+              </Card>
+              <Card style={{ height: "38%", maxWidth: "15%", marginLeft: 50, marginTop: 10, backgroundColor: "#f2f2f2", display: 'flex', flexDirection: 'column' }}>
+                <CardContent>
+                  <Typography variant="h5" component="div">
+                    Color
+                  </Typography>
+                  <Typography variant="h6" component="div">
+                    Victoria Saeturn, Nicole Mata
+                  </Typography>
+                  <Editdropdown/>
+                  <Button 
+                    variant="contained" 
+                    size="small" 
+                    style={{width: 80, marginTop: "5%", borderColor: '#E95252', color: "white", backgroundColor: '#E95252'}}>
+                    Cancel
+                  </Button>
+                </CardContent>
+              </Card>
+            </Grid>
           </Grid>
+          
 
           <Grid item xs={6}>
             <h1 align="left" style={{marginLeft: 20, marginTop: 50}}> Select Date </h1>
