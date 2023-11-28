@@ -12,7 +12,6 @@ import { Account } from "./scenes/login/Account.js";
 import ErrorPage from "./scenes/404/index.jsx";
 import Requestsummary from "./scenes/requestsummary/index.jsx";
 import Confirm from "./scenes/confirm/index.jsx";
-import Staff from "./scenes/staff/index.jsx"
 
 function App() {
   return (
