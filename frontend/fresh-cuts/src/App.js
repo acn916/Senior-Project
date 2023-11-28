@@ -11,6 +11,8 @@ import Staff from "./scenes/staff/index.jsx"
 import { Account } from "./scenes/login/Account.js";
 import ErrorPage from "./scenes/404/index.jsx";
 import Requestsummary from "./scenes/requestsummary/index.jsx";
+import Confirm from "./scenes/confirm/index.jsx";
+import Staff from "./scenes/staff/index.jsx"
 
 function App() {
   return (
@@ -21,7 +23,10 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/Home" element={<Home />} />
-            <Route path="/Staff" element={<Staff />}/>
+
+            <Route path="/Staff" element={<Staff />} />
+            <Route path="/Confirmation" element={<Confirm/>}/>
+
             <Route path="/Services" element={<Services />} />
             <Route path="/Booking" element={<Booking />} />
             <Route path="/Signup" element={<Signup/>}/>
