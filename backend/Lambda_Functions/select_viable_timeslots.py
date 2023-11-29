@@ -49,9 +49,6 @@ def get_service_duration_given_list_and_id(service_durations, service_id):
         if (duration["service_id"] == service_id):
             return duration["service_duration"]
 
-# def get_service_given_list_and_id(services_table, service_id):
-    
-
 def get_staff_service_table():
     cursor.execute(f"""
                     SELECT *
