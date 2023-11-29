@@ -5,15 +5,15 @@ import {
 import { Link } from 'react-router-dom'
 
 export default function Requestsummary() {
-    const paperStyle={ maxHeight:'80vh', overflowY:'auto', width:'350px', margin:"0px auto"}
-    const reqStyle={display: 'flex', flexDirection: 'column', width:'450px', padding:20}
+    const paperStyle={ maxHeight:'80vh', overflowY:'auto', width:'90%', maxWidth:'350px', margin:"30px auto"}
+    const reqStyle={display: 'flex', flexDirection: 'column', width:'90%', maxWidth:'450px', padding:20, margin:"30px auto"}
 
     return (
         <>
         <Container>
-            <Grid margin="70px" container direction="row">
+            <Grid container direction="row">
                 <Paper elevation={2} style={reqStyle}>
-                    <Grid margin="10px auto" container direction="column">
+                    <Grid container direction="column">
                         <Typography variant='h5' margin='normal'>
                             Client Information
                         </Typography>
@@ -60,7 +60,7 @@ export default function Requestsummary() {
                             <Button type='submit'
                                     style={{
                                         backgroundColor: "#a6a6a6",
-                                        padding: "12px 48px",
+                                        padding: "12px 36px",
                                         margin: "5px 10px"
                                     }}>
                                     <Typography color='white'>Back</Typography>
@@ -70,7 +70,7 @@ export default function Requestsummary() {
                                     type='submit'
                                     style={{
                                     backgroundColor: "#e95252",
-                                    padding: "12px 48px",
+                                    padding: "12px 36px",
                                     margin: "5px 10px"
                                     }}>
                                 <Typography color='white'>Request</Typography>
