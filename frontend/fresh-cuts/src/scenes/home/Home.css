@@ -15,8 +15,8 @@
   }
 
   .left-column {
-    max-width: 100%;
-    width: 100%;
+    max-width: 90%;
+    width: 80%;
     padding-top: 20px;
   }
 
@@ -48,5 +48,5 @@
   }
 
   .time {
-    margin-right: 100px;
+    margin-right: 70px;
   }  
