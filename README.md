@@ -1,6 +1,8 @@
 # Team Entrecodeurs CSC Senior Project
 
-This repository contains the codebase for an online scheduling system designed for beauty salons. To schedule appointments, the system allows clients to select their preferred service, choose a stylist, and pick a date of their choosing. The system allows stylists to set their schedule and whether or not to approve or disapprove an appointment.
+<a href="https://ibb.co/xqMtdyc"><img src="https://i.ibb.co/5h5gwdz/Homepage.png" alt="Homepage" border="0"></a>
+
+This repository contains the codebase for an online scheduling system designed for beauty salons. To schedule an appointment, the system allows clients to select from a list of available services, select one or more stylists, and pick a date that fits their schedule. From there, stylists can input their schedules, and select whether or not to accept or decline incoming appointment requests.
 
 ## Repository Structure
 
@@ -22,6 +24,24 @@ The backend architecture is serverless, built around AWS services. It's exposed 
 ## Contributing
 
 Please note that unsolicited pull requests are not allowed for this repository. 
+
+## Testing and Deployment
+
+Awaiting further information.
+
+## Application Views
+
+<a href="https://ibb.co/8KjzYcL"><img src="https://i.ibb.co/HFrNhdf/Image1.png" alt="Image1" border="0"></a>
+
+<a href="https://ibb.co/M7JbfZ2"><img src="https://i.ibb.co/w42T7B0/Image2.png" alt="Image2" border="0"></a>
+
+<a href="https://imgbb.com/"><img src="https://i.ibb.co/0cfSFZT/Image3.png" alt="Image3" border="0"></a>
+
+<a href="https://imgbb.com/"><img src="https://i.ibb.co/f0Fcc2H/Image4.png" alt="Image4" border="0"></a>
+
+## Future Roadmap
+
+Awaiting further information.
 
 ## Team Members
 
