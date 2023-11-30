@@ -8,7 +8,7 @@ import Login from "./scenes/login/index.jsx";
 import Signup from "./scenes/signup/index.jsx";
 import Passwordreset from "./scenes/passwordreset/index.js";
 import Staff from "./scenes/staff/index.jsx"
-import Staff from "./scenes/staff/index.jsx"
+
 import { Account } from "./scenes/login/Account.js";
 import ErrorPage from "./scenes/404/index.jsx";
 import Requestsummary from "./scenes/requestsummary/index.jsx";
