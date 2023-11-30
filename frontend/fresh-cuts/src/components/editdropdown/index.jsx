@@ -29,7 +29,7 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 1000,
-  height: 480,
+  height: 100,
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
@@ -51,7 +51,7 @@ const rows = [
   createData(4, 'Color Touch Up', 'Victoria Saeturn, Nicole Mata'),
 ];
 
-function Servicesdropdown() {
+function Editdropdown() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -76,19 +76,13 @@ function Servicesdropdown() {
     <header>
       <Button 
         onClick={handleOpen} 
-        sx={{
-          marginLeft: 5, 
-          marginTop: 6, 
-          display: 'block',
-          color: 'white', 
-          bgcolor: '#E95252', 
-          ':hover': {bgcolor: '#E95252'}}}
-      >
-        + Service
+        variant="outlined" 
+        size="small" 
+        style={{width: 80, marginTop: "5%", marginBottom: "1%", borderColor: '#E95252', color: '#E95252'}}>
+        Edit
       </Button>
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <Box sx={style}>
-
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <FormControl fullWidth>
@@ -140,58 +134,13 @@ function Servicesdropdown() {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={10}></Grid>
-
-
-            <Grid item xs={2}>
-              <Button 
-              disabled={addDisabled}
-              variant="contained" 
-              size="large" 
-              style={{backgroundColor:'#E95252'}}>
-              Add +
-              </Button>
-            </Grid>
-
-
-            <Grid item xs={6}>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 300 }} size="Small" aria-label="selected services table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Number</TableCell>
-                    <TableCell align="center">Service</TableCell>
-                    <TableCell align="center">Stylist(s)</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map((row) => (
-                    <TableRow
-                      key={row.name}
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        {row.number}
-                      </TableCell>
-                      <TableCell align="center">{row.service}</TableCell>
-                      <TableCell align="center">{row.stylists}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            </Grid>
-            <Grid item xs={12}>
-              
-            </Grid>
-            <Grid item xs={8}>
-              
-            </Grid>
+            
+            <Grid item xs={8}></Grid>
             <Grid item xs={2}>
               <Button onClick = {handleClose} variant="outlined" size="large" style={{borderColor: '#E95252', color: '#E95252'}}>Cancel</Button>
             </Grid>
             <Grid item xs={2}>
-              <Button variant="contained" size="large" style={{backgroundColor:'#E95252'}}>Confirm</Button>
+              <Button disabled={addDisabled} variant="contained" size="large" style={{backgroundColor:'#E95252'}}>Confirm</Button>
             </Grid>
           </Grid>
         </Box>
@@ -200,4 +149,4 @@ function Servicesdropdown() {
   );
 }
 
-export default Servicesdropdown;
+export default Editdropdown;
