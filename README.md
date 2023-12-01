@@ -1,8 +1,26 @@
 # Team Entrecodeurs CSC Senior Project
 
+<p align="center">
 <a href="https://ibb.co/xqMtdyc"><img src="https://i.ibb.co/5h5gwdz/Homepage.png" alt="Homepage" border="0"></a>
+</p>
 
+<p align="center">
 This repository contains the codebase for an online scheduling system designed for beauty salons. To schedule an appointment, the system allows clients to select from a list of available services, select one or more stylists, and pick a date that fits their schedule. From there, stylists can input their schedules, and select whether or not to accept or decline incoming appointment requests.
+</p>
+
+<p align="center">
+<a href="#repository-structure">Repository Structure</a> &nbsp;&bull;&nbsp;
+<a href="#project-architecture">Project Architecture</a> &nbsp;&bull;&nbsp;
+<a href="#contributing">Contributing</a> &nbsp;&bull;&nbsp;
+<a href="#testing-and-deployment">Testing and Deployment</a> &nbsp;&bull;&nbsp;
+<a href="#application-views">Application Views</a>
+</p>
+
+<p align="center">
+<a href="#future-roadmap">Future Roadmap</a> &nbsp;&bull;&nbsp;
+<a href="#team-members">Team Members</a> &nbsp;&bull;&nbsp;
+<a href="#contact">Contact</a>
+</p>
 
 ## Repository Structure
 
@@ -10,6 +28,8 @@ This repository consists of two main directories:
 
 - `frontend/` - Contains the ReactJS code for the client-facing part of the application.
 - `backend/` - Contains the code for the server-side part of the application.
+
+<div align="right"> <a href="#team-entrecodeurs-csc-senior-project">Back to top</a> </div>
 
 ## Project Architecture
 
@@ -21,13 +41,19 @@ Our frontend is constructed using ReactJS, an efficient and flexible JavaScript 
 
 The backend architecture is serverless, built around AWS services. It's exposed through the AWS API Gateway, which triggers events to AWS Lambda. Our Lambda functions are written in Python, providing a responsive and efficient service. The database is handled by AWS Aurora, a cloud-based relational database service compatible with MySQL. This architecture ensures scalability, maintainability, and resilience.
 
+<div align="right"> <a href="#team-entrecodeurs-csc-senior-project">Back to top</a> </div>
+
 ## Contributing
 
 Please note that unsolicited pull requests are not allowed for this repository. 
 
+<div align="right"> <a href="#team-entrecodeurs-csc-senior-project">Back to top</a> </div>
+
 ## Testing and Deployment
 
 Awaiting further information.
+
+<div align="right"> <a href="#team-entrecodeurs-csc-senior-project">Back to top</a> </div>
 
 ## Application Views
 
@@ -38,6 +64,8 @@ Awaiting further information.
 <a href="https://imgbb.com/"><img src="https://i.ibb.co/0cfSFZT/Image3.png" alt="Image3" border="0"></a>
 
 <a href="https://imgbb.com/"><img src="https://i.ibb.co/f0Fcc2H/Image4.png" alt="Image4" border="0"></a>
+
+<div align="right"> <a href="#team-entrecodeurs-csc-senior-project">Back to top</a> </div>
 
 ## Future Roadmap
 
@@ -63,6 +91,8 @@ Sprint 8 Goals
 - [ ] Clients will get a reminder SMS before their appointment
 - [ ] Users will be able to delete their accounts
 
+<div align="right"> <a href="#team-entrecodeurs-csc-senior-project">Back to top</a> </div>
+
 ## Team Members
 
 - [Andrew Desrochers](mailto:andrewdesrochers@csus.edu)
@@ -74,6 +104,10 @@ Sprint 8 Goals
 - [Nikita Cherepanov](mailto:ncherepanov@csus.edu)
 - [Vivian Nguyen](mailto:viviannguyen5@csus.edu)
 
+<div align="right"> <a href="#team-entrecodeurs-csc-senior-project">Back to top</a> </div>
+
 ## Contact
 
 If you have any questions or need further clarification, feel free to reach out to any of the team members.
+
+<div align="right"> <a href="#team-entrecodeurs-csc-senior-project">Back to top</a> </div>
