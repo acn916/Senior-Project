@@ -41,6 +41,12 @@ Our frontend is constructed using ReactJS, an efficient and flexible JavaScript 
 
 The backend architecture is serverless, built around AWS services. It's exposed through the AWS API Gateway, which triggers events to AWS Lambda. Our Lambda functions are written in Python, providing a responsive and efficient service. The database is handled by AWS Aurora, a cloud-based relational database service compatible with MySQL. This architecture ensures scalability, maintainability, and resilience.
 
+### Database
+
+Database Layout
+
+<a href="https://ibb.co/RBX6sBS"><img src="https://i.ibb.co/ZYQgFYJ/ERD.jpg" alt="ERD" border="0" /></a>
+
 <div align="right"> <a href="#team-entrecodeurs-csc-senior-project">Back to top</a> </div>
 
 ## Contributing
@@ -51,7 +57,19 @@ Please note that unsolicited pull requests are not allowed for this repository.
 
 ## Testing and Deployment
 
-Awaiting further information.
+Required Technologies
+- npm 
+
+```
+git clone git@github.com:acn916/Senior-Project.git
+
+cd Senior-Project/front-end/fresh-cuts
+
+npm install
+
+npm start
+```
+
 
 <div align="right"> <a href="#team-entrecodeurs-csc-senior-project">Back to top</a> </div>
 
