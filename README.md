@@ -41,7 +41,27 @@ Awaiting further information.
 
 ## Future Roadmap
 
-Awaiting further information.
+Sprint 5 Goals
+- [ ] All public facing pages should be completed
+- [ ] Users will be able to login
+- [ ] Clients will be able to change their password
+- [ ] Clients will be able to schedule an appointment
+
+Sprint 6 Goals
+- [ ] Clients panel UI will be completed
+- [ ] Stylists panel UI will be completed
+- [ ] Admin panel UI will be completed
+- [ ] Admin will be able to add new stylists
+- [ ] Admin will be able to add new services
+
+Sprint 7 Goals
+- [ ] Stylists will be able to confirm or deny their appointments
+- [ ] Clients will be able to cancel their appointments
+- [ ] Private routing is completed
+
+Sprint 8 Goals
+- [ ] Clients will get a reminder SMS before their appointment
+- [ ] Users will be able to delete their accounts
 
 ## Team Members
 
