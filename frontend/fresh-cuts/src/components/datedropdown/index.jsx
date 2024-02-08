@@ -27,7 +27,7 @@ function Datedropdown() {
       <Button onClick={handleOpen}>Open date</Button>
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <Box sx={style}>
-          <StaticDatePicker disablePast/>
+          {/* <StaticDatePicker disablePast/>*/}
         </Box>
       </Modal> 
     </LocalizationProvider>
