@@ -122,6 +122,9 @@ function Dashboard() {
                 <MonthView startDayHour={12} endDayHour={20} />   
 
                 <Toolbar flexibleSpaceComponent={CustomToolbar}/>
+                <ViewSwitcher />
+                <DateNavigator />
+                <Appointments />
       
 
             </Scheduler>
