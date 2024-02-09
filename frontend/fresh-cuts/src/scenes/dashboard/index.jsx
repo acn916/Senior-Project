@@ -23,6 +23,7 @@ import {
 
 import { FormControl, InputLabel, Select, MenuItem, Container } from '@mui/material';
 import CustomBasicLayout from './CustomAppointmentForm';
+import { ConfirmationDialog } from '@devexpress/dx-react-scheduler-material-ui';
 
 function Dashboard() {
 
@@ -102,6 +103,31 @@ function Dashboard() {
         // You can perform any additional actions when a stylist is selected
         setCurrentStylist(selectedStylistId);
     };
+    const commitChanges = ({ added, changed, deleted }) => {
+        setAppointments((prevData) => {
+          let updatedData = [...prevData];
+    
+          if (added) {
+            console.log("Added!");
+            const startingAddedId = prevData.length > 0 ? prevData[prevData.length - 1].id + 1 : 0;
+            updatedData = [...prevData, { id: startingAddedId, ...added }];
+          }
+    
+          if (changed) {
+            console.log("Changed!");
+            updatedData = updatedData.map((appointment) =>
+              changed[appointment.id] ? { ...appointment, ...changed[appointment.id] } : appointment
+            );
+          }
+    
+          if (deleted !== undefined) {
+            console.log("Deleted!");
+            updatedData = updatedData.filter((appointment) => appointment.id !== deleted);
+          }
+    
+          return updatedData;
+        });
+      };
 
 
 
@@ -117,6 +143,10 @@ function Dashboard() {
                     defaultCurrentDate={currentDate}
                     defaultCurrentViewName='Week'
                 />
+
+                <EditingState onCommitChanges={commitChanges} />
+                <IntegratedEditing />
+                <ConfirmationDialog ignoreCancel />
 
                 <DayView startDayHour={9} endDayHour={18} />
                 <WeekView startDayHour={9} endDayHour={24} />
