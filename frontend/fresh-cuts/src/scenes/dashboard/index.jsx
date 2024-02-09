@@ -22,6 +22,7 @@ import {
 } from '@devexpress/dx-react-scheduler-material-ui';
 
 import { FormControl, InputLabel, Select, MenuItem, Container } from '@mui/material';
+import CustomBasicLayout from './CustomAppointmentForm';
 
 function Dashboard() {
 
@@ -123,8 +124,16 @@ function Dashboard() {
 
                 <Toolbar flexibleSpaceComponent={CustomToolbar}/>
                 <ViewSwitcher />
-                <DateNavigator />
                 <Appointments />
+                <AppointmentTooltip 
+                    showCloseButton 
+                    showOpenButton 
+                    showDeleteButton 
+                    
+                />
+                <AppointmentForm basicLayoutComponent={CustomBasicLayout} />
+                <DateNavigator />
+               
       
 
             </Scheduler>
