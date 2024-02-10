@@ -14,6 +14,11 @@ function phoneFormat(input) {
     return input;
 }
 
+function reformatNumber(input){
+    let phoneNum =  `+1${input.replace(/\D/g, '').substring(0, 10)}`;
+    return phoneNum;
+}
+
 export default function Signup() {
     const [isStylist, setIsStylist] = useState(false); // Updated state for the checkbox
     const [email, setEmail] = useState("");
@@ -21,8 +26,9 @@ export default function Signup() {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
+    const [formatNum, setFormatNum] = useState("");
     const paperStyle={padding:20, height:'620px', width:350, margin:"10px auto"}
-
+    console.log(formatNum);
     const onSubmit = (event) => {
         event.preventDefault();
         const attributes = [
@@ -36,7 +42,7 @@ export default function Signup() {
             },
             {
                 Name: "phone_number", // Phone Number attribute
-                Value: phoneNumber,
+                Value: formatNum,
             },
             {
                 Name: "custom:user_role", // Custom role attribute
@@ -47,9 +53,13 @@ export default function Signup() {
         UserPool.signUp(email, password, attributes, null, (err, data) => {
             if (err) {
                 console.error(err);
+                alert("Invalid information entered.")
             }
-            console.log(data);
-            alert("Please check your email to verify your account.");
+            else{
+                console.log(data);
+                alert("Please check your email to verify your account.");
+            }
+ 
         });
     };
 
@@ -98,12 +108,27 @@ export default function Signup() {
                     onChange={(event) => setLastName(event.target.value)}
                 />
 
+                
+
                 <TextField
-                    required id="phone-number-signup"
+                    required
+                    id="phone-number-signup"
                     label="Phone Number"
                     margin="normal"
-                    value={phoneNumber}
-                    onChange={(event) => setPhoneNumber(event.target.value)}
+                    value={phoneFormat(phoneNumber)}
+                    onChange={(event) => {
+                        const inputNumber = event.target.value;
+                        setPhoneNumber(inputNumber)
+                        console.log(phoneNumber); // This will log the updated state
+
+                        // Check if the input contains at least 10 digits
+                        if (inputNumber.replace(/\D/g, '').length >= 10) {
+                            const formattedNumber = reformatNumber(inputNumber);
+                            setFormatNum(formattedNumber);
+                            console.log(formatNum);
+                        }
+                        
+                    }}
                     fullWidth
                 />
 
@@ -164,6 +189,7 @@ export default function Signup() {
                 </Paper>
                 </Grid>
             </form>
+            <h1/>
         </div>
         </>
     )

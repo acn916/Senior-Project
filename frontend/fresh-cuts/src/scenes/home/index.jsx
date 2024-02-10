@@ -19,20 +19,22 @@ function Home() {
             className='home-image'
           />
 
-          {['Booking'].map((page) => (
+          
             <Button
-              key={page}
+              
+              size="large"
               style={{
                 position: 'absolute',
                 backgroundColor:'#E95252',
+                borderRadius: '50px',
                 color: '#FFFFFF',
                 top: '20px',
                 right: '10%'
               }}
             >
-              <Link style={{textDecoration: "none", color: "white"}} to={`/${page}`}> Book Now</Link>
+              <Link style={{textDecoration: "none", color: "white"}} to={'/booking'}> Book Now</Link>
             </Button>
-          ))} 
+          
 
             
           

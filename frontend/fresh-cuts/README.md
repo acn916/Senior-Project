@@ -2,7 +2,15 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Compatability
+
+Create React App works on macOS, Windows, and Linux.
+
 ## Available Scripts
+
+Start by cloning the repository into a project directory:
+
+### `git clone https://github.com/acn916/Senior-Project`
 
 In the project directory, you can run:
 
@@ -38,6 +46,16 @@ If you aren't satisfied with the build tool and configuration choices, you can `
 Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
 You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+
+## Application Views
+
+<a href="https://ibb.co/8KjzYcL"><img src="https://i.ibb.co/HFrNhdf/Image1.png" alt="Image1" border="0"></a>
+
+<a href="https://ibb.co/M7JbfZ2"><img src="https://i.ibb.co/w42T7B0/Image2.png" alt="Image2" border="0"></a>
+
+<a href="https://imgbb.com/"><img src="https://i.ibb.co/0cfSFZT/Image3.png" alt="Image3" border="0"></a>
+
+<a href="https://imgbb.com/"><img src="https://i.ibb.co/f0Fcc2H/Image4.png" alt="Image4" border="0"></a>
 
 ## Learn More
 

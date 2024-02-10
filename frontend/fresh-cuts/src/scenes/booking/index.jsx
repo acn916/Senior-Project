@@ -13,8 +13,6 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Stack } from '@mui/material';
-//mport Servicedropdown from '../../components/servicesdropdown/index.jsx';
-//import Editdropdown from '../../components/editdropdown/index.jsx';
 
 const services = [
   'Baby Color',
