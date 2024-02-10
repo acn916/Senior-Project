@@ -308,28 +308,7 @@ const Setting = () => {
   return (
     <Container maxWidth="90" sx={{}}>
       <Grid container>
-        <Grid item xs={3} sx={{ marginTop: "10px", marginLeft: "5%" }}>
-          <Paper>
-            <List>
-              {list.map(({ primaryText, icon, secondaryText, color }, i) => (
-                <ListItemButton
-                  key={primaryText}
-                  sx={{ color: color || "inherit" }}
-                >
-                  <ListItemIcon>
-                    <Icon>{icon}</Icon>
-                  </ListItemIcon>
-                  <ListItemText
-                    primaryTypographyProps={{ fontSize: "22px" }}
-                    secondaryTypographyProps={{ fontSize: "14px" }}
-                    primary={primaryText}
-                    secondary={secondaryText}
-                  />
-                </ListItemButton>
-              ))}
-            </List>
-          </Paper>
-        </Grid>
+        
         <Grid item xs={6}>
           <Typography
             variant="h6"

@@ -19,6 +19,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import PopupForm from "./components/EditStylistsPopup";
 import ConfirmDeleteDialog from "./components/DeleteStylistsPopup";
+import Setting from "../settings/index";
 
 const SettingsPage = () => {
   // State to track the active page
@@ -283,6 +284,7 @@ const SettingsPage = () => {
                   Add/Remove Service
                 </Typography>
                 <Box sx={{ height: "16px" }} />
+                <Setting/>
               </>
             )}
             {activePage === "" && (

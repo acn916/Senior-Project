@@ -15,6 +15,7 @@ import Requestsummary from "./scenes/requestsummary/index.jsx";
 import Confirm from "./scenes/confirm/index.jsx";
 import PrivateRoutes from "./PrivateRoutes.js";
 import Dashboard from "./scenes/dashboard/index.jsx";
+import SettingsPage from "./scenes/staff-settings/index.jsx";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
             <Route path="/Error" element={<ErrorPage/>}/>
             <Route path="/Summary" element={<Requestsummary/>}/>
             <Route path="/Dashboard" element={<Dashboard/>}/>
+            <Route path="/Settings" element={<SettingsPage/>}/>
             
           </Routes>
       </div>
