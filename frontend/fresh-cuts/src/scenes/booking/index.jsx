@@ -154,13 +154,18 @@ const Booking = () => {
               <Card style={{ height: "30%", width: "10%", marginLeft: 20, marginTop: 20, backgroundColor: "#f2f2f2", display: 'flex', flexDirection: 'column' }}>
                 <CardContent>
                   <FormControl fullWidth>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DatePicker 
-                        label="Select a Date"
-                        disablePast
-                        slotProps={{ textField: { fullWidth: true } }}
-                      />
-                    </LocalizationProvider>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      value={startDate}
+                      onChange={(date) => setStartDate(date)}
+                      renderInput={(props) => (
+                        <input
+                          type="date"
+                        />
+                      )}
+                    />
+                  </LocalizationProvider>
+                    
                   </FormControl>
                 </CardContent>
               </Card>
