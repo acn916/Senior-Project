@@ -85,10 +85,14 @@ const Booking = () => {
             <div style={{borderTop: "2px solid", color: "black", marginLeft: 20, maxWidth:"80%"}}/>
             <div style={{width: 230, marginLeft: 20, marginTop: 20}}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker 
-                  label="Select a Date"
-                  disablePast
-                  slotProps={{ textField: { fullWidth: true } }}
+                <DatePicker
+                  value={startDate}
+                  onChange={(date) => setStartDate(date)}
+                  renderInput={(props) => (
+                    <input
+                      type="date"
+                    />
+                  )}
                 />
               </LocalizationProvider>
             </div>
