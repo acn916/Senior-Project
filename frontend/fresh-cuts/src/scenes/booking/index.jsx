@@ -68,7 +68,7 @@ const Booking = () => {
                     variant="contained" 
                     size="small" 
                     style={{width: 80, marginTop: "5%", borderColor: '#E95252', color: "white", backgroundColor: '#E95252'}}>
-                    Cancel
+                    Delete
                   </Button>
                 </CardContent>
               </Card>
