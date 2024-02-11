@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, GridItem, Box, Container, Button, Typography } from '@mui/material';
+import { Grid, Box, Button, Typography } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
@@ -53,25 +53,25 @@ const Accept = () => {
   };
 
   return (
-    <box>
-        <Button onClick={handleOpen} style={{color: "black", textTransform: "none"}}> Accept </Button>
-        <Modal open={open} onClose={handleClose}>
-            <Box sx={style}>
-              <Grid container spacing={2} justifyContent="center">
-                
-                <Typography fontSize="28px" fontWeight="lighter">
-                    Confirm Appointment
-                </Typography>
-              </Grid>
+    <>
+      <Button onClick={handleOpen} style={{color: "black", textTransform: "none"}}> Accept </Button>
+      <Modal open={open} onClose={handleClose}>
+          <Box sx={style}>
+            <Grid container spacing={2} justifyContent="center">
+              
+              <Typography fontSize="28px" fontWeight="lighter">
+                  Confirm Appointment
+              </Typography>
+            </Grid>
 
-              <Grid container spacing={2} justifyContent="center" marginTop="20px">
-                <Button onClick={handleClose} sx={backStyle}> <KeyboardBackspaceIcon/> Back </Button>
-                <Button onClick={handleClose} sx={confirmStyle}> Confirm </Button>
-              </Grid>
+            <Grid container spacing={2} justifyContent="center" marginTop="20px">
+              <Button onClick={handleClose} sx={backStyle}> <KeyboardBackspaceIcon/> Back </Button>
+              <Button onClick={handleClose} sx={confirmStyle}> Confirm </Button>
+            </Grid>
 
-            </Box>
-        </Modal>
-    </box>
+          </Box>
+      </Modal>
+    </>
   );
 }
 

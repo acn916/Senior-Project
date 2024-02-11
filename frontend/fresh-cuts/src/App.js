@@ -14,6 +14,8 @@ import ErrorPage from "./scenes/404/index.jsx";
 import Requestsummary from "./scenes/requestsummary/index.jsx";
 import Confirm from "./scenes/confirm/index.jsx";
 import PrivateRoutes from "./PrivateRoutes.js";
+import Dashboard from "./scenes/dashboard/index.jsx";
+import SettingsPage from "./scenes/staff-settings/index.jsx";
 import Request from "./scenes/request/index.jsx";
 import "./index.css";
 
@@ -21,8 +23,8 @@ function App() {
   return (
     <div>
       <ResponsiveAppBar />
-      <div class="flex-wrapper">
-        <div>
+      <div style={{minHeight:"700px"}}>
+        
           <Routes>
             <Route element = {<PrivateRoutes />}>
               <Route path="/" element={<Home />} />
@@ -40,16 +42,13 @@ function App() {
             <Route path="/Passwordreset" element={<Passwordreset/>}/>
             <Route path="/Error" element={<ErrorPage/>}/>
             <Route path="/Summary" element={<Requestsummary/>}/>
-            <Route path="/Request" element={<Request/>}/>
             
           </Routes>
-        </div>
-        
-        <div>
-          <Footer />
-        </div>
-
       </div>
+        
+      <Footer />
+
+
     </div>
   );
 }
