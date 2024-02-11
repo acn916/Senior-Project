@@ -16,6 +16,8 @@ import Confirm from "./scenes/confirm/index.jsx";
 import PrivateRoutes from "./PrivateRoutes.js";
 import Dashboard from "./scenes/dashboard/index.jsx";
 import SettingsPage from "./scenes/staff-settings/index.jsx";
+import Request from "./scenes/request/index.jsx";
+import "./index.css";
 
 function App() {
   return (
@@ -42,6 +44,7 @@ function App() {
             <Route path="/Summary" element={<Requestsummary/>}/>
             <Route path="/Dashboard" element={<Dashboard/>}/>
             <Route path="/Settings" element={<SettingsPage/>}/>
+            <Route path="/Request" element={<Request/>}/>
             
           </Routes>
       </div>
