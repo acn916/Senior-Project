@@ -23,8 +23,8 @@ function App() {
   return (
     <div>
       <ResponsiveAppBar />
-      <div class="flex-wrapper">
-        <div>
+      <div style={{minHeight:"700px"}}>
+        
           <Routes>
             <Route element = {<PrivateRoutes />}>
               <Route path="/" element={<Home />} />
@@ -47,13 +47,11 @@ function App() {
             <Route path="/Request" element={<Request/>}/>
             
           </Routes>
-        </div>
-        
-        <div>
-          <Footer />
-        </div>
-
       </div>
+        
+      <Footer />
+
+
     </div>
   );
 }
