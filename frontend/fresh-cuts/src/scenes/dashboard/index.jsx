@@ -21,7 +21,7 @@ import {
     MonthView,
 } from '@devexpress/dx-react-scheduler-material-ui';
 
-import { FormControl, InputLabel, Select, MenuItem, Container } from '@mui/material';
+import { FormControl, Select, MenuItem } from '@mui/material';
 import CustomBasicLayout from './CustomAppointmentForm';
 import { ConfirmationDialog } from '@devexpress/dx-react-scheduler-material-ui';
 
@@ -30,7 +30,7 @@ function Dashboard() {
     const [appointments, setAppointments] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const [currentDate, setCurrentDate] = useState('2023-12-01');
+    const [currentDate, setCurrentDate] = useState(new Date());
 
     const [currentStylist, setCurrentStylist] = useState(null);
     const [stylist, setStylist] = useState([]);
@@ -143,15 +143,12 @@ function Dashboard() {
                     defaultCurrentDate={currentDate}
                     defaultCurrentViewName='Week'
                 />
-
                 <EditingState onCommitChanges={commitChanges} />
                 <IntegratedEditing />
                 <ConfirmationDialog ignoreCancel />
-
                 <DayView startDayHour={9} endDayHour={18} />
                 <WeekView startDayHour={9} endDayHour={24} />
                 <MonthView startDayHour={12} endDayHour={20} />   
-
                 <Toolbar flexibleSpaceComponent={CustomToolbar}/>
                 <ViewSwitcher />
                 <Appointments />
@@ -159,16 +156,10 @@ function Dashboard() {
                     showCloseButton 
                     showOpenButton 
                     showDeleteButton 
-                    
                 />
                 <AppointmentForm basicLayoutComponent={CustomBasicLayout} />
                 <DateNavigator />
-               
-      
-
             </Scheduler>
-
-
         </Paper>
     )
 }
