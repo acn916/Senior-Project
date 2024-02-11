@@ -13,7 +13,7 @@ import {Link} from "react-router-dom"
 import Image from "../../pictures/redsalonart.png"
 
 
-const pages = ['Home', 'Staff', 'Services'];
+const pages = ['Home', 'Staff', 'Services', 'Settings'];
 
 const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
