@@ -1,10 +1,29 @@
-import {Outlet, Navigate} from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
+import { useState, useEffect, useContext } from 'react';
+import { AccountContext } from './scenes/login/Account';
+import Login from './scenes/login';
 
 const PrivateRoutes = () => {
-    let auth = {'token': true} //replace true with false for private routing
-    return(
-        auth.token ? <Outlet/> : <Navigate to ="Login"/>
-    )
+    const { getSession } = useContext(AccountContext);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    useEffect(() => {
+        const checkAuthentication = async () => {
+            try {
+                const session = await getSession();
+                setIsAuthenticated(!!session); // Set isAuthenticated based on session existence
+            } catch (error) {
+                setIsAuthenticated(false);
+                console.error('Error checking authentication:', error);
+            }
+        };
+
+        checkAuthentication();
+    }, [getSession]);
+
+    return (
+        isAuthenticated ? <Outlet/> : <Login/>
+    );
 }
 
 export default PrivateRoutes;
