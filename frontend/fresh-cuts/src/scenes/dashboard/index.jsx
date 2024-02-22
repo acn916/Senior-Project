@@ -43,16 +43,20 @@ function Dashboard() {
             const [year, month, day, hour, minute] = appointment.scheduled_at
                 .match(/\d+/g)
                 .map(Number);
+                
     
             return {
                 id: appointment.id,
                 startDate: new Date(year, month - 1, day, hour, minute),
                 endDate: new Date(year, month - 1, day, hour + 1, minute),
-                title: `Client ID: ${appointment.client_id}`,
+                title: `${appointment.client_id}`,
+                service_id: `${appointment.service_id}`,
+                notes: `${appointment.notes}`,
+                name: `${appointment.client_id}`,
             };
             });
             
-            console.log(response);
+           // console.log(response);
             setAppointments(formattedAppointments);
             setLoading(false);
         })
@@ -71,8 +75,8 @@ function Dashboard() {
             setLoading(false);
         });
 
-        console.log(appointments);
-        console.log(stylist);
+        //console.log('appointments', appointments);
+        //console.log('Stylist', stylist);
 
     },[]);
 
@@ -84,6 +88,7 @@ function Dashboard() {
               id="stylist-select"
               value={currentStylist || 'All'}  // Set initial value to 'All'
               onChange={handleStylistChange}
+              sx={{ height: '44px' }}
             >
               <MenuItem value="All">
                 <em>All</em>
@@ -129,39 +134,90 @@ function Dashboard() {
         });
       };
 
+      const appointmentCellColor = ({
+        children, style, ...restProps
+      }) => (
+        <Appointments.Appointment
+          {...restProps}
+          style={{
+            ...style,
+            backgroundColor: '#F43F5E',
+            borderRadius: '8px',
+          }}
+    
+        >
+          {children}
+        </Appointments.Appointment>
+      );
+
+      const CustomTimeTableCellWeek = ({ startDate, ...restProps }) => {
+        const currentTime = new Date();
+        const isPastTime = startDate < currentTime;
+        const cellStyles = isPastTime ? { backgroundColor: '#F0F0F0' } : {};
+        return <WeekView.TimeTableCell startDate={startDate} style={cellStyles} {...restProps} />;
+      };
+
+      const CustomTimeTableCellDay = ({ startDate, ...restProps }) => {
+        const currentTime = new Date();
+        const isPastTime = startDate < currentTime;
+        const cellStyles = isPastTime ? { backgroundColor: '#F0F0F0' } : {};
+        return <DayView.TimeTableCell startDate={startDate} style={cellStyles} {...restProps} />;
+      };
+
+      const CustomTimeTableCellMonth = ({ startDate, ...restProps }) => {
+        const currentTime = new Date();
+        const isPastTime = startDate < currentTime;
+        const cellStyles = isPastTime ? { backgroundColor: '#F0F0F0' } : {};
+        return <MonthView.TimeTableCell startDate={startDate} style={cellStyles} {...restProps} />;
+      };
+
+      
 
 
-    return (
 
-
-        <Paper style={{marginTop:'20px'}}>
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+          <Paper style={{ flex: '1 0 auto', overflow: 'auto' }}>
             <Scheduler
-                data={appointments}
-                height={600}
+              data={appointments}
+              height={'100%'}
             >
-                <ViewState 
-                    defaultCurrentDate={currentDate}
-                    defaultCurrentViewName='Week'
-                />
-                <EditingState onCommitChanges={commitChanges} />
-                <IntegratedEditing />
-                <ConfirmationDialog ignoreCancel />
-                <DayView startDayHour={9} endDayHour={18} />
-                <WeekView startDayHour={9} endDayHour={24} />
-                <MonthView startDayHour={12} endDayHour={20} />   
-                <Toolbar flexibleSpaceComponent={CustomToolbar}/>
-                <ViewSwitcher />
-                <Appointments />
-                <AppointmentTooltip 
-                    showCloseButton 
-                    showOpenButton 
-                    showDeleteButton 
-                />
-                <AppointmentForm basicLayoutComponent={CustomBasicLayout} />
-                <DateNavigator />
+              <ViewState
+                defaultCurrentDate={currentDate}
+                defaultCurrentViewName='Week'
+              />
+              <EditingState onCommitChanges={commitChanges} />
+              <IntegratedEditing />
+              <ConfirmationDialog ignoreCancel />
+              <DayView 
+                startDayHour={9} endDayHour={18} 
+                timeTableCellComponent={CustomTimeTableCellDay}
+              />
+              <WeekView
+                startDayHour={9} endDayHour={20}
+                timeTableCellComponent={CustomTimeTableCellWeek}
+              />
+              <MonthView 
+                startDayHour={12} endDayHour={20} 
+                timeTableCellComponent={CustomTimeTableCellMonth}
+              />
+              <Toolbar flexibleSpaceComponent={CustomToolbar} />
+              <ViewSwitcher />
+              <Appointments
+                appointmentComponent={appointmentCellColor}
+              />
+              <AppointmentTooltip
+                showCloseButton
+                showOpenButton
+                showDeleteButton
+              />
+              <AppointmentForm basicLayoutComponent={CustomBasicLayout} />
+              <DateNavigator />
             </Scheduler>
-        </Paper>
-    )
-}
+          </Paper>
+          <footer style={{ flexShrink: 0, height: '100px', overflow: 'hidden' }}></footer>
+        </div>
+      );
+    }
 
 export default Dashboard;

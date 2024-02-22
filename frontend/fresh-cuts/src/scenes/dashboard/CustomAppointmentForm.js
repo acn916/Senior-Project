@@ -15,13 +15,20 @@ import axios from 'axios';
 const CustomStyledLayout = (props) => {
   const { appointmentData, onFieldChange, ...restProps } = props;
   const [selectedServices, setSelectedServices] = useState([]);
+  const [clients, setClient] = useState([]);
+  const [stylist, setStylist] = useState([]);
+  const [selectedStylist, setSelectedStylist] = useState('');
   const [loading, setLoading] = useState(true);
-
   const [services, setServices] = useState([]);
+  
+
+  const [name, setName] = useState("");
+  const [service, setService] = useState("");
 
   const handleServiceChange = (event) => {
     setSelectedServices(event.target.value);
   };
+  
 /*
   const services = [
     'Haircut',
@@ -37,16 +44,63 @@ const CustomStyledLayout = (props) => {
 
     axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/service')
       .then(response => {
-        console.log(response);
+       // console.log(response);
         setServices(response.data);
         setLoading(false);
         console.log('Services:', response.data);
+
+       for(let i = 0; i < response.data.length; i++){
+
+            if(response.data[i].id == appointmentData.service_id){
+                setSelectedServices([response.data[i].name]);
+                console.log(selectedServices);
+            }
+
+       }
+        
       })
       .catch(error => {
         console.error('Error Fetching Data', error);
         setLoading(false);
-      })
+      });
 
+      axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/get_all_staff')
+        .then(response => {
+            setStylist(response.data);
+            setLoading(false);
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+            setLoading(false);
+        });
+
+        axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/client')
+        .then(response => {
+           // console.log(response);
+            setClient(response.data);
+
+            for(let i = 0; i < response.data.length; ++i){
+               // console.log(response.data[i]);
+
+                if(response.data[i].id == appointmentData.title){
+                    setName(response.data[i].first_name + " " + response.data[i].last_name );
+                    console.log(name);
+                }
+                
+            }
+            
+            setLoading(false);
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+            setLoading(false);
+        });
+        
+       // console.log('Service', services);
+       // console.log('Stylist', stylist);
+       // console.log('Client', clients);
+
+       //console.log('appointment data', appointmentData);
 
   }, []);
   
@@ -58,12 +112,12 @@ const CustomStyledLayout = (props) => {
       </Typography>
       <div style={{ marginBottom: '16px', marginTop: "16px" }}>
         <TextField
-          id="title"
+          id="name"
           label="Name"
           variant="outlined"
           fullWidth
-          value={appointmentData.title || ''}
-          onChange={(e) => onFieldChange({ title: e.target.value })}
+          value={appointmentData.name || ''}
+          onChange={(e) => onFieldChange({ name: e.target.value } )}
         />
       </div>
 
@@ -107,8 +161,6 @@ const CustomStyledLayout = (props) => {
               {String(service.name)}
             </MenuItem>
           ))}
-
-
           </Select>
         </FormControl>
       </div>
