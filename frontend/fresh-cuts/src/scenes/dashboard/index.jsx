@@ -90,6 +90,7 @@ function Dashboard() {
               id="stylist-select"
               value={currentStylist || 'All'}  // Set initial value to 'All'
               onChange={handleStylistChange}
+              sx ={'44px'}
             >
               <MenuItem value="All">
                 <em>All</em>
@@ -225,6 +226,45 @@ function Dashboard() {
     
       setAppointments(updatedData); // Update the state with the new data (for changes other than additions)
     };
+
+    const appointmentCellColor = ({
+      children, style, ...restProps
+    }) => (
+      <Appointments.Appointment
+        {...restProps}
+        style={{
+          ...style,
+          backgroundColor: '#F43F5E',
+          borderRadius: '8px',
+        }}
+  
+      >
+        {children}
+      </Appointments.Appointment>
+    );
+
+    const CustomTimeTableCellWeek = ({ startDate, ...restProps }) => {
+      const currentTime = new Date();
+      const isPastTime = startDate < currentTime;
+      const cellStyles = isPastTime ? { backgroundColor: '#F0F0F0' } : {};
+      return <WeekView.TimeTableCell startDate={startDate} style={cellStyles} {...restProps} />;
+    };
+
+    const CustomTimeTableCellDay = ({ startDate, ...restProps }) => {
+      const currentTime = new Date();
+      const isPastTime = startDate < currentTime;
+      const cellStyles = isPastTime ? { backgroundColor: '#F0F0F0' } : {};
+      return <DayView.TimeTableCell startDate={startDate} style={cellStyles} {...restProps} />;
+    };
+
+    const CustomTimeTableCellMonth = ({ startDate, ...restProps }) => {
+      const currentTime = new Date();
+      const isPastTime = startDate < currentTime;
+      const cellStyles = isPastTime ? { backgroundColor: '#F0F0F0' } : {};
+      return <MonthView.TimeTableCell startDate={startDate} style={cellStyles} {...restProps} />;
+    };
+
+    
     
 
 
@@ -234,30 +274,47 @@ function Dashboard() {
           {loading ? (
             <div>Loading</div>
           ) : (
-            <Paper style={{ marginTop: '20px' }}>
-              <Scheduler data={appointments} height={600}>
-                <ViewState
-                  defaultCurrentDate={currentDate}
-                  defaultCurrentViewName="Week"
-                />
-                <EditingState onCommitChanges={commitChanges} />
-                <IntegratedEditing />
-                <ConfirmationDialog ignoreCancel />
-                <DayView startDayHour={9} endDayHour={18} />
-                <WeekView startDayHour={9} endDayHour={24} />
-                <MonthView startDayHour={12} endDayHour={20} />
-                <Toolbar flexibleSpaceComponent={CustomToolbar} />
-                <ViewSwitcher />
-                <Appointments />
-                <AppointmentTooltip
-                  showCloseButton
-                  showOpenButton
-                  showDeleteButton
-                />
-                <AppointmentForm basicLayoutComponent={CustomBasicLayout} />
-                <DateNavigator />
-              </Scheduler>
-            </Paper>
+             <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+          <Paper style={{ flex: '1 0 auto', overflow: 'auto' }}>
+            <Scheduler
+              data={appointments}
+              height={'100%'}
+            >
+              <ViewState
+                defaultCurrentDate={currentDate}
+                defaultCurrentViewName='Week'
+              />
+              <EditingState onCommitChanges={commitChanges} />
+              <IntegratedEditing />
+              <ConfirmationDialog ignoreCancel />
+              <DayView 
+                startDayHour={9} endDayHour={18} 
+                timeTableCellComponent={CustomTimeTableCellDay}
+              />
+              <WeekView
+                startDayHour={9} endDayHour={20}
+                timeTableCellComponent={CustomTimeTableCellWeek}
+              />
+              <MonthView 
+                startDayHour={12} endDayHour={20} 
+                timeTableCellComponent={CustomTimeTableCellMonth}
+              />
+              <Toolbar flexibleSpaceComponent={CustomToolbar} />
+              <ViewSwitcher />
+              <Appointments
+                appointmentComponent={appointmentCellColor}
+              />
+              <AppointmentTooltip
+                showCloseButton
+                showOpenButton
+                showDeleteButton
+              />
+              <AppointmentForm basicLayoutComponent={CustomBasicLayout} />
+              <DateNavigator />
+            </Scheduler>
+          </Paper>
+          <footer style={{ flexShrink: 0, height: '100px', overflow: 'hidden' }}></footer>
+        </div>
           )}
         </div>
       );
