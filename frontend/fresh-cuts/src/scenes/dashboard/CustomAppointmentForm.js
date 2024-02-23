@@ -179,16 +179,12 @@ const CustomStyledLayout = (props) => {
             onChange={handleServiceChange}
             label="Select Service"
           >
-          {services.map((service) => (
-            <MenuItem key={String(service.id)} value={String(service.name)}>
-              {String(service.name)}
-            </MenuItem>
-          ))}
             {services.map((service) => (
               <MenuItem key={service.id} value={service.id}>
                 {service.name}
               </MenuItem>
             ))}
+            
           </Select>
 
 

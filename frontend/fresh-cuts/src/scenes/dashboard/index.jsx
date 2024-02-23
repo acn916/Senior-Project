@@ -90,7 +90,7 @@ function Dashboard() {
               id="stylist-select"
               value={currentStylist || 'All'}  // Set initial value to 'All'
               onChange={handleStylistChange}
-              sx ={'44px'}
+              sx ={{height: '44px'}}
             >
               <MenuItem value="All">
                 <em>All</em>
@@ -131,6 +131,7 @@ function Dashboard() {
           }
         ];
         
+        console.log(newAppointment)
     
        // console.log(newAppointment);
         axios.post('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/appointment', newAppointment)
@@ -145,9 +146,6 @@ function Dashboard() {
             console.error('Error adding appointment:', error);
             // No need to rollback changes here, as we haven't updated the state yet
           });
-
-        
-        
       }
     
       
@@ -192,7 +190,7 @@ function Dashboard() {
             cancellation_reason: "none"
           }
         
-          //console.log(newData)
+          console.log(newData)
           
           axios.put(`https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/appointment/${id}`, [newData])
             .then(response =>{
