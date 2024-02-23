@@ -97,13 +97,13 @@ const PopupForm = ({ open, handleClose, handleSubmit, data }) => {
             </Grid>
           </Grid>
           <Box display="flex" justifyContent="flex-end" mt={2}>
-  <Button onClick={handleClose} color="secondary" variant="outlined" sx={{ borderColor: '#6B6767', color: '#6B6767', mr: 1 }}>
-    Cancel
-  </Button>
-  <Button type="submit" disabled={loading} variant="contained" sx={{ backgroundColor: loading ? undefined : '#E95252', color: 'white', '&:hover': { backgroundColor: '#C74444' } }}>
-    {loading ? <CircularProgress size={24} color="secondary" /> : 'Save'}
-  </Button>
-</Box>
+            <Button onClick={handleClose} color="secondary" variant="outlined" sx={{ borderColor: '#6B6767', color: '#6B6767', mr: 1 }}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={loading} variant="contained" sx={{ backgroundColor: loading ? undefined : '#E95252', color: 'white', '&:hover': { backgroundColor: '#C74444' } }}>
+              {loading ? <CircularProgress size={24} color="secondary" /> : 'Save'}
+            </Button>
+          </Box>
         </Box>
       </form>
     </Dialog>
