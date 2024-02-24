@@ -132,7 +132,7 @@ function AddPopUp({ onSubmit, onClose }) {
 function EditServicePopUp({ selectedRow, onSubmit, onClose }) {
   const [editedData, setEditedData] = useState({
     id: selectedRow ? selectedRow.id : "",
-    name: selectedRow ? selectedRow.service : "",
+    name: selectedRow ? selectedRow.name : "",
     price: selectedRow ? selectedRow.price : 0, // Initialize with a default value
     duration: selectedRow ? selectedRow.duration : "",
     description: selectedRow ? selectedRow.description : "",
@@ -254,16 +254,16 @@ const Setting = () => {
     const updatedRows = rows.map((row) =>
       row === selectedRow ? { ...row, ...editedData } : row
     );
-    setRows(updatedRows);
 
-    console.log("Here", editedData);
-    // Make a PUT request to update the service on the server // DOESN"T WORK
+    //console.log("Here", editedData);
+    // Make a PUT request to update the service on the server //
     const updateServiceUrl = `https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/service/${id}`;
 
     axios
-      .put(updateServiceUrl, [editedData])
+      .put(updateServiceUrl, editedData)
       .then((response) => {
         console.log("Service updated successfully: ", response.data);
+        fetchServiceData();
       })
       .catch((error) => {
         console.error("Failed to update service: ", error);
@@ -280,7 +280,7 @@ const Setting = () => {
 
   const handleAddServicePopupSubmit = (newService) => {
     const addServiceUrl = `https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/service`;
-    console.log("Format:", newService);
+    //console.log("Format:", newService);
 
     axios
       .post(addServiceUrl, newService)
@@ -299,7 +299,17 @@ const Setting = () => {
   const handleRemoveRow = (rowToRemove) => {
     // Filter out the row to be removed
     const updatedRows = rows.filter((row) => row !== rowToRemove);
+    let id = rowToRemove.id;
 
+    const delServiceUrl = `https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/service/${id}`;
+    axios
+      .delete(delServiceUrl)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error("Error deleting service from database", error);
+      });
     // Update the state with the new rows
     setRows(updatedRows);
   };
