@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import { Grid } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -10,21 +10,174 @@ import Accept from './Accept.jsx';
 import Decline from './Decline.jsx';
 import Rebook from './Rebook.jsx';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import axios from "axios";
 
-function createData(bookingDate, name, service, price, appointmentDate, id) {
-  return { bookingDate, name, service, price, appointmentDate, id };
-}
+export const rows = [ 
+  {id: 1,
+  confirmation_timestamp:'02/10/2023',
+  scheduled_at: "2023/09/17", 
+  status:"Pending",
+  service_id: 2,
+  client_id: 1},
 
-const Request = () => {
+  {id: 2,
+  confirmation_timestamp:'02/10/2023',
+  scheduled_at: "2023/09/17", 
+  status:"Pending",
+  service_id: 15,
+  client_id: 1},
 
-  const rows = [
-    createData('02/10/2023', "Sara Eastern", "Hair Exensions", "$200", "2023/09/17", 1),
-    createData('02/11/2023', "Sara Eastern", "Hair cut/color", "$100", "2023/09/17", 2),
-    createData('02/14/2023', "Sara Eastern", "Men's hair cut", "$25", "2023/09/17", 3),
-    createData('02/15/2023', "Sara Eastern", "Highlight", "$120", "2023/09/17", 4),
-    createData('02/15/2023', "Sara Eastern", "Blowout", "$50", "2023/09/17", 5),
-    createData('02/15/2023', "Sara Eastern", "Hair Extension Move up", "$200", "2023/09/17", 6),
-  ];
+  {id: 3,
+  confirmation_timestamp:'02/10/2023',
+  scheduled_at: "2023/09/17", 
+  status:"Pending",
+  service_id: 7,
+  client_id: 1},
+
+  {id: 4,
+  confirmation_timestamp:'02/10/2023',
+  scheduled_at: "2023/09/17", 
+  status:"Pending",
+  service_id: 10,
+  client_id: 1},
+
+  {id: 5,
+  confirmation_timestamp:'02/10/2023', 
+  scheduled_at: "2023/09/17", 
+  status:"Pending",
+  service_id: 27,
+  client_id: 1},
+
+  {id: 6,
+  confirmation_timestamp:'02/10/2023',
+  scheduled_at: "2023/09/17", 
+  status:"Pending",
+  service_id: 5,
+  client_id: 2},
+
+  {id: 7,
+  confirmation_timestamp:'test',
+  scheduled_at: "test", 
+  status:"Confirmed",
+  service_id: 7,
+  client_id: 1},
+]
+
+export const rows2 = [
+  {id: 2,
+  name: "Hair Extensions",
+  price: "200"},
+
+  {id: 15,
+  name: "Hair cut/color",
+  price: "100"},
+
+  {id: 7,
+  name: "Men's haircut",
+  price: "25"},
+
+  {id: 10,
+  name: "Highlight",
+  price: "120"},
+
+  {id: 27,
+  name: "Blowout",
+  price: "50"},
+
+  {id: 5,
+  name: "Hair Extension Move up",
+  price: "200"},
+]
+
+export const rows3 = [
+  {id: 1,
+  first_name: "Sara",
+  last_name: "Eastern"},
+
+  {id: 2,
+  first_name: "Test",
+  last_name: "Testing"}
+]
+
+const Request = () => { 
+
+  const [requests, setRequests] = useState(rows.filter(test => test.status === "Pending")); //with data above (fake data)
+  const [services, setServices] = useState(rows2); //with data above (fake data)
+  const [clients, setClients] = useState(rows3); //with data above (fake data)
+  
+  /*const [requests, setRequests] = useState([]); //for get API (actual request data) //entire commented block is functional and will be used for database info
+  const [services, setServices] = useState([]); //for get API (actual service data)
+  const [clients, setClients] = useState([]); //for get API (actual client data) 
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => { //
+    axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/service')
+      .then(response => {
+        console.log(response);
+        setServices(response.data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        setLoading(false);
+      });
+
+    axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/appointments')
+      .then(response => {
+        console.log(response);
+        setRequests(response.data.filter(appointment => appointment.status === "Pending"));
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        setLoading(false);
+      });
+
+    axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/client')
+      .then(response => {
+        console.log(response);
+        setClients(response.data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        setLoading(false);
+      });
+  }, []);*/
+  
+  //changes status to Confirmed
+  const handleConfirm = (id) => {
+    const currentRequestIndex = requests.findIndex((request) => request.id === id);
+    const updatedRequest = {...requests[currentRequestIndex], status: "Confirmed"};
+    const newRequests = [
+      ...requests.slice(0, currentRequestIndex),
+      updatedRequest,
+      ...requests.slice(currentRequestIndex + 1)
+    ];
+    setRequests(newRequests);
+    console.log(newRequests);
+  }
+
+  //changes status to Denied
+  const handleDeny = (id) => {
+    const currentRequestIndex = requests.findIndex((request) => request.id === id);
+    const updatedRequest = {...requests[currentRequestIndex], status: "Denied"};
+    const newRequests = [
+      ...requests.slice(0, currentRequestIndex),
+      updatedRequest,
+      ...requests.slice(currentRequestIndex + 1)
+    ];
+    setRequests(newRequests);
+    console.log(newRequests);
+  }
+
+  //deletes the row from the array
+  const handleDelete = (id) => {
+    handleDeny(id)
+    setRequests(values => {
+      return values.filter(request => request.id !== id)
+    })
+  }
 
   return (
     <Grid>
@@ -44,21 +197,34 @@ const Request = () => {
 
 
           <TableBody>
-            {rows.map((row) => (
+            {requests.map((request) => (
               <TableRow
-                key={row.id}
+                key={request.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell component="th" scope="row"> {row.bookingDate}</TableCell>
-                <TableCell align="left" sx={{color: "#2F65DD"}}><AccountCircleIcon sx={{marginBottom: -1}}/>{' '}{row.name}</TableCell>
-                <TableCell align="left">{row.service}</TableCell>
-                <TableCell align="left">{row.price}</TableCell>
-                <TableCell align="left">{row.appointmentDate}</TableCell>
+                <TableCell component="th" scope="row"> {request.confirmation_timestamp}</TableCell>
+
+                {clients.map((client) => request.client_id === client.id ? (
+                  <React.Fragment key={client.id}>
+                    <TableCell align="left" sx={{color: "#2F65DD"}}>
+                      <AccountCircleIcon sx={{marginBottom: -1}}/> {' ' + client.first_name + " " + client.last_name}
+                    </TableCell>
+                  </React.Fragment>
+                ): null)}
+
+                {services.map((service) => request.service_id === service.id ? (
+                  <React.Fragment key={service.id}>
+                    <TableCell align="left">{service.name}</TableCell>
+                    <TableCell align="left">{'$'+ service.price}</TableCell>
+                  </React.Fragment>
+                ): null)}
+                
+                <TableCell align="left">{request.scheduled_at}</TableCell>
                 <TableCell align="left">
-                  <Accept/>
-                  <span> | </span>
-                  <Decline/>
-                  <span> | </span>
+                  <Accept id={request.id} handleConfirm={handleConfirm}/>
+                  <span>|</span>
+                  <Decline id={request.id} handleDelete={handleDelete}/>
+                  <span>|</span>
                   <Rebook/>
                 </TableCell>
               </TableRow>
