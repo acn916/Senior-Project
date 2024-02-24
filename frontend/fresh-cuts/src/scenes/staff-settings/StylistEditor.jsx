@@ -40,13 +40,14 @@ const StylistEditor = () => {
     };
 
     const handleConfirmDelete = () => {
-        setStylists(currentItems => currentItems.filter(i => i !== selectedItemToDelete));
+        setStylists(currentItems => currentItems.filter(i => i.id !== selectedItemToDelete));
+        deleteUserFromDatabase(selectedItemToDelete)
         handleCloseDialog();
     };
 
     const handleOpenPopup = (item) => {
-        setItemToEdit(item); // Set the item you want to edit
-        setPopupOpen(true); // Open the PopupForm
+        setItemToEdit(item);
+        setPopupOpen(true);
     };
 
     const handleClosePopup = () => {
@@ -64,6 +65,17 @@ const StylistEditor = () => {
             }
         });
     };
+
+    const deleteUserFromDatabase = async (id) => {
+        try {
+          const response = await axios.delete('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/client', {
+            data: { user_id: id }
+          });
+          console.log(response.data);
+        } catch (error) {
+          console.error(error.response.data);
+        }
+      };      
 
     useEffect(() => {
         const apiUrl = 'https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/get_all_staff';
@@ -121,18 +133,17 @@ const StylistEditor = () => {
                     sx={{
                         width: 697,
                         display: "flex",
-                        justifyContent: "flex-end", // Align the button to the right
-                        marginBottom: 1, // Add space between the icon and the list
+                        justifyContent: "flex-end",
+                        marginBottom: 1,
                     }}
                 >
                     <IconButton
                         sx={{
-                            color: "red", // Set the icon color to red
-                            backgroundColor: "white", // Set the background color to white
-                            border: "2px solid red", // Red border around the button
-                            borderRadius: "10px", // Squircle-like border radius
+                            color: "red",
+                            backgroundColor: "white",
+                            border: "2px solid red",
+                            borderRadius: "10px",
                             padding: "2px",
-                            // Adjust the size and padding as needed
                         }}
                         aria-label="add"
                         onClick={handleOpenPopup}
@@ -155,7 +166,7 @@ const StylistEditor = () => {
                             width: 697,
                             maxHeight: "637px",
                             overflow: "auto",
-                            border: 1, // Apply a single border around the entire List
+                            border: 1,
                             borderColor: "grey.300",
                             borderRadius: 2,
                             bgcolor: "background.paper",
@@ -187,10 +198,9 @@ const StylistEditor = () => {
                                         </IconButton>
                                     </>
                                 }
-                                // Remove the marginBottom and border from individual ListItem
                                 sx={{
                                     "&:not(:last-child)": {
-                                        borderBottom: 1, // Only apply border to bottom if not the last item
+                                        borderBottom: 1,
                                         borderColor: "grey.300",
                                     },
                                 }}
