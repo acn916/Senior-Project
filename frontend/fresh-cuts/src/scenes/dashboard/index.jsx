@@ -34,16 +34,14 @@ function Dashboard() {
     const [currentStylist, setCurrentStylist] = useState(null);
     const [stylist, setStylist] = useState([]);
    
-
-
-    useEffect(() => {
-        axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/appointments')
-          .then(response => {
-              const formattedAppointments = response.data.map(appointment => {
-              const [year, month, day, hour, minute] = appointment.scheduled_at
-                  .match(/\d+/g)
-                  .map(Number);
-      
+    const fetchAppointments = async () =>  {
+      try{
+        const response = await axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/appointments');
+        const formattedAppointments = response.data.map(appointment => {
+            const [year, month, day, hour, minute] = appointment.scheduled_at
+                .match(/\d+/g)
+                .map(Number);
+    
               return {
                   id: appointment.id,
                   startDate: new Date(year, month - 1, day, hour, minute),
@@ -55,30 +53,36 @@ function Dashboard() {
                   notes: `${appointment.notes}`,
                   status: `${appointment.status}`,
               };
-          });
-              
-              console.log(response);
-              setAppointments(formattedAppointments);
-              
-          })
-          .catch(error => {
-              console.error('Error fetching data:', error);
-              setLoading(false);
-          });
+        });
 
-        axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/get_all_staff')
-          .then(response => {
-              setStylist(response.data);
-              
-          })
-          .catch(error => {
-              console.error('Error fetching data:', error);
-              setLoading(false);
-          });
+        setAppointments(formattedAppointments);
 
-       
-
+      } catch(error){
+        console.error("Error fetching data:'", error);
         setLoading(false);
+      }
+    }
+
+    useEffect(() => {
+
+      axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/get_all_staff')
+        .then(response => {
+            setStylist(response.data);
+            
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+            setLoading(false);
+        });
+
+
+
+      fetchAppointments();
+      setLoading(false);
+      const intervalId = setInterval(fetchAppointments, 9000);
+
+      return () => clearInterval(intervalId);  
+
 
     },[]);
 
@@ -88,7 +92,7 @@ function Dashboard() {
             <Select
               labelId="stylist-select-label"
               id="stylist-select"
-              value={currentStylist || 'All'}  // Set initial value to 'All'
+              value={currentStylist || 'All'}  
               onChange={handleStylistChange}
               sx ={{height: '44px'}}
             >
@@ -112,13 +116,10 @@ function Dashboard() {
     };
     
     const commitChanges = ({ added, changed, deleted }) => {
-      let updatedData = [...appointments]; // Copy the current state of appointments
+        let updatedData = [...appointments]; // Copy the current state of appointments
       
       if (added) {
-        console.log("Added!");
 
-        console.log(added.startDate)
-    
         const newAppointment = [
           {
             client_id: added.client_id,
@@ -130,35 +131,23 @@ function Dashboard() {
             confirmation_timestamp: added.confirmation_timestamp,
           }
         ];
-        
-        console.log(newAppointment)
-    
-       // console.log(newAppointment);
+            
         axios.post('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/appointment', newAppointment)
           .then(response => {
-            console.log("Appointment added successfully:", response.data);
-            // Update the appointment with the ID received from the server
             const updatedAppointment = { ...added, id: response.data.id };
-            updatedData = [...updatedData, updatedAppointment]; // Add the updated appointment to the copy of appointments
-            setAppointments(updatedData); // Update the state with the new data
+            updatedData = [...updatedData, updatedAppointment]; 
+            setAppointments(updatedData); 
           })
           .catch(error => {
             console.error('Error adding appointment:', error);
-            // No need to rollback changes here, as we haven't updated the state yet
           });
       }
     
       
-      if (changed) {
-        console.log("Changed!");
-    
+      if (changed) {    
         Object.keys(changed).forEach(appointmentId => {
 
-          //console.log(parseInt(appointmentId));
           let id = parseInt(appointmentId);
-
-         // console.log(updatedData);
-          //console.log(changed[id]);
           let prevData = {};
 
           for(let i = 0; i < updatedData.length; ++i){
@@ -166,17 +155,15 @@ function Dashboard() {
               prevData = updatedData[i];
             }
           }
+
           let changedData = changed[id];
-          
-          // Extracting and formatting start date
           let newStartDate;
+          
           if (changedData.startDate instanceof Date) {
               newStartDate = changedData.startDate.toISOString().split('T')[0] + ' ' + changedData.startDate.toTimeString().split(' ')[0];
           } else {
               newStartDate = prevData.startDate.toISOString().split('T')[0] + ' ' + prevData.startDate.toTimeString().split(' ')[0];
           }
-
-          console.log(newStartDate);
           
           const newData = {
             
@@ -189,30 +176,25 @@ function Dashboard() {
             confirmation_timestamp: newStartDate,
             cancellation_reason: "none"
           }
-        
-          console.log(newData)
-          
+                  
           axios.put(`https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/appointment/${id}`, [newData])
             .then(response =>{
-              console.log(response);
+              fetchAppointments();
             })
             .catch(error =>{
               console.error("Error updating", error);
             })   
         });
+
+
       }
 
-    
-  
       if (deleted) {
-        console.log("Deleted!");
       
         let id = deleted;
-        console.log(deleted);
         axios.delete(`https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/appointment/${id}`)
           .then(response => {
-            // Handle success response if needed
-            console.log(response);
+            console.log("Deleted Successfully");
           })
           .catch(error =>{
             console.error('Error deleting appointment', error);
@@ -221,13 +203,10 @@ function Dashboard() {
         updatedData = updatedData.filter(appointment => appointment.id !== deleted);
       }
       
-    
-      setAppointments(updatedData); // Update the state with the new data (for changes other than additions)
+      setAppointments(updatedData);
     };
 
-    const appointmentCellColor = ({
-      children, style, ...restProps
-    }) => (
+    const appointmentCellColor = ({children, style, ...restProps }) => (
       <Appointments.Appointment
         {...restProps}
         style={{
@@ -235,7 +214,6 @@ function Dashboard() {
           backgroundColor: '#F43F5E',
           borderRadius: '8px',
         }}
-  
       >
         {children}
       </Appointments.Appointment>
@@ -262,58 +240,53 @@ function Dashboard() {
       return <MonthView.TimeTableCell startDate={startDate} style={cellStyles} {...restProps} />;
     };
 
-    
-    
-
-
-
       return (
         <div>
           {loading ? (
             <div>Loading</div>
           ) : (
-             <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-          <Paper style={{ flex: '1 0 auto', overflow: 'auto' }}>
-            <Scheduler
-              data={appointments}
-              height={'100%'}
-            >
-              <ViewState
-                defaultCurrentDate={currentDate}
-                defaultCurrentViewName='Week'
-              />
-              <EditingState onCommitChanges={commitChanges} />
-              <IntegratedEditing />
-              <ConfirmationDialog ignoreCancel />
-              <DayView 
-                startDayHour={9} endDayHour={18} 
-                timeTableCellComponent={CustomTimeTableCellDay}
-              />
-              <WeekView
-                startDayHour={9} endDayHour={20}
-                timeTableCellComponent={CustomTimeTableCellWeek}
-              />
-              <MonthView 
-                startDayHour={12} endDayHour={20} 
-                timeTableCellComponent={CustomTimeTableCellMonth}
-              />
-              <Toolbar flexibleSpaceComponent={CustomToolbar} />
-              <ViewSwitcher />
-              <Appointments
-                appointmentComponent={appointmentCellColor}
-              />
-              <AppointmentTooltip
-                showCloseButton
-                showOpenButton
-                showDeleteButton
-              />
-              <AppointmentForm basicLayoutComponent={CustomBasicLayout} />
-              <DateNavigator />
-            </Scheduler>
-          </Paper>
-          <footer style={{ flexShrink: 0, height: '100px', overflow: 'hidden' }}></footer>
-        </div>
-          )}
+            <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+              <Paper style={{ flex: '1 0 auto', overflow: 'auto' }}>
+                <Scheduler
+                  data={appointments}
+                  height={'100%'}
+                >
+                  <ViewState
+                    defaultCurrentDate={currentDate}
+                    defaultCurrentViewName='Week'
+                  />
+                  <EditingState onCommitChanges={commitChanges} />
+                  <IntegratedEditing />
+                  <ConfirmationDialog ignoreCancel />
+                  <DayView 
+                    startDayHour={9} endDayHour={18} 
+                    timeTableCellComponent={CustomTimeTableCellDay}
+                  />
+                  <WeekView
+                    startDayHour={9} endDayHour={20}
+                    timeTableCellComponent={CustomTimeTableCellWeek}
+                  />
+                  <MonthView 
+                    startDayHour={12} endDayHour={20} 
+                    timeTableCellComponent={CustomTimeTableCellMonth}
+                  />
+                  <Toolbar flexibleSpaceComponent={CustomToolbar} />
+                  <ViewSwitcher />
+                  <Appointments
+                    appointmentComponent={appointmentCellColor}
+                  />
+                  <AppointmentTooltip
+                    showCloseButton
+                    showOpenButton
+                    showDeleteButton
+                  />
+                  <AppointmentForm basicLayoutComponent={CustomBasicLayout} />
+                  <DateNavigator />
+                </Scheduler>
+              </Paper>
+              <footer style={{ flexShrink: 0, height: '100px', overflow: 'hidden' }}></footer>
+            </div>
+         )}
         </div>
       );
       

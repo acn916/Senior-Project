@@ -24,34 +24,17 @@ const CustomStyledLayout = (props) => {
   const [name, setName] = useState("");
   const [service, setService] = useState("");
 
-  
-/*
-  const services = [
-    'Haircut',
-    'Coloring',
-    'Styling',
-    'Extensions',
-    'Perm',
-    // Add more services as needed
-  ];
-
-  */
-
   useEffect(() =>{
     axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/service')
     .then(response => {
-     // console.log(response);
       setServices(response.data);
       setLoading(false);
-      console.log('Services:', response.data);
 
      for(let i = 0; i < response.data.length; i++){
 
           if(response.data[i].id == appointmentData.service_id){
               setSelectedServices([response.data[i].name]);
-              console.log(selectedServices);
           }
-
      }
       
     })
@@ -72,15 +55,12 @@ const CustomStyledLayout = (props) => {
 
     axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/client')
     .then(response => {
-       // console.log(response);
         setClient(response.data);
 
         for(let i = 0; i < response.data.length; ++i){
-           // console.log(response.data[i]);
 
             if(response.data[i].id == appointmentData.title){
                 setName(response.data[i].first_name + " " + response.data[i].last_name );
-                console.log(name);
             }
             
         }
@@ -99,11 +79,17 @@ const CustomStyledLayout = (props) => {
 
  
   const handleServiceChange = (event) => {
-    const selectedServiceId = event.target.value;
-    setSelectedServices(selectedServiceId);
-    // Call onFieldChange to update the appointmentData with the selected service_id
-    onFieldChange({ service_id: selectedServiceId });
+    const selectedServiceName = event.target.value;
+    const selectedService = services.find(service => service.name === selectedServiceName);
+  
+    if (selectedService) {
+      setSelectedServices(selectedServiceName);
+      onFieldChange({ service_id: selectedService.id });
+    } else {
+      console.log("Not Found");
+    }
   };
+  
 
   return (
     <Box marginLeft={'20px'}>
@@ -156,8 +142,6 @@ const CustomStyledLayout = (props) => {
         </div>
       </Box>
 
-      
-
       <div style={{ marginBottom: '16px', marginTop: "16px" }}>
         <TextField
           id="stylist"
@@ -179,15 +163,14 @@ const CustomStyledLayout = (props) => {
             onChange={handleServiceChange}
             label="Select Service"
           >
+            
             {services.map((service) => (
-              <MenuItem key={service.id} value={service.id}>
+              <MenuItem key={service.id} value={service.name}>
                 {service.name}
               </MenuItem>
             ))}
             
           </Select>
-
-
         </FormControl>
       </div>
     </Box>
