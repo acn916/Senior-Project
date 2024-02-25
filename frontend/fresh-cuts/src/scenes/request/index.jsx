@@ -101,32 +101,43 @@ export const rows3 = [
 
 const Request = () => { 
 
-  const [requests, setRequests] = useState(rows.filter(test => test.status === "Pending")); //with data above (fake data)
-  const [services, setServices] = useState(rows2); //with data above (fake data)
-  const [clients, setClients] = useState(rows3); //with data above (fake data)
+ // const [requests, setRequests] = useState(rows.filter(test => test.status === "Pending")); //with data above (fake data)
+  //const [services, setServices] = useState(rows2); //with data above (fake data)
+  //const [clients, setClients] = useState(rows3); //with data above (fake data)
   
-  /*const [requests, setRequests] = useState([]); //for get API (actual request data) //entire commented block is functional and will be used for database info
+  const [requests, setRequests] = useState([]); //for get API (actual request data) //entire commented block is functional and will be used for database info
   const [services, setServices] = useState([]); //for get API (actual service data)
   const [clients, setClients] = useState([]); //for get API (actual client data) 
   const [loading, setLoading] = useState(true);
 
+  const fetchAppointments = async () =>  {
+    try{
+      const response = await axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/appointments');
+      
+      const pending_request = response.data.filter(appointment => appointment.status === 'Pending');
+      setRequests(pending_request);
+
+    } catch(error){
+      console.error("Error fetching data:'", error);
+      setLoading(false);
+    }
+  }
+
+  const editAppointment = async (id, appointment) => {
+    try{
+
+      const response = axios.put(`https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/appointment/${id}`, [appointment])
+
+    }catch(error){
+      console.error("Error updating", error);
+      setLoading(false);
+    }
+  }
+
   useEffect(() => { //
     axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/service')
       .then(response => {
-        console.log(response);
         setServices(response.data);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-        setLoading(false);
-      });
-
-    axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/appointments')
-      .then(response => {
-        console.log(response);
-        setRequests(response.data.filter(appointment => appointment.status === "Pending"));
-        setLoading(false);
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -135,40 +146,49 @@ const Request = () => {
 
     axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/client')
       .then(response => {
-        console.log(response);
         setClients(response.data);
-        setLoading(false);
       })
       .catch(error => {
         console.error('Error fetching data:', error);
         setLoading(false);
       });
-  }, []);*/
+
+      fetchAppointments();
+      setLoading(false);
+      const intervalId = setInterval(fetchAppointments, 9000);
+
+      return () => clearInterval(intervalId);  
+
+  }, []);
   
   //changes status to Confirmed
   const handleConfirm = (id) => {
     const currentRequestIndex = requests.findIndex((request) => request.id === id);
     const updatedRequest = {...requests[currentRequestIndex], status: "Confirmed"};
+    console.log("updated request", updatedRequest);
     const newRequests = [
       ...requests.slice(0, currentRequestIndex),
       updatedRequest,
       ...requests.slice(currentRequestIndex + 1)
     ];
+
+    editAppointment(id, updatedRequest);
+
     setRequests(newRequests);
-    console.log(newRequests);
   }
 
   //changes status to Denied
   const handleDeny = (id) => {
     const currentRequestIndex = requests.findIndex((request) => request.id === id);
-    const updatedRequest = {...requests[currentRequestIndex], status: "Denied"};
+    const updatedRequest = {...requests[currentRequestIndex], status: "Cancelled"};
     const newRequests = [
       ...requests.slice(0, currentRequestIndex),
       updatedRequest,
       ...requests.slice(currentRequestIndex + 1)
     ];
+    editAppointment(id, updatedRequest);
+
     setRequests(newRequests);
-    console.log(newRequests);
   }
 
   //deletes the row from the array
