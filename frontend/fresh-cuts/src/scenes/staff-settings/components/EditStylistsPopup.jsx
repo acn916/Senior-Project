@@ -24,21 +24,24 @@ const PopupForm = ({ open, handleClose, handleSubmit, data }) => {
         phoneNumber: data.phoneNumber || ''
       });
     }
-  }, [data]); // Only re-run if `data` changes
+  }, [data]);
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
+
+    try {
+      await handleSubmit(formData);
+    } catch (error) {
+      console.error('An error occurred during form submission:', error);
+    } finally {
       setLoading(false);
-      handleSubmit(formData); // Pass the form data to the parent component
-      handleClose(); // Close the dialog
-    }, 1000); // Simulate a 1-second loading process
+    }
   };
 
   return (
@@ -101,7 +104,14 @@ const PopupForm = ({ open, handleClose, handleSubmit, data }) => {
               Cancel
             </Button>
             <Button type="submit" disabled={loading} variant="contained" sx={{ backgroundColor: loading ? undefined : '#E95252', color: 'white', '&:hover': { backgroundColor: '#C74444' } }}>
-              {loading ? <CircularProgress size={24} color="secondary" /> : 'Save'}
+              {loading ? (
+                <CircularProgress
+                  size={24}
+                  sx={{ color: 'white' }}
+                />
+              ) : (
+                'Save'
+              )}
             </Button>
           </Box>
         </Box>

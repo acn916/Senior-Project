@@ -6,9 +6,7 @@ import {
     List,
     ListItem,
     ListItemText,
-    Typography
-    
-    ,
+    Typography,
     CircularProgress
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
@@ -26,8 +24,8 @@ const StylistEditor = () => {
     const [selectedItemToDelete, setDeleteSelectedItem] = useState(null);
 
     const [popupOpen, setPopupOpen] = useState(false);
-    const [formResults, setFormResults] = useState(null);
     const [itemToEdit, setItemToEdit] = useState(null);
+    const [action, setAction] = useState(null);
 
     const handleDeleteClick = (item) => {
         setDeleteSelectedItem(item);
@@ -39,14 +37,15 @@ const StylistEditor = () => {
         setDeleteSelectedItem(null);
     };
 
-    const handleConfirmDelete = () => {
-        setStylists(currentItems => currentItems.filter(i => i.id !== selectedItemToDelete));
-        deleteUserFromDatabase(selectedItemToDelete)
+    const handleConfirmDelete = async () => {
+        await deleteUserFromDatabase(selectedItemToDelete)
+        refresh();
         handleCloseDialog();
     };
 
     const handleOpenPopup = (item) => {
         setItemToEdit(item);
+        setAction(item === null ? 'add' : 'edit');
         setPopupOpen(true);
     };
 
@@ -54,36 +53,45 @@ const StylistEditor = () => {
         setPopupOpen(false);
     };
 
-    const handleFormSubmit = (results) => {
-        setFormResults(results);
-        setNames(currentNames => {
-            const nameIndex = currentNames.findIndex(name => name === results.firstName);
-            if (nameIndex >= 0) {
-                return currentNames.map((name, index) => index === nameIndex ? results.firstName : name);
-            } else {
-                return [...currentNames, results.firstName];
-            }
-        });
+    const handleFormSubmit = async (results) => {
+        await addUserToDatabase(results);
+        refresh();
+        handleClosePopup();
     };
+
+    const addUserToDatabase = async (userData) => {
+        try {
+            const response = await axios.post('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/client', {
+                cognito_user_id: "fake",
+                email: userData.email,
+                first_name: userData.firstName,
+                last_name: userData.lastName,
+                phone: userData.phoneNumber,
+                user_role: "Staff"
+            })
+        } catch (error) {
+            console.error(error.response.data);
+        }
+    }
 
     const deleteUserFromDatabase = async (id) => {
         try {
-          const response = await axios.delete('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/client', {
-            data: { user_id: id }
-          });
-          console.log(response.data);
+            const response = await axios.delete('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/client', {
+                data: { user_id: id }
+            }); 
+            console.log(response.data);
         } catch (error) {
-          console.error(error.response.data);
+            console.error(error.response.data);
         }
-      };      
+    };
 
-    useEffect(() => {
+    function refresh() {
         const apiUrl = 'https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/get_all_staff';
 
+        setLoading(true);
         axios.get(apiUrl)
             .then((response) => {
                 setStylists(response.data);
-                console.log(response.data);
                 setError(null);
             })
             .catch((error) => {
@@ -92,6 +100,10 @@ const StylistEditor = () => {
             .finally(() => {
                 setLoading(false);
             });
+    }
+
+    useEffect(() => {
+        refresh();
     }, []);
 
     if (loading) {
@@ -113,11 +125,11 @@ const StylistEditor = () => {
     return (
         <>
             <Typography
-            
-            variant="h4" gutterBottom fontWeight={700}>
+
+                variant="h4" gutterBottom fontWeight={700}>
                 Add/Remove Stylist
             </Typography
-            
+
             >
             <Box sx={{ height: "16px" }} />
             <Box
@@ -153,10 +165,10 @@ const StylistEditor = () => {
                 </Box>
                 {stylists.length === 0 ? (
                     <Typography
-                    sx={{
-                        color: "#E95252",
-                        fontWeight: "bold"
-                    }}
+                        sx={{
+                            color: "#E95252",
+                            fontWeight: "bold"
+                        }}
                     >
                         No Stylists Found
                     </Typography>
