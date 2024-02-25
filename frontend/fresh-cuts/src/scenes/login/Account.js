@@ -62,15 +62,15 @@ const Account = (props) => {
         
             user.authenticateUser(authDetails, {
                 onSuccess: (data) => {
-                    console.log("onSuccess: ", data);
+                    //console.log("onSuccess: ", data);
                     resolve(data);
                 },
                 onFailure: (err) => {
-                    console.log("onFailure: ", err);
+                    //console.log("onFailure: ", err);
                     reject(err);
                 },
                 newPasswordRequired: (data) => {
-                    console.log("newPasswordRequired: ", data);
+                   // console.log("newPasswordRequired: ", data);
                     resolve(data);
                 }
             });

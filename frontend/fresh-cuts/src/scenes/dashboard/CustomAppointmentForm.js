@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -14,56 +13,108 @@ import axios from 'axios';
 
 const CustomStyledLayout = (props) => {
   const { appointmentData, onFieldChange, ...restProps } = props;
-  const [selectedServices, setSelectedServices] = useState([]);
+  const [clients, setClient] = useState([]);
+  const [stylist, setStylist] = useState([]);
+  const [selectedStylist, setSelectedStylist] = useState('');
+  const [selectedServices, setSelectedServices] = useState('');
   const [loading, setLoading] = useState(true);
-
   const [services, setServices] = useState([]);
+  
 
-  const handleServiceChange = (event) => {
-    setSelectedServices(event.target.value);
-  };
-/*
-  const services = [
-    'Haircut',
-    'Coloring',
-    'Styling',
-    'Extensions',
-    'Perm',
-    // Add more services as needed
-  ];
+  const [name, setName] = useState("");
+  const [service, setService] = useState("");
 
-  */
-  useEffect(() => {
-
+  useEffect(() =>{
     axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/service')
-      .then(response => {
-        console.log(response);
-        setServices(response.data);
-        setLoading(false);
-        console.log('Services:', response.data);
-      })
-      .catch(error => {
-        console.error('Error Fetching Data', error);
-        setLoading(false);
-      })
+    .then(response => {
+      setServices(response.data);
+      setLoading(false);
 
+     for(let i = 0; i < response.data.length; i++){
+
+          if(response.data[i].id == appointmentData.service_id){
+              setSelectedServices([response.data[i].name]);
+          }
+     }
+      
+    })
+    .catch(error => {
+      console.error('Error Fetching Data', error);
+      setLoading(false);
+    });
+
+    axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/get_all_staff')
+    .then(response => {
+        setStylist(response.data);
+        setLoading(false);
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+        setLoading(false);
+    });
+
+    axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/client')
+    .then(response => {
+        setClient(response.data);
+
+        for(let i = 0; i < response.data.length; ++i){
+
+            if(response.data[i].id == appointmentData.title){
+                setName(response.data[i].first_name + " " + response.data[i].last_name );
+            }
+            
+        }
+        
+        setLoading(false);
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+        setLoading(false);
+    });
+
+    setLoading(false);
 
   }, []);
+ 
+
+ 
+  const handleServiceChange = (event) => {
+    const selectedServiceName = event.target.value;
+    const selectedService = services.find(service => service.name === selectedServiceName);
+  
+    if (selectedService) {
+      setSelectedServices(selectedServiceName);
+      onFieldChange({ service_id: selectedService.id });
+    } else {
+      console.log("Not Found");
+    }
+  };
   
 
   return (
     <Box marginLeft={'20px'}>
-       <Typography variant="h6" style={{ fontWeight: 'bold', fontSize: '1.2rem', marginBottom: '16px', marginTop: '16px' }}>
+      <Typography variant="h6" style={{ fontWeight: 'bold', fontSize: '1.2rem', marginBottom: '16px', marginTop: '16px' }}>
         Details
       </Typography>
       <div style={{ marginBottom: '16px', marginTop: "16px" }}>
         <TextField
-          id="title"
+          id="name"
           label="Name"
           variant="outlined"
           fullWidth
-          value={appointmentData.title || ''}
-          onChange={(e) => onFieldChange({ title: e.target.value })}
+          value={appointmentData.name || ''}
+          onChange={(e) => onFieldChange({ name: e.target.value } )}
+        />
+      </div>
+
+      <div style={{ marginBottom: '16px', marginTop: "16px" }}>
+        <TextField
+          id="client"
+          label="Client"
+          variant="outlined"
+          fullWidth
+          value={appointmentData.client_id || ''}
+          onChange={(e) => onFieldChange({ client_id: e.target.value })}
         />
       </div>
 
@@ -91,24 +142,34 @@ const CustomStyledLayout = (props) => {
         </div>
       </Box>
 
+      <div style={{ marginBottom: '16px', marginTop: "16px" }}>
+        <TextField
+          id="stylist"
+          label="Stylist"
+          variant="outlined"
+          fullWidth
+          value={appointmentData.staff_id || ''}
+          onChange={(e) => onFieldChange({ staff_id: e.target.value })}
+        />
+      </div>
+
       <div style={{ marginTop: '16px' }}>
         <FormControl fullWidth>
           <InputLabel id="services-label">Select Services</InputLabel>
           <Select
             labelId="services-label"
             id="services"
-            multiple
             value={selectedServices}
             onChange={handleServiceChange}
-            label="Select Services"
+            label="Select Service"
           >
-          {services.map((service) => (
-            <MenuItem key={String(service.id)} value={String(service.name)}>
-              {String(service.name)}
-            </MenuItem>
-          ))}
-
-
+            
+            {services.map((service) => (
+              <MenuItem key={service.id} value={service.name}>
+                {service.name}
+              </MenuItem>
+            ))}
+            
           </Select>
         </FormControl>
       </div>

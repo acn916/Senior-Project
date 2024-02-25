@@ -28,7 +28,7 @@ export default function Signup() {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [formatNum, setFormatNum] = useState("");
     const paperStyle={padding:20, height:'620px', width:350, margin:"10px auto"}
-    console.log(formatNum);
+    //console.log(formatNum);
     const onSubmit = (event) => {
         event.preventDefault();
         const attributes = [
@@ -56,7 +56,7 @@ export default function Signup() {
                 alert("Invalid information entered.")
             }
             else{
-                console.log(data);
+               // console.log(data);
                 alert("Please check your email to verify your account.");
             }
  
@@ -119,13 +119,13 @@ export default function Signup() {
                     onChange={(event) => {
                         const inputNumber = event.target.value;
                         setPhoneNumber(inputNumber)
-                        console.log(phoneNumber); // This will log the updated state
+                        //console.log(phoneNumber); // This will log the updated state
 
                         // Check if the input contains at least 10 digits
                         if (inputNumber.replace(/\D/g, '').length >= 10) {
                             const formattedNumber = reformatNumber(inputNumber);
                             setFormatNum(formattedNumber);
-                            console.log(formatNum);
+                            //console.log(formatNum);
                         }
                         
                     }}
