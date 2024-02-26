@@ -1,4 +1,4 @@
-import React from "react";
+import {useContext} from "react";
 import {
 	Box,
 	FooterContainer,
@@ -15,14 +15,23 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import PlaceIcon from '@mui/icons-material/Place';
 import "./Footer.css";
 
+import { AuthContext } from "../../AuthContext";
+
 import {Link} from "react-router-dom"
+
 
 const Servicepage = ['Services']
 
 const Footer = () => {
+
+	const { isLoggedIn} = useContext(AuthContext);
+
 	return (
+
+		
 		<Box>
-			<FooterContainer>
+			{(!isLoggedIn && 
+				<FooterContainer>
 				<Row>
 					<Column>
 						
@@ -76,6 +85,9 @@ const Footer = () => {
 
 				</Row>
 			</FooterContainer>
+			
+			)}
+			
 		</Box>
 	);
 };
