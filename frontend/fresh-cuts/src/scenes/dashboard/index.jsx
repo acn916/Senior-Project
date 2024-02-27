@@ -54,7 +54,17 @@ function Dashboard() {
                   status: `${appointment.status}`,
               };
         });
+/*
+        let confirmedAppointments = [];
+        for(let i = 0; i < formattedAppointments.length; ++i){
+          if(formattedAppointments[i].status === 'Confirmed'){
+            confirmedAppointments.push(formattedAppointments[i])
 
+          }
+        }
+
+        console.log(confirmedAppointments)
+        */
         setAppointments(formattedAppointments);
 
       } catch(error){
