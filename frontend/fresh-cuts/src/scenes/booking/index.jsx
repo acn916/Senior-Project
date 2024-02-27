@@ -7,7 +7,7 @@ import ListItemText from '@mui/material/ListItemText';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
 import {useState} from "react";
-import { Grid, Box, Container, Button, Typography, Card, CardContent } from '@mui/material';
+import { Grid, Box, Container, Button, Typography, Card, CardContent, Paper } from '@mui/material';
 import 'react-datepicker/dist/react-datepicker.css';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -63,6 +63,21 @@ const Booking = () => {
     {id: 21, name: "7:00 PM"},
     {id: 22, name: "7:30 PM"},
   ])
+  function removeTime(id) {
+    const newTimes = times.filter((l) => l.id !== id);
+    setTimes(newTimes);
+  }
+
+  function revealNoApt() {
+    document.getElementById("noApt").innerHTML = "Sorry, there are no available appointments, please try another date.";
+    document.getElementById("callUs").innerHTML = "Call to see if there are any last minute openings at (916) 451-1517";
+  }
+
+  function hideNoApt() {
+    document.getElementById("noApt").innerHTML = "";
+    document.getElementById("callUs").innerHTML = "";
+  }
+
   function removeTime(id) {
     const newTimes = times.filter((l) => l.id !== id);
     setTimes(newTimes);
@@ -149,18 +164,19 @@ const Booking = () => {
       revealNoApt();
     }
   };
+  
   return (
     <Container maxWidth="100%">
         <Grid container spacing={2} style={{minHeight: "500px"}}>
           <Grid item xs={12}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <h1 align="left" style={{marginLeft: 50, marginTop: 50}}> Schedule an Appointment </h1>
+                <h1 align="left" style={{marginLeft: 20, marginTop: 50}}> Schedule an Appointment </h1>
               </Grid>
             </Grid>
-            <div style={{borderTop: "2px solid", color: "black", marginLeft: 50, maxWidth:"80%"}}/>
+            <div style={{borderTop: "2px solid", color: "black", marginLeft: 20, maxWidth:"80%"}}/>
             <Grid container>
-              <Card style={{ height: "30%", width: "10%", marginLeft: 50, marginTop: 20, backgroundColor: "#f2f2f2", display: 'flex', flexDirection: 'column' }}>
+              <Card style={{ height: "30%", width: "10%", minWidth: "180px", marginLeft: 20, marginTop: 20, backgroundColor: "#f2f2f2", display: 'flex', flexDirection: 'column' }}>
                 <CardContent>
                   <FormControl fullWidth>
                   <InputLabel id="stylist-select-label">Select a Stylist</InputLabel>
@@ -180,7 +196,7 @@ const Booking = () => {
                   </FormControl>
                 </CardContent>
               </Card>
-              <Card style={{ height: "30%", width: "30%", marginLeft: 20, marginTop: 20, backgroundColor: "#f2f2f2", display: 'flex', flexDirection: 'column' }}>
+              <Card style={{ height: "30%", width: "30%", minWidth: "180px", marginLeft: 20, marginTop: 20, backgroundColor: "#f2f2f2", display: 'flex', flexDirection: 'column' }}>
                 <CardContent>
                   <FormControl fullWidth>
                     <InputLabel id="service-select-label">Select One or More Services</InputLabel>
@@ -205,7 +221,7 @@ const Booking = () => {
                   </FormControl>
                 </CardContent>
               </Card>
-              <Card style={{ height: "30%", width: "10%", marginLeft: 20, marginTop: 20, backgroundColor: "#f2f2f2", display: 'flex', flexDirection: 'column' }}>
+              <Card style={{ height: "30%", width: "10%", minWidth:"146px", padding: 17, marginLeft: 20, marginTop: 20, backgroundColor: "#f2f2f2", display: 'flex', flexDirection: 'column' }}>
                 <CardContent>
                   <FormControl fullWidth>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -223,7 +239,7 @@ const Booking = () => {
                   </FormControl>
                 </CardContent>
               </Card>
-              <Card style={{ height: "30%", width: "10%", marginLeft: 20, marginTop: 20, backgroundColor: "#f2f2f2", display: 'flex', flexDirection: 'column' }}>
+              <Card style={{ height: "30%", width: "10%", minWidth:"180px", marginLeft: 20, marginTop: 20, backgroundColor: "#f2f2f2", display: 'flex', flexDirection: 'column' }}>
                 <CardContent>
                   <FormControl fullWidth>
                     <Button variant='Contained'
@@ -242,8 +258,8 @@ const Booking = () => {
         </Grid>
 
         <Grid container spacing={2} style={{minHeight: "300px"}} marginLeft='20px'>
-          <Stack flexDirection='column' margin='40px'>
-            <Grid item xs={12}><Typography variant='h5'>Appointment Time</Typography></Grid>
+          <Stack flexDirection='column' marginTop='50px'>
+            <Grid item xs={12}><Typography variant='h5' marginLeft='50px'>Appointment Time</Typography></Grid>
             <Grid item xs={8}>
               <div style={{display: 'flex'}}>
                 <ul>
