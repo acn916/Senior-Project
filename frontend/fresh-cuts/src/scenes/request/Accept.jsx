@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from "react";
 import { Grid, Box, Button, Typography } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
-const Accept = () => {
+const Accept = ({id, handleConfirm}) => {
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -66,7 +66,7 @@ const Accept = () => {
 
             <Grid container spacing={2} justifyContent="center" marginTop="20px">
               <Button onClick={handleClose} sx={backStyle}> <KeyboardBackspaceIcon/> Back </Button>
-              <Button onClick={handleClose} sx={confirmStyle}> Confirm </Button>
+              <Button onClick={() => {handleConfirm(id); handleClose()}} sx={confirmStyle}> Confirm </Button>
             </Grid>
 
           </Box>

@@ -20,6 +20,11 @@ function reformatNumber(input){
 }
 
 export default function Signup() {
+    const [isChecked, setChecked] = useState(false);
+    
+    const handleCheckboxChange = (event) => {
+        setChecked(event.target.checked);
+    };
     const [isStylist, setIsStylist] = useState(false); // Updated state for the checkbox
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -155,7 +160,7 @@ export default function Signup() {
                 <FormGroup>
                     <FormControlLabel 
                         control={
-                            <Checkbox color='default' size='small'/>
+                            <Checkbox color='default' size='small' onChange={handleCheckboxChange}/>
                         }
                         label={
                             <Typography variant='caption'>I agree to the Terms of Service and Privacy Policy.</Typography>
@@ -182,7 +187,8 @@ export default function Signup() {
                         backgroundColor: "#e95252",
                         padding: "12px 24px",
                         }}
-                        fullWidth required>
+                        fullWidth required
+                        disabled={!isChecked}>
                     <Typography color='white'>Create an Account</Typography>
                 </Button>
                 

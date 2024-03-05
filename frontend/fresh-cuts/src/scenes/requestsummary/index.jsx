@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {
     Grid, Paper, TextField, FormControlLabel, FormGroup, Checkbox, Button, Typography, List, ListItem, Divider, ListItemText, ListItemAvatar, Avatar, Container
     } from '@mui/material';
@@ -7,6 +7,12 @@ import { Link } from 'react-router-dom'
 export default function Requestsummary() {
     const paperStyle={ maxHeight:'80vh', overflowY:'auto', width:'90%', maxWidth:'350px', margin:"30px auto"}
     const reqStyle={display: 'flex', flexDirection: 'column', width:'90%', maxWidth:'450px', padding:20, margin:"30px auto"}
+    const [isChecked, setChecked] = useState(false);
+    
+    const handleCheckboxChange = (event) => {
+        setChecked(event.target.checked);
+    };
+
 
     return (
         <>
@@ -48,6 +54,8 @@ export default function Requestsummary() {
                                         type="checkbox" 
                                         color='default' 
                                         size='small'
+                                        checked={isChecked}
+                                        onChange={handleCheckboxChange}
                                     />}
 
                                 label={
@@ -72,7 +80,10 @@ export default function Requestsummary() {
                                     backgroundColor: "#e95252",
                                     padding: "12px 36px",
                                     margin: "5px 10px"
-                                    }}>
+                                    }}
+                                    required
+                                    disabled={!isChecked} // Disable if checkbox is not checked
+                                    >
                                 <Typography color='white'>Request</Typography>
                             </Button>
                         </Grid>
