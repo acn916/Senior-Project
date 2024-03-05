@@ -17,12 +17,14 @@ const CustomStyledLayout = (props) => {
   const [stylist, setStylist] = useState([]);
   const [selectedStylist, setSelectedStylist] = useState('');
   const [selectedServices, setSelectedServices] = useState('');
+ 
   const [loading, setLoading] = useState(true);
   const [services, setServices] = useState([]);
   
 
   const [name, setName] = useState("");
   const [service, setService] = useState("");
+
 
   useEffect(() =>{
     axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/service')
@@ -171,6 +173,8 @@ const CustomStyledLayout = (props) => {
             ))}
             
           </Select>
+
+
         </FormControl>
       </div>
     </Box>
