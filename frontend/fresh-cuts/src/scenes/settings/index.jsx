@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import {
   ListItem,
@@ -34,27 +34,12 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import axios from "axios";
 
-const list = [
-  {
-    primaryText: "Setting",
-    icon: <SettingsIcon />,
-    secondaryText: "Site Setting",
-    color: "#E95252",
-  },
-  {
-    primaryText: "Add/Remove Stylist",
-    color: "#052B74",
-  },
-  {
-    color: "#052B74",
-    primaryText: "Add/ Remove Service",
-  },
-];
-
-function addService(service, price, description, duration) {
+function addService(id, name, price, description, duration) {
   return {
-    service,
+    id,
+    name,
     price: typeof price === "number" ? price : 0,
     description,
     duration,
@@ -63,7 +48,7 @@ function addService(service, price, description, duration) {
 
 function AddPopUp({ onSubmit, onClose }) {
   const [newServiceData, setNewServiceData] = useState({
-    service: "",
+    name: "",
     price: 0,
     duration: "",
     description: "",
@@ -79,14 +64,14 @@ function AddPopUp({ onSubmit, onClose }) {
   };
 
   const handleSubmit = () => {
-    if (!newServiceData.service.trim()) {
+    if (!newServiceData.name.trim()) {
       setError("Service name is required");
       return;
     }
 
     onSubmit(newServiceData);
     setNewServiceData({
-      service: "",
+      name: "",
       price: 0,
       duration: "",
       description: "",
@@ -102,8 +87,8 @@ function AddPopUp({ onSubmit, onClose }) {
           <TextField
             variant="outlined"
             label="Service"
-            value={newServiceData.service}
-            onChange={handleChange("service")}
+            value={newServiceData.name}
+            onChange={handleChange("name")}
           />
           <TextField
             variant="outlined"
@@ -146,7 +131,8 @@ function AddPopUp({ onSubmit, onClose }) {
 
 function EditServicePopUp({ selectedRow, onSubmit, onClose }) {
   const [editedData, setEditedData] = useState({
-    service: selectedRow ? selectedRow.service : "",
+    id: selectedRow ? selectedRow.id : "",
+    name: selectedRow ? selectedRow.name : "",
     price: selectedRow ? selectedRow.price : 0, // Initialize with a default value
     duration: selectedRow ? selectedRow.duration : "",
     description: selectedRow ? selectedRow.description : "",
@@ -163,6 +149,8 @@ function EditServicePopUp({ selectedRow, onSubmit, onClose }) {
   const handleSubmit = () => {
     // Submit the edited data
     onSubmit(editedData);
+
+    // TODO
   };
 
   return (
@@ -212,63 +200,48 @@ function EditServicePopUp({ selectedRow, onSubmit, onClose }) {
 
 // Call API
 // -----------------------------------------------------------------------------------------------------
-const rows = [
-  addService(
-    "Extension Move up",
-    200.0,
-    "Service requires consultation, before booking an appointment",
-    "2 hours"
-  ),
-  addService(
-    "Color Correction",
-    150.0,
-    "Service requires consultation, before booking an appointment",
-    "3 hours"
-  ),
-  addService(
-    "Full Highlights",
-    200.0,
-    "Traditional highlighting for hair birghtness",
-    "2 hours"
-  ),
-  addService(
-    "Men's Haircut",
-    50.0,
-    "Price varies based on client's hair density, length, and texture. Includes a wash and style",
-    "2 hours"
-  ),
-];
+
 const Setting = () => {
-  const [rows, setRows] = useState([
-    addService(
-      "Extension Move up",
-      200.0,
-      "Service requires consultation, before booking an appointment",
-      "2 hours"
-    ),
-    addService(
-      "Color Correction",
-      150.0,
-      "Service requires consultation, before booking an appointment",
-      "3 hours"
-    ),
-    addService(
-      "Full Highlights",
-      200.0,
-      "Traditional highlighting for hair brightness",
-      "2 hours"
-    ),
-    addService(
-      "Men's Haircut",
-      50.0,
-      "Price varies based on client's hair density, length, and texture. Includes a wash and style",
-      "2 hours"
-    ),
-  ]);
+  const [rows, setRows] = useState([]);
 
   const [selectedRow, setSelectedRow] = useState(null);
   const [open, setOpen] = useState(false);
   const [addServicePopupOpen, setAddServicePopupOpen] = useState(false);
+  const [services, setServices] = useState([]);
+
+  const fetchServiceData = () => {
+    const get_all_services_url =
+      "https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/service";
+
+    axios
+      .get(get_all_services_url)
+      .then((response) => {
+        console.log(response);
+
+        // Update the state with the new data
+        setServices(response.data);
+
+        // Iterate through the rows
+        const mappedRows = response.data.map((service) => {
+          return addService(
+            service.id,
+            service.name,
+            service.price,
+            service.description,
+            service.duration
+          );
+        });
+
+        setRows(mappedRows);
+      })
+      .catch((error) => {
+        console.error("Failed to get all services: ", error);
+      });
+  };
+
+  useEffect(() => {
+    fetchServiceData();
+  }, []);
 
   const handleEditClick = (row) => {
     setSelectedRow(row);
@@ -277,10 +250,26 @@ const Setting = () => {
 
   const handlePopupSubmit = (editedData) => {
     // Update the rows with the edited data
+    let id = editedData.id;
     const updatedRows = rows.map((row) =>
       row === selectedRow ? { ...row, ...editedData } : row
     );
-    setRows(updatedRows);
+
+    //console.log("Here", editedData);
+    // Make a PUT request to update the service on the server //
+    const updateServiceUrl = `https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/service/${id}`;
+
+    axios
+      .put(updateServiceUrl, editedData)
+      .then((response) => {
+        console.log("Service updated successfully: ", response.data);
+        fetchServiceData();
+      })
+      .catch((error) => {
+        console.error("Failed to update service: ", error);
+        console.error([editedData]);
+      });
+
     // Close the popup and reset the selectedRow state
     setOpen(false);
     setSelectedRow(null);
@@ -290,8 +279,18 @@ const Setting = () => {
   };
 
   const handleAddServicePopupSubmit = (newService) => {
-    // Append the new service to the rows array
-    setRows((prevRows) => [...prevRows, newService]);
+    const addServiceUrl = `https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/service`;
+    //console.log("Format:", newService);
+
+    axios
+      .post(addServiceUrl, newService)
+      .then(() => {
+        // Fetch data after successful POST
+        fetchServiceData();
+      })
+      .catch((error) => {
+        console.error("Failed to add service: ", error);
+      });
 
     // Close the popup
     setAddServicePopupOpen(false);
@@ -300,7 +299,17 @@ const Setting = () => {
   const handleRemoveRow = (rowToRemove) => {
     // Filter out the row to be removed
     const updatedRows = rows.filter((row) => row !== rowToRemove);
+    let id = rowToRemove.id;
 
+    const delServiceUrl = `https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/service/${id}`;
+    axios
+      .delete(delServiceUrl)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error("Error deleting service from database", error);
+      });
     // Update the state with the new rows
     setRows(updatedRows);
   };
@@ -308,8 +317,7 @@ const Setting = () => {
   return (
     <Container maxWidth="90" sx={{}}>
       <Grid container>
-        
-        <Grid item xs={6}>
+        <Grid item xs={11}>
           <Typography
             variant="h6"
             sx={{
@@ -319,39 +327,47 @@ const Setting = () => {
               justifyContent: "space-between",
             }}
           >
-            <strong>Add/Remove Service</strong>
-            <IconButton onClick={handleAddServiceClick}>
+            <IconButton
+              sx={{ marginLeft: "auto" }}
+              onClick={handleAddServiceClick}
+            >
               <AddCircleOutlineIcon />
             </IconButton>
           </Typography>
           <TableContainer
             component={Paper}
-            sx={{ marginTop: "20px", marginLeft: "20px" }}
+            sx={{
+              marginTop: "20px",
+              marginLeft: "20px",
+              height: "70vh",
+            }}
           >
             <Table
               sx={{ minWidth: 800, minHeight: 400 }}
               aria-label="simple table"
             >
               <TableHead>
-                <TableRow>
+                <TableRow key="table-header">
                   <TableCell>Service</TableCell>
-                  <TableCell align="right">Price</TableCell>
+                  <TableCell>Price</TableCell>
                   <TableCell>Description&nbsp;</TableCell>
-                  <TableCell align="right">Duration&nbsp;</TableCell>
-                  <TableCell align="right">&nbsp;</TableCell>
-                  <TableCell align="right">&nbsp;</TableCell>
+                  <TableCell>Duration&nbsp;</TableCell>
+                  <TableCell>&nbsp;</TableCell>
+                  <TableCell>&nbsp;</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {rows.map((row) => (
-                  <TableRow key={row.name}>
+                  <TableRow key={row.id}>
                     <TableCell component="th" scope="row">
-                      {row.service}
+                      {row.name}
                     </TableCell>
-                    <TableCell>{row.price.toFixed(2)}</TableCell>
+                    <TableCell>
+                      {row.price ? row.price.toFixed(2) : 0}
+                    </TableCell>
                     <TableCell>{row.description}</TableCell>
-                    <TableCell align="right">{row.duration}</TableCell>
-                    <TableCell align="right" sx={{ paddingRight: "4px" }}>
+                    <TableCell>{row.duration}</TableCell>
+                    <TableCell sx={{ paddingRight: "4px" }}>
                       <IconButton onClick={() => handleEditClick(row)}>
                         <EditOutlinedIcon />
                       </IconButton>

@@ -20,6 +20,11 @@ function reformatNumber(input){
 }
 
 export default function Signup() {
+    const [isChecked, setChecked] = useState(false);
+    
+    const handleCheckboxChange = (event) => {
+        setChecked(event.target.checked);
+    };
     const [isStylist, setIsStylist] = useState(false); // Updated state for the checkbox
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -28,7 +33,7 @@ export default function Signup() {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [formatNum, setFormatNum] = useState("");
     const paperStyle={padding:20, height:'620px', width:350, margin:"10px auto"}
-    console.log(formatNum);
+    //console.log(formatNum);
     const onSubmit = (event) => {
         event.preventDefault();
         const attributes = [
@@ -56,7 +61,7 @@ export default function Signup() {
                 alert("Invalid information entered.")
             }
             else{
-                console.log(data);
+               // console.log(data);
                 alert("Please check your email to verify your account.");
             }
  
@@ -119,13 +124,13 @@ export default function Signup() {
                     onChange={(event) => {
                         const inputNumber = event.target.value;
                         setPhoneNumber(inputNumber)
-                        console.log(phoneNumber); // This will log the updated state
+                        //console.log(phoneNumber); // This will log the updated state
 
                         // Check if the input contains at least 10 digits
                         if (inputNumber.replace(/\D/g, '').length >= 10) {
                             const formattedNumber = reformatNumber(inputNumber);
                             setFormatNum(formattedNumber);
-                            console.log(formatNum);
+                            //console.log(formatNum);
                         }
                         
                     }}
@@ -155,7 +160,7 @@ export default function Signup() {
                 <FormGroup>
                     <FormControlLabel 
                         control={
-                            <Checkbox color='default' size='small'/>
+                            <Checkbox color='default' size='small' onChange={handleCheckboxChange}/>
                         }
                         label={
                             <Typography variant='caption'>I agree to the Terms of Service and Privacy Policy.</Typography>
@@ -182,7 +187,8 @@ export default function Signup() {
                         backgroundColor: "#e95252",
                         padding: "12px 24px",
                         }}
-                        fullWidth required>
+                        fullWidth required
+                        disabled={!isChecked}>
                     <Typography color='white'>Create an Account</Typography>
                 </Button>
                 
