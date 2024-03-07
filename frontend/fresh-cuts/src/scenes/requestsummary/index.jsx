@@ -65,27 +65,31 @@ export default function Requestsummary() {
                         />
 
                         <Grid container direction='row' justifyContent="space-between" alignItems="center">
-                            <Button type='submit'
-                                    style={{
-                                        backgroundColor: "#a6a6a6",
+                            <Link to="/booking">
+                                <Button type='submit'
+                                        style={{
+                                            backgroundColor: "#a6a6a6",
+                                            padding: "12px 36px",
+                                            margin: "5px 10px"
+                                        }}>
+                                        <Typography color='white'>Back</Typography>
+                                </Button>
+                            </Link>
+                            
+                            <Link to="/confirmation">
+                                <Button variant='Contained'
+                                        type='submit'
+                                        style={{
+                                        backgroundColor: "#e95252",
                                         padding: "12px 36px",
                                         margin: "5px 10px"
-                                    }}>
-                                    <Typography color='white'>Back</Typography>
-                            </Button>
-
-                            <Button variant='Contained'
-                                    type='submit'
-                                    style={{
-                                    backgroundColor: "#e95252",
-                                    padding: "12px 36px",
-                                    margin: "5px 10px"
-                                    }}
-                                    required
-                                    disabled={!isChecked} // Disable if checkbox is not checked
-                                    >
-                                <Typography color='white'>Request</Typography>
-                            </Button>
+                                        }}
+                                        required
+                                        disabled={!isChecked} // Disable if checkbox is not checked
+                                        >
+                                    <Typography color='white'>Request</Typography>
+                                </Button>
+                            </Link>
                         </Grid>
                     </Grid>
                 </Paper>

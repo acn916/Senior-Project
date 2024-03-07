@@ -33,6 +33,7 @@ function Dashboard() {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [currentStylist, setCurrentStylist] = useState(null);
     const [stylist, setStylist] = useState([]);
+    const [clients, setClients] = useState([]);
    
     const fetchAppointments = async () =>  {
       try{
@@ -73,6 +74,15 @@ function Dashboard() {
       }
     }
 
+    const fetchClients = async () => {
+      try {
+          const clientResponse = await axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/client');
+          setClients(clientResponse.data);
+      } catch (error) {
+          console.error("Error fetching clients:", error);
+      }
+  };
+
     useEffect(() => {
 
       axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/get_all_staff')
@@ -88,6 +98,7 @@ function Dashboard() {
 
 
       fetchAppointments();
+      fetchClients();
       setLoading(false);
       const intervalId = setInterval(fetchAppointments, 9000);
 
@@ -175,6 +186,7 @@ function Dashboard() {
               newStartDate = prevData.startDate.toISOString().split('T')[0] + ' ' + prevData.startDate.toTimeString().split(' ')[0];
           }
           
+          
           const newData = {
             
             client_id: changedData.client_id !== undefined ? changedData.client_id : prevData.client_id,
@@ -182,7 +194,7 @@ function Dashboard() {
             service_id: changedData.service_id !== undefined ? changedData.service_id : prevData.service_id,
             scheduled_at: newStartDate,
             status: prevData.status,
-            notes: "none",
+            notes: changedData.notes !== undefined ? changedData.notes : prevData.notes,
             confirmation_timestamp: newStartDate,
             cancellation_reason: "none"
           }
@@ -193,10 +205,9 @@ function Dashboard() {
             })
             .catch(error =>{
               console.error("Error updating", error);
-            })   
+            })
+            
         });
-
-
       }
 
       if (deleted) {

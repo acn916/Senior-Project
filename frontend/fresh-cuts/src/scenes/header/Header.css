@@ -1,0 +1,4 @@
+.active-link a {
+    font-weight: bold;
+    color: #E95252 !important; /* Change the color to red and use !important */
+}

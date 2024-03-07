@@ -2,15 +2,15 @@ import * as React from 'react';
 import { useContext, useState, useEffect } from 'react';
 import { AppBar, Box, Toolbar, IconButton, Typography, Menu, MenuItem, Button, Avatar, Container } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Image from '../../pictures/redsalonart.png';
 import { AccountContext } from '../login/Account';
 import { AuthContext } from '../../AuthContext';
+import './Header.css';
 
 const pages = {
   Client: ['Home', 'Services', 'Staff'],
   Stylist: ['Dashboard', 'Settings', 'Request'],
-  
 };
 
 const ResponsiveAppBar = () => {
@@ -18,27 +18,25 @@ const ResponsiveAppBar = () => {
     const { logout, getSession } = useContext(AccountContext);
     const { isLoggedIn, setIsLoggedIn, userRole, setUserRole, name, setName } = useContext(AuthContext);
     const [userFullName, setUserFullName] = useState('');
-    
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         const checkAuthentication = async () => {
             try {
                 const session = await getSession();
                 if (session) {
-                    
                     setIsLoggedIn(true);
                 } else {
-                  setIsLoggedIn(false);
+                    setIsLoggedIn(false);
                 }
             } catch (error) {
                 setIsLoggedIn(false);
-                
             }
         };
 
         checkAuthentication();
-    }, [getSession]);
+    }, []);
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -56,19 +54,25 @@ const ResponsiveAppBar = () => {
         navigate('/login');
     };
 
+    const isPageActive = (page) => {
+        return location.pathname === `/${page}`;
+    };
+
     return (
         <AppBar style={{ background: 'white' }} position="static">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <Box
-                        component="img"
-                        sx={{
-                            display: { xs: 'none', md: 'flex' },
-                            mr: 1, height: 100,
-                            width: 140, marginLeft: 5
-                        }}
-                        src={Image}
-                    />
+                    <a href="/home">
+                        <Box
+                            component="img"
+                            sx={{
+                                display: { xs: 'none', md: 'flex' },
+                                mr: 1, height: 100,
+                                width: 140, marginLeft: 5
+                            }}
+                            src={Image}
+                        />
+                    </a>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                         <IconButton
@@ -101,7 +105,7 @@ const ResponsiveAppBar = () => {
                         >
                             {pages[userRole].map((page) => (
                                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">
+                                    <Typography textAlign="center" className={isPageActive(page) ? 'active-link' : ''}>
                                         <Link style={{ textDecoration: 'none', color: 'black' }} to={`/${page}`}>{page}</Link>
                                     </Typography>
                                 </MenuItem>
@@ -114,7 +118,7 @@ const ResponsiveAppBar = () => {
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                       {pages[userRole].map((page) => (
                         <MenuItem key={page} onClick={handleCloseNavMenu}>
-                            <Typography textAlign="center">
+                            <Typography textAlign="center" className={isPageActive(page) ? 'active-link' : ''}>
                                 <Link style={{ textDecoration: 'none', color: 'black' }} to={`/${page}`}>{page}</Link>
                             </Typography>
                         </MenuItem>
