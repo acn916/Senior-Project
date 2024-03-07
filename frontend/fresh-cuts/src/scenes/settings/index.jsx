@@ -86,7 +86,7 @@ function AddPopUp({ onSubmit, onClose }) {
         <Stack spacing={2} margin={2}>
           <TextField
             variant="outlined"
-            label="Service"
+            label="Name"
             value={newServiceData.name}
             onChange={handleChange("name")}
           />
@@ -148,6 +148,7 @@ function EditServicePopUp({ selectedRow, onSubmit, onClose }) {
 
   const handleSubmit = () => {
     // Submit the edited data
+    console.log(editedData);
     onSubmit(editedData);
 
     // TODO
@@ -161,8 +162,8 @@ function EditServicePopUp({ selectedRow, onSubmit, onClose }) {
           <TextField
             variant="outlined"
             label="Service"
-            value={editedData.service}
-            onChange={handleChange("service")}
+            value={editedData.name}
+            onChange={handleChange("name")}
           />
           <TextField
             variant="outlined"
@@ -256,6 +257,7 @@ const Setting = () => {
     );
 
     //console.log("Here", editedData);
+
     // Make a PUT request to update the service on the server //
     const updateServiceUrl = `https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/service/${id}`;
 
