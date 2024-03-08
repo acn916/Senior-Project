@@ -20,6 +20,7 @@ export default function Requestsummary() {
     const [formatNum, setFormatNum] = useState("");
     const [email, setEmail] = useState("");
     const [notes, setNotes] = useState("");
+    const [id_from_email, set_id_from_email] = useState(-1);
 
     //const [clientID, setClientID] = useState("");
 
@@ -29,7 +30,61 @@ export default function Requestsummary() {
         setChecked(event.target.checked);
     };
 
+    const fetchIDFromEmail = async () =>{
+        try{
+            const response = null; // api request to retrieve the id based on email.
+
+
+
+        } catch (error) {
+            console.error('Error fetching id:', error);
+        }
+
+    }
+
     const handleRequestSubmit = (event) =>{
+
+        // check if the email the client enters is already in the db.
+         // if (true) then do not create an account and add the appointment
+         // else (false) then create an account first and the create the appointment
+
+        // api call will
+
+        if(id_from_email === -1 ){
+            // create a user
+            /*
+            const newClient = [{
+                email: email,
+                first_name: firstName,
+                last_name: lastName,
+                phone: phoneNumber,
+                user_role: "Client"
+             }];
+            */
+
+            // dummy data
+            const newClient = {
+                cognito_user_id: "4234234",
+                email: "johndo3e6@email.com",
+                first_name: "John",
+                last_name: "Doe",
+                phone: "+19162222222",
+                user_role: "Staff"
+                
+            };
+
+            axios.post('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/client', newClient)
+            .then(response =>{
+                console.log(response);
+            })
+            .catch(error =>{
+                console.error('Error adding user:', error);
+            })
+
+        }
+
+
+        
 
         // dummy data. When props are passed to this then change the dummy data.
         const newAppointment = [{
@@ -45,51 +100,34 @@ export default function Requestsummary() {
 
          }];
 
-         const newClient = [{
-            email: "johndoe@email.com",
-            first_name: "John",
-            last_name: "Doe",
-            phone: "+19162222222",
-            user_role: "Client",
-         }];
-
 /*
          const newAppointment = [{
 
-            client_id: clientID,
+            client_id: id_from_email,
             staff_id: staffID,
             service_id: serviceID,
             scheduled_at: scheduled_at,
             status: "Pending",
             notes: notes,
-            confirmation_timestamp: "2024-02-20 08:00:00",
+            confirmation_timestamp: scheduled_at,
             cancellation_reason: "",
 
          }];
 
-         const newClient = [{
-            email: email,
-            first_name: firstName,
-            last_name: lastName,
-            phone: phoneNumber,
-            user_role: "Client"
-         }];
-*/
-         // check if the email the client enters is already in the db.
-         // if (true) then do not create an account and add the appointment
-         // else (false) then create an account first and the create the appointment
 
+*/  
         axios.post('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/appointment', newAppointment)
-          .then(response => {
-            console.log(response);
+            .then(response => {
+                console.log(response);
 
-            // only navigate if response was succesful
-            navigate('/confirmation')
+                // only navigate if response was succesful
+                navigate('/confirmation')
 
-          })
-          .catch(error => {
-            console.error('Error adding appointment:', error);
-          });
+            })
+            .catch(error => {
+                console.error('Error adding appointment:', error);
+            });
+     
     }
 
     function phoneFormat(input) {
