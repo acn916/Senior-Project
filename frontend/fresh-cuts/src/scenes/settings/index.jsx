@@ -2,16 +2,10 @@ import React from "react";
 import { useState, useEffect } from "react";
 
 import {
-  ListItem,
-  List,
-  ListItemText,
-  ListItemIcon,
-  Icon,
-  Divider,
+  Box,
   Container,
   Grid,
   Paper,
-  ListItemButton,
   Typography,
   Table,
   TableBody,
@@ -24,7 +18,6 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogContentText,
   DialogActions,
   Stack,
   TextField,
@@ -99,30 +92,28 @@ function AddPopUp({ onSubmit, onClose }) {
 
   return (
     <Dialog open onClose={onClose} aria-labelledby="dialog-title" fullWidth>
-      <DialogTitle id="dialog-title">Add New Service</DialogTitle>
+      <Box sx={{ backgroundColor: "#E95252", color: "white", padding: 2 }}>
+        <Typography variant="h6">Add/Remove Service</Typography>
+      </Box>
       <DialogContent>
         <Stack spacing={2} margin={2}>
           <TextField
+            fullWidth
             variant="outlined"
             label="Name"
             value={newServiceData.name}
             onChange={handleChange("name")}
           />
           <TextField
+            fullWidth
             variant="outlined"
             label="Price"
             value={newServiceData.price}
             onChange={handleChange("price")}
           />
-          {/* <TextField
-            variant="outlined"
-            label="Hour"
-            value={newServiceData.duration}
-            onChange={handleChange("duration")}
-          /> */}
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <TimeField
-              label="Duration"
+              label="Duration (hour/minute/seconds)"
               format="hh:mm:ss"
               value={dayjs(`2022-01-01T${newServiceData.duration}`, {
                 format: "HH:mm:ss",
@@ -147,11 +138,24 @@ function AddPopUp({ onSubmit, onClose }) {
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button variant="contained" onClick={handleSubmit}>
-          Submit
-        </Button>
-        <Button variant="contained" color="error" onClick={onClose}>
+        <Button
+          variant="outlined"
+          color="error"
+          onClick={onClose}
+          sx={{ borderColor: "#6B6767", color: "#6B6767", mr: 1 }}
+        >
           Cancel
+        </Button>
+        <Button
+          sx={{
+            backgroundColor: "#E95252",
+            color: "white",
+            "&:hover": { backgroundColor: "#C74444" },
+          }}
+          variant="outlined"
+          onClick={handleSubmit}
+        >
+          Submit
         </Button>
       </DialogActions>
     </Dialog>
@@ -215,7 +219,7 @@ function EditServicePopUp({ selectedRow, onSubmit, onClose }) {
           />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <TimeField
-              label="Duration"
+              label="Duration (hour/minute/seconds)"
               format="hh:mm:ss"
               value={dayjs(`2022-01-01T${editedData.duration}`, {
                 format: "HH:mm:ss",
@@ -234,11 +238,24 @@ function EditServicePopUp({ selectedRow, onSubmit, onClose }) {
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button variant="contained" onClick={handleSubmit}>
-          Submit
-        </Button>
-        <Button variant="contained" color="error" onClick={onClose}>
+        <Button
+          variant="outlined"
+          color="error"
+          onClick={onClose}
+          sx={{ borderColor: "#6B6767", color: "#6B6767", mr: 1 }}
+        >
           Cancel
+        </Button>
+        <Button
+          sx={{
+            backgroundColor: "#E95252",
+            color: "white",
+            "&:hover": { backgroundColor: "#C74444" },
+          }}
+          variant="outlined"
+          onClick={handleSubmit}
+        >
+          Submit
         </Button>
       </DialogActions>
     </Dialog>
