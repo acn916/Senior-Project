@@ -6,13 +6,14 @@ import Checkbox from '@mui/material/Checkbox';
 import ListItemText from '@mui/material/ListItemText';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import { Grid, Box, Container, Button, Typography, Card, CardContent, Paper } from '@mui/material';
 import 'react-datepicker/dist/react-datepicker.css';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Stack } from '@mui/material';
+import { Check } from '@mui/icons-material';
 
 const services = [
   'Baby Color',
@@ -39,6 +40,33 @@ const services = [
 ];*/
 
 const Booking = () => {
+  useEffect(() => {
+    const fetchStylists = async () => {
+      try {
+        const response = await fetch(`https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/get_all_staff`, { method: 'GET' });
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const data = await response.json();
+        setStylists(data); // Adjust depending on your API response structure
+      } catch (error) {
+        console.error("Could not fetch stylists: ", error);
+      }
+    };
+
+    const fetchServices = async () => {
+      try {
+        const response = await fetch(`https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/service`, { method: 'GET' });
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const data = await response.json();
+        setServicesList(data); // Store fetched services in servicesList
+      } catch (error) {
+        console.error("Could not fetch services: ", error);
+      }
+    };
+  
+    fetchStylists();
+    fetchServices();
+  }, []);
+
   const [times, setTimes] = React.useState([
     {id: 1, name: "9:00 AM"},
     {id: 2, name: "9:30 AM"},
@@ -95,20 +123,22 @@ const Booking = () => {
 
   const [staffData, setStaffData] = useState(null);
   const [startDate, setStartDate] = useState(new Date());
-  const [service, setService] = React.useState([]);
   const [addDisabled, setAddDisabled] = React.useState(true);
+  const [servicesList, setServicesList] = useState([]);
+  const [selectedServices, setSelectedServices] = useState([]);
+
   const handleServiceChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setService(typeof value === 'string' ? value.split(',') : value,);
-    console.log(!value.length)
-    setAddDisabled(!value.length)
+    const { target: { value } } = event;
+    setSelectedServices(typeof value === 'string' ? value.split(',') : value);
   };
   const [stylist, setStylist] = React.useState('');
+  const [stylists, setStylists] = useState([]);
+  const [selectedStylist, setSelectedStylist] = useState('');
+
   const handleStylistChange = (event) => {
-    setStylist(event.target.value);
+    setSelectedStylist(event.target.value);
   };
+
   const fetchData = async (staff_id) => {
     try {
       const response = await fetch(`https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/staff_availability/${staff_id}`, {
@@ -118,6 +148,7 @@ const Booking = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
+      console.log(data);
       return data; // Return the fetched data
     } catch (error) {
       console.error("Could not fetch data: ", error);
@@ -180,19 +211,19 @@ const Booking = () => {
                 <CardContent>
                   <FormControl fullWidth>
                   <InputLabel id="stylist-select-label">Select a Stylist</InputLabel>
-                <Select
-                  labelId="stylist-select-label"
-                  id="stylist-select"
-                  value={stylist}
-                  label="Stylists"
-                  onChange={handleStylistChange}
-                >
-                  <MenuItem value={1}>Kayla Nguyen</MenuItem>
-                  <MenuItem value={2}>Nicole Mata</MenuItem>
-                  <MenuItem value={3}>Victoria Saeturn</MenuItem>
-                  <MenuItem value={4}>Sil Baron</MenuItem>
-                  <MenuItem value={5}>Starrie Le</MenuItem>
-                </Select>
+                  <Select
+                    labelId="stylist-select-label"
+                    id="stylist-select"
+                    value={selectedStylist}
+                    label="Stylists"
+                    onChange={handleStylistChange}
+                  >
+                    {stylists.map((stylist) => (
+                      <MenuItem key={stylist.id} value={stylist.id}>
+                        {stylist.first_name} {stylist.last_name}
+                      </MenuItem>
+                    ))}
+                  </Select>
                   </FormControl>
                 </CardContent>
               </Card>
@@ -203,18 +234,16 @@ const Booking = () => {
                     <Select
                       labelId="service-select-label"
                       id="service-select"
-                      name="service_select"
                       multiple
-                      value={service}
-                      label="Services"
+                      value={selectedServices}
                       onChange={handleServiceChange}
                       input={<OutlinedInput label="Tag" />}
-                      renderValue={(selected) => selected.join(', ')}
+                      renderValue={(selected) => selected.map(id => servicesList.find(service => service.id === id)?.name).join(', ')}
                     >
-                      {services.map((name) => (
-                        <MenuItem key={name} value={name}>
-                          <Checkbox checked={service.indexOf(name) > -1} />
-                          <ListItemText primary={name} />
+                      {servicesList.map((service) => (
+                        <MenuItem key={service.id} value={service.id}>
+                          <Checkbox checked={selectedServices.indexOf(service.id) > -1} />
+                          <ListItemText primary={service.name} />
                         </MenuItem>
                       ))}
                     </Select>
