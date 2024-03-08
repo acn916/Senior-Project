@@ -29,12 +29,17 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
+import { TimeField } from "@mui/x-date-pickers/TimeField";
+
 import SettingsIcon from "@mui/icons-material/Settings";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import axios from "axios";
+import dayjs from "dayjs";
 
 function addService(id, name, price, description, duration) {
   return {
@@ -56,11 +61,24 @@ function AddPopUp({ onSubmit, onClose }) {
   const [error, setError] = useState("");
 
   const handleChange = (field) => (event) => {
-    const value = event.target.value;
-    setNewServiceData((prevData) => ({
-      ...prevData,
-      [field]: field === "price" ? parseFloat(value) || 0 : value,
-    }));
+    if (field === "duration") {
+      console.log(typeof event.$d);
+      const selectedDate = dayjs(event.$d);
+
+      // Format the selected time as "HH:mm:ss"
+      const formattedTime = selectedDate.format("HH:mm:ss");
+      console.log(typeof formattedTime);
+      setNewServiceData((prevData) => ({
+        ...prevData,
+        duration: formattedTime,
+      }));
+    } else {
+      const value = event.target.value;
+      setNewServiceData((prevData) => ({
+        ...prevData,
+        [field]: field === "price" ? parseFloat(value) || 0 : value,
+      }));
+    }
   };
 
   const handleSubmit = () => {
@@ -96,12 +114,23 @@ function AddPopUp({ onSubmit, onClose }) {
             value={newServiceData.price}
             onChange={handleChange("price")}
           />
-          <TextField
+          {/* <TextField
             variant="outlined"
             label="Hour"
             value={newServiceData.duration}
             onChange={handleChange("duration")}
-          />
+          /> */}
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <TimeField
+              label="Duration"
+              format="hh:mm:ss"
+              value={dayjs(`2022-01-01T${newServiceData.duration}`, {
+                format: "HH:mm:ss",
+              })}
+              onChange={handleChange("duration")}
+            />
+          </LocalizationProvider>
+
           <TextField
             variant="outlined"
             label="Description"
@@ -139,11 +168,24 @@ function EditServicePopUp({ selectedRow, onSubmit, onClose }) {
   });
 
   const handleChange = (field) => (event) => {
-    const value = event.target.value;
-    setEditedData((prevData) => ({
-      ...prevData,
-      [field]: field === "price" ? parseFloat(value) || 0 : value,
-    }));
+    if (field === "duration") {
+      console.log(typeof event.$d);
+      const selectedDate = dayjs(event.$d);
+
+      // Format the selected time as "HH:mm:ss"
+      const formattedTime = selectedDate.format("HH:mm:ss");
+      console.log(typeof formattedTime);
+      setEditedData((prevData) => ({
+        ...prevData,
+        duration: formattedTime,
+      }));
+    } else {
+      const value = event.target.value;
+      setEditedData((prevData) => ({
+        ...prevData,
+        [field]: field === "price" ? parseFloat(value) || 0 : value,
+      }));
+    }
   };
 
   const handleSubmit = () => {
@@ -171,12 +213,16 @@ function EditServicePopUp({ selectedRow, onSubmit, onClose }) {
             value={editedData.price}
             onChange={handleChange("price")}
           />
-          <TextField
-            variant="outlined"
-            label="Hour"
-            value={editedData.duration}
-            onChange={handleChange("duration")}
-          />
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <TimeField
+              label="Duration"
+              format="hh:mm:ss"
+              value={dayjs(`2022-01-01T${editedData.duration}`, {
+                format: "HH:mm:ss",
+              })}
+              onChange={handleChange("duration")}
+            />
+          </LocalizationProvider>
           <TextField
             variant="outlined"
             label="Description"
