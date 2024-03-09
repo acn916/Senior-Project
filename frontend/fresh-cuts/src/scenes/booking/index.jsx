@@ -7,12 +7,13 @@ import ListItemText from '@mui/material/ListItemText';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
 import {useState} from "react";
-import { Grid, Box, Container, Button, Typography, Card, CardContent, Paper } from '@mui/material';
+import { Grid, Container, Button, Typography, Card, CardContent} from '@mui/material';
 import 'react-datepicker/dist/react-datepicker.css';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Stack } from '@mui/material';
+import {Link} from "react-router-dom";
 
 const services = [
   'Baby Color',
@@ -31,41 +32,67 @@ const services = [
   'Men\'s Haircut'
 ];
 
-/*const rows = [
-  createData(1, 'Brazillian Blowout', 'Starrie Le'),
-  createData(2, 'Cleanup', 'Sil Baron, Nicole Mata, Starrie Le'),
-  createData(3, 'Color', 'Starrie Le'),
-  createData(4, 'Color Touch Up', 'Victoria Saeturn, Nicole Mata'),
-];*/
+// Things to update
+// - Resolve linking issues with date/time data linking
 
 const Booking = () => {
+  const [dataPackage, setDataPackage] = useState({ 
+    stylist: "N/A", 
+    date: "N/A", 
+    time: "N/A", 
+    service: "N/A"
+  });
+
+  function updatePackage(sty, dat, tim, ser) {
+    setDataPackage({
+      stylist: sty, 
+      date: dat, 
+      time: tim, 
+      service: ser
+    })
+  }
+
   const [times, setTimes] = React.useState([
-    {id: 1, name: "9:00 AM"},
-    {id: 2, name: "9:30 AM"},
-    {id: 3, name: "10:00 AM"},
-    {id: 4, name: "10:30 AM"},
-    {id: 5, name: "11:00 AM"},
-    {id: 6, name: "11:30 AM"},
-    {id: 7, name: "12:00 PM"},
-    {id: 8, name: "12:30 PM"},
-    {id: 9, name: "1:00 PM"},
-    {id: 10, name: "1:30 PM"},
-    {id: 11, name: "2:00 PM"},
-    {id: 12, name: "2:30 PM"},
-    {id: 13, name: "3:00 PM"},
-    {id: 14, name: "3:30 PM"},
-    {id: 15, name: "4:00 PM"},
-    {id: 16, name: "4:30 PM"},
-    {id: 17, name: "5:00 PM"},
-    {id: 18, name: "5:30 PM"},
-    {id: 19, name: "6:00 PM"},
-    {id: 20, name: "6:30 PM"},
-    {id: 21, name: "7:00 PM"},
-    {id: 22, name: "7:30 PM"},
+    {id: 900, name: "9:00 AM"},
+    {id: 930, name: "9:30 AM"},
+    {id: 1000, name: "10:00 AM"},
+    {id: 1030, name: "10:30 AM"},
+    {id: 1100, name: "11:00 AM"},
+    {id: 1130, name: "11:30 AM"},
+    {id: 1200, name: "12:00 PM"},
+    {id: 1230, name: "12:30 PM"},
+    {id: 1300, name: "1:00 PM"},
+    {id: 1330, name: "1:30 PM"},
+    {id: 1400, name: "2:00 PM"},
+    {id: 1430, name: "2:30 PM"},
+    {id: 1500, name: "3:00 PM"},
+    {id: 1530, name: "3:30 PM"},
+    {id: 1600, name: "4:00 PM"},
+    {id: 1630, name: "4:30 PM"},
+    {id: 1700, name: "5:00 PM"},
+    {id: 1730, name: "5:30 PM"},
+    {id: 1800, name: "6:00 PM"},
+    {id: 1830, name: "6:30 PM"},
+    {id: 1900, name: "7:00 PM"},
+    {id: 1930, name: "7:30 PM"},
   ])
-  function removeTime(id) {
-    const newTimes = times.filter((l) => l.id !== id);
-    setTimes(newTimes);
+
+  function filterTimes(freeTimes) {
+    let newTimes = times;
+    let availability = 0;
+    for(let x = 0; x < times.length; x++) { //For each possible time slot
+      availability = 0;
+      for(let y = 0; y < freeTimes.length; y++) { //For each available time
+        if(times[x].id === freeTimes[y]) { //If the current time slot is available
+          availability++; //Break since this time slot will not be removed
+          break;
+        }
+      }
+      if(availability === 0) {
+        newTimes = newTimes.filter((l) => l.id !== times[x].id);
+      }
+    }
+    setTimes(newTimes); //Assign the filtered list to our ui
   }
 
   function revealNoApt() {
@@ -78,22 +105,6 @@ const Booking = () => {
     document.getElementById("callUs").innerHTML = "";
   }
 
-  function removeTime(id) {
-    const newTimes = times.filter((l) => l.id !== id);
-    setTimes(newTimes);
-  }
-
-  function revealNoApt() {
-    document.getElementById("noApt").innerHTML = "Sorry, there are no available appointments, please try another date.";
-    document.getElementById("callUs").innerHTML = "Call to see if there are any last minute openings at (916) 451-1517";
-  }
-
-  function hideNoApt() {
-    document.getElementById("noApt").innerHTML = "";
-    document.getElementById("callUs").innerHTML = "";
-  }
-
-  const [staffData, setStaffData] = useState(null);
   const [startDate, setStartDate] = useState(new Date());
   const [service, setService] = React.useState([]);
   const [addDisabled, setAddDisabled] = React.useState(true);
@@ -102,13 +113,24 @@ const Booking = () => {
       target: { value },
     } = event;
     setService(typeof value === 'string' ? value.split(',') : value,);
-    console.log(!value.length)
+    updatePackage(dataPackage.stylist, dataPackage.date, dataPackage.time, value[0])
     setAddDisabled(!value.length)
   };
   const [stylist, setStylist] = React.useState('');
   const handleStylistChange = (event) => {
-    setStylist(event.target.value);
+    const {
+      target: { value },
+    } = event;
+    setStylist(value);
+    console.log("Value is:" + value);
+    updatePackage(value, dataPackage.date, dataPackage.time, dataPackage.service);
   };
+
+  function handleTimeClick (newTime) {
+    updatePackage(dataPackage.stylist, dataPackage.date, newTime, dataPackage.service);
+    console.log(newTime);
+  };
+
   const fetchData = async (staff_id) => {
     try {
       const response = await fetch(`https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/staff_availability/${staff_id}`, {
@@ -124,44 +146,17 @@ const Booking = () => {
       return null; // Return null or appropriate error handling
     }
   };
+
   const handleSearchClick = async () => {
-    const data = await fetchData(stylist); // Assuming `stylist` holds the staff_id you want to fetch
-    setStaffData(data); // Update the state with the fetched data
-    
-    //Reset times
-    const newTimes = [
-      {id: 1, name: "9:00 AM"},
-      {id: 2, name: "9:30 AM"},
-      {id: 3, name: "10:00 AM"},
-      {id: 4, name: "10:30 AM"},
-      {id: 5, name: "11:00 AM"},
-      {id: 6, name: "11:30 AM"},
-      {id: 7, name: "12:00 PM"},
-      {id: 8, name: "12:30 PM"},
-      {id: 9, name: "1:00 PM"},
-      {id: 10, name: "1:30 PM"},
-      {id: 11, name: "2:00 PM"},
-      {id: 12, name: "2:30 PM"},
-      {id: 13, name: "3:00 PM"},
-      {id: 14, name: "3:30 PM"},
-      {id: 15, name: "4:00 PM"},
-      {id: 16, name: "4:30 PM"},
-      {id: 17, name: "5:00 PM"},
-      {id: 18, name: "5:30 PM"},
-      {id: 19, name: "6:00 PM"},
-      {id: 20, name: "6:30 PM"},
-      {id: 21, name: "7:00 PM"},
-      {id: 22, name: "7:30 PM"},
-    ];
-    setTimes(newTimes);
+    //const data = await fetchData(stylist); // Assuming `stylist` holds the staff_id you want to fetch
+    const data = [900, 1000, 1500]; //Dummy data for testing purposes
+    filterTimes(data); // Update the state with the fetched data
 
-    //Handle interaction with the removeTime() function based on availability
-
-    if(times.length != 0) { //Reveal no available appointments if our list of times is empty
-      hideNoApt();
+    if(data.length === 0) { //Reveal no available appointments if our list of available times is empty
+      revealNoApt();
     }
     else {
-      revealNoApt();
+      hideNoApt();
     }
   };
   
@@ -187,11 +182,11 @@ const Booking = () => {
                   label="Stylists"
                   onChange={handleStylistChange}
                 >
-                  <MenuItem value={1}>Kayla Nguyen</MenuItem>
-                  <MenuItem value={2}>Nicole Mata</MenuItem>
-                  <MenuItem value={3}>Victoria Saeturn</MenuItem>
-                  <MenuItem value={4}>Sil Baron</MenuItem>
-                  <MenuItem value={5}>Starrie Le</MenuItem>
+                  <MenuItem value={"Kayla Nguyen"}>Kayla Nguyen</MenuItem>
+                  <MenuItem value={"Nicole Mata"}>Nicole Mata</MenuItem>
+                  <MenuItem value={"Victoria Saeturn"}>Victoria Saeturn</MenuItem>
+                  <MenuItem value={"Sil Baron"}>Sil Baron</MenuItem>
+                  <MenuItem value={"Starrie Le"}>Starrie Le</MenuItem>
                 </Select>
                   </FormControl>
                 </CardContent>
@@ -268,14 +263,15 @@ const Booking = () => {
                       return <Button variant='Contained'
                       id={time.id}
                       type='submit'
-                      onClick={()=> removeTime(time.id)}
                       style={{
                         backgroundColor: "#e95252",
                         width: "120px",
                         padding: "10px 10px",
                         margin: "10px",
-                      }}>
-                      <Typography color='white'>{time.name}</Typography>
+                      }}
+                      >
+                      
+                      <Link  style={{textDecoration: "none", color: "white"}} to='/Summary' state={dataPackage} >{time.name}</Link>
                     </Button>
                     })
                   }
@@ -284,8 +280,8 @@ const Booking = () => {
               <script>
               document.getElementById("p1").innerHTML = "New text!";
               </script>
-              <h1 id="noApt" align="center" style={{width: "70%", marginTop: 0}}></h1><br/>
-              <p id="callUs" align="center" style={{width: "70%", marginTop: 0}}></p>
+              <h1 id="noApt" align="center" style={{width: "70%", marginTop: 0}}> </h1><br/>
+              <p id="callUs" align="center" style={{width: "70%", marginTop: 0}}> </p>
             </Grid>
           </Stack>
         </Grid>

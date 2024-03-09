@@ -3,6 +3,7 @@ import {
     Grid, Paper, TextField, FormControlLabel, FormGroup, Checkbox, Button, Typography, List, ListItem, Divider, ListItemText, ListItemAvatar, Avatar, Container
     } from '@mui/material';
 import { Link } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 export default function Requestsummary() {
     const paperStyle={ maxHeight:'80vh', overflowY:'auto', width:'90%', maxWidth:'350px', margin:"30px auto"}
@@ -13,6 +14,10 @@ export default function Requestsummary() {
         setChecked(event.target.checked);
     };
 
+    const location = useLocation();
+    const {stylist, date, time, service} = location.state;
+
+    //const price = getPrice(service); //Will need a fetch request
 
     return (
         <>
@@ -71,7 +76,7 @@ export default function Requestsummary() {
                                         padding: "12px 36px",
                                         margin: "5px 10px"
                                     }}>
-                                    <Typography color='white'>Back</Typography>
+                                    <Link style={{textDecoration: "none", color: "white"}} to={'/Booking'}>Back</Link>
                             </Button>
 
                             <Button variant='Contained'
@@ -103,10 +108,10 @@ export default function Requestsummary() {
                     
                     <List container="true">
                         <ListItem>
-                            <ListItemText>Date</ListItemText>
+                            <ListItemText>{date}</ListItemText>
                             <ListItemText>
                                 <Typography align="right">
-                                    Time
+                                    {time}
                                 </Typography>
                             </ListItemText>
                         </ListItem>
@@ -115,10 +120,10 @@ export default function Requestsummary() {
                         
                         <ListItem>
                             <ListItemAvatar><Avatar></Avatar></ListItemAvatar>
-                            <ListItemText>Stylist</ListItemText>
+                            <ListItemText>{stylist}</ListItemText>
                             <ListItemText>
                                 <Typography align="right">
-                                    Service Price
+                                    {service}
                                 </Typography>
                             </ListItemText>
                         </ListItem>
