@@ -31,6 +31,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import AddIcon from "@mui/icons-material/Add";
+
 import axios from "axios";
 import dayjs from "dayjs";
 
@@ -393,10 +395,19 @@ const Setting = () => {
             }}
           >
             <IconButton
-              sx={{ marginLeft: "auto" }}
+              sx={{
+                marginLeft: "auto",
+                color: "red", // Set the icon color to red
+                backgroundColor: "white", // Set the background color to white
+                border: "2px solid red", // Red border around the button
+                borderRadius: "10px", // Squircle-like border radius
+                padding: "2px",
+                // Adjust the size and padding as needed
+              }}
+              aria-label="add"
               onClick={handleAddServiceClick}
             >
-              <AddCircleOutlineIcon />
+              <AddIcon />
             </IconButton>
           </Typography>
           <TableContainer
