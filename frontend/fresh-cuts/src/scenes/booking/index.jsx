@@ -32,36 +32,26 @@ const services = [
   'Men\'s Haircut'
 ];
 
-//Things to update
-// - Save stylist, date, and services locally in variables when clicking search
-// - Send the time, and the bundled local variables via a .js script when time is clicked
-// - Display those details on the request page
-
-let stylist = "";
-let date = "";
-let time = "";
-let pickedServices = [];
-
-function getData() {
-  let allData = [stylist, date, time]; //Create the data packet for the request summary page
-  for(let i = 0; i < pickedServices.length; i++) {
-    allData.push(pickedServices[i]);
-  }
-  return allData;
-}
-function setData(newStylist, newDate, newServices) {
-  stylist = newStylist;
-  date = newDate;
-  pickedServices = newServices;
-}
-function getTime() {
-  return time;
-}
-function setTime(newTime) {
-  time = newTime;
-}
+// Things to update
+// - Resolve linking issues with date/time data linking
 
 const Booking = () => {
+  const [dataPackage, setDataPackage] = useState({ 
+    stylist: "N/A", 
+    date: "N/A", 
+    time: "N/A", 
+    service: "N/A"
+  });
+
+  function updatePackage(sty, dat, tim, ser) {
+    setDataPackage({
+      stylist: sty, 
+      date: dat, 
+      time: tim, 
+      service: ser
+    })
+  }
+
   const [times, setTimes] = React.useState([
     {id: 900, name: "9:00 AM"},
     {id: 930, name: "9:30 AM"},
@@ -87,11 +77,6 @@ const Booking = () => {
     {id: 1930, name: "7:30 PM"},
   ])
 
-  function removeTime(id) {
-    const newTimes = times.filter((l) => l.id !== id);
-    setTimes(newTimes);
-  }
-
   function filterTimes(freeTimes) {
     let newTimes = times;
     let availability = 0;
@@ -99,7 +84,7 @@ const Booking = () => {
       availability = 0;
       for(let y = 0; y < freeTimes.length; y++) { //For each available time
         if(times[x].id === freeTimes[y]) { //If the current time slot is available
-          availability++; //Break since it will not be removed
+          availability++; //Break since this time slot will not be removed
           break;
         }
       }
@@ -107,7 +92,7 @@ const Booking = () => {
         newTimes = newTimes.filter((l) => l.id !== times[x].id);
       }
     }
-    setTimes(newTimes);
+    setTimes(newTimes); //Assign the filtered list to our ui
   }
 
   function revealNoApt() {
@@ -128,12 +113,22 @@ const Booking = () => {
       target: { value },
     } = event;
     setService(typeof value === 'string' ? value.split(',') : value,);
-    console.log(!value.length)
+    updatePackage(dataPackage.stylist, dataPackage.date, dataPackage.time, value[0])
     setAddDisabled(!value.length)
   };
   const [stylist, setStylist] = React.useState('');
   const handleStylistChange = (event) => {
-    setStylist(event.target.value);
+    const {
+      target: { value },
+    } = event;
+    setStylist(value);
+    console.log("Value is:" + value);
+    updatePackage(value, dataPackage.date, dataPackage.time, dataPackage.service);
+  };
+
+  function handleTimeClick (newTime) {
+    updatePackage(dataPackage.stylist, dataPackage.date, newTime, dataPackage.service);
+    console.log(newTime);
   };
 
   const fetchData = async (staff_id) => {
@@ -153,31 +148,6 @@ const Booking = () => {
   };
 
   const handleSearchClick = async () => {
-    const newTimes = [ //Reset times
-      {id: 900, name: "9:00 AM"},
-      {id: 930, name: "9:30 AM"},
-      {id: 1000, name: "10:00 AM"},
-      {id: 1030, name: "10:30 AM"},
-      {id: 1100, name: "11:00 AM"},
-      {id: 1130, name: "11:30 AM"},
-      {id: 1200, name: "12:00 PM"},
-      {id: 1230, name: "12:30 PM"},
-      {id: 1300, name: "1:00 PM"},
-      {id: 1330, name: "1:30 PM"},
-      {id: 1400, name: "2:00 PM"},
-      {id: 1430, name: "2:30 PM"},
-      {id: 1500, name: "3:00 PM"},
-      {id: 1530, name: "3:30 PM"},
-      {id: 1600, name: "4:00 PM"},
-      {id: 1630, name: "4:30 PM"},
-      {id: 1700, name: "5:00 PM"},
-      {id: 1730, name: "5:30 PM"},
-      {id: 1800, name: "6:00 PM"},
-      {id: 1830, name: "6:30 PM"},
-      {id: 1900, name: "7:00 PM"},
-      {id: 1930, name: "7:30 PM"},
-    ];
-
     //const data = await fetchData(stylist); // Assuming `stylist` holds the staff_id you want to fetch
     const data = [900, 1000, 1500]; //Dummy data for testing purposes
     filterTimes(data); // Update the state with the fetched data
@@ -188,7 +158,6 @@ const Booking = () => {
     else {
       hideNoApt();
     }
-    setData({stylist}, {date}, {service})
   };
   
   return (
@@ -213,11 +182,11 @@ const Booking = () => {
                   label="Stylists"
                   onChange={handleStylistChange}
                 >
-                  <MenuItem value={1}>Kayla Nguyen</MenuItem>
-                  <MenuItem value={2}>Nicole Mata</MenuItem>
-                  <MenuItem value={3}>Victoria Saeturn</MenuItem>
-                  <MenuItem value={4}>Sil Baron</MenuItem>
-                  <MenuItem value={5}>Starrie Le</MenuItem>
+                  <MenuItem value={"Kayla Nguyen"}>Kayla Nguyen</MenuItem>
+                  <MenuItem value={"Nicole Mata"}>Nicole Mata</MenuItem>
+                  <MenuItem value={"Victoria Saeturn"}>Victoria Saeturn</MenuItem>
+                  <MenuItem value={"Sil Baron"}>Sil Baron</MenuItem>
+                  <MenuItem value={"Starrie Le"}>Starrie Le</MenuItem>
                 </Select>
                   </FormControl>
                 </CardContent>
@@ -300,8 +269,9 @@ const Booking = () => {
                         padding: "10px 10px",
                         margin: "10px",
                       }}
-                      onClick={setTime(time.id)}>
-                      <Link style={{textDecoration: "none", color: "white"}} to={'/Summary'}>{time.name}</Link>
+                      >
+                      
+                      <Link  style={{textDecoration: "none", color: "white"}} to='/Summary' state={dataPackage} >{time.name}</Link>
                     </Button>
                     })
                   }

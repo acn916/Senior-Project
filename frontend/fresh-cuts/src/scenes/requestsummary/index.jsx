@@ -2,41 +2,22 @@ import React, {useState} from 'react'
 import {
     Grid, Paper, TextField, FormControlLabel, FormGroup, Checkbox, Button, Typography, List, ListItem, Divider, ListItemText, ListItemAvatar, Avatar, Container
     } from '@mui/material';
-import getData from "../booking/index.jsx";
-import getTime from "../booking/index.jsx";
 import { Link } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 export default function Requestsummary() {
     const paperStyle={ maxHeight:'80vh', overflowY:'auto', width:'90%', maxWidth:'350px', margin:"30px auto"}
     const reqStyle={display: 'flex', flexDirection: 'column', width:'90%', maxWidth:'450px', padding:20, margin:"30px auto"}
     const [isChecked, setChecked] = useState(false);
-    //const 
     
     const handleCheckboxChange = (event) => {
         setChecked(event.target.checked);
     };
 
-    let stylist = "";
-    let date = "";
-    let time = "";
-    let pickedServices = [];
-    let dataPackage = getData();
-    for(let i = 0; i < dataPackage.length; i++) {
-        if(i === 0) {
-            stylist = dataPackage[0];
-        }
-        if(i === 1) {
-            date = dataPackage[1];
-        }
-        if(i === 2) {
-            time = dataPackage[2];
-        }
-        else {
-            pickedServices.push(dataPackage[i])
-        }
-    }
-    
-    //Include all of this in an onstartup function, then update the text fields with the new values
+    const location = useLocation();
+    const {stylist, date, time, service} = location.state;
+
+    //const price = getPrice(service); //Will need a fetch request
 
     return (
         <>
@@ -95,7 +76,7 @@ export default function Requestsummary() {
                                         padding: "12px 36px",
                                         margin: "5px 10px"
                                     }}>
-                                    <Typography color='white'>Back</Typography>
+                                    <Link style={{textDecoration: "none", color: "white"}} to={'/Booking'}>Back</Link>
                             </Button>
 
                             <Button variant='Contained'
@@ -127,10 +108,10 @@ export default function Requestsummary() {
                     
                     <List container="true">
                         <ListItem>
-                            <ListItemText>Date</ListItemText>
+                            <ListItemText>{date}</ListItemText>
                             <ListItemText>
                                 <Typography align="right">
-                                    Time
+                                    {time}
                                 </Typography>
                             </ListItemText>
                         </ListItem>
@@ -139,10 +120,10 @@ export default function Requestsummary() {
                         
                         <ListItem>
                             <ListItemAvatar><Avatar></Avatar></ListItemAvatar>
-                            <ListItemText>Stylist</ListItemText>
+                            <ListItemText>{stylist}</ListItemText>
                             <ListItemText>
                                 <Typography align="right">
-                                    Service Price
+                                    {service}
                                 </Typography>
                             </ListItemText>
                         </ListItem>
