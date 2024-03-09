@@ -6,39 +6,43 @@ import Checkbox from '@mui/material/Checkbox';
 import ListItemText from '@mui/material/ListItemText';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import { Grid, Box, Container, Button, Typography, Card, CardContent, Paper } from '@mui/material';
 import 'react-datepicker/dist/react-datepicker.css';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Stack } from '@mui/material';
-
-const services = [
-  'Baby Color',
-  'Bang Trim',
-  'Base Bump',
-  'Bleach Wash',
-  'Brazilian Blowout',
-  'Clean Up',
-  'Color',
-  'Color Touch Up',
-  'Color & Cut',
-  'Color Correction',
-  'Extension Fixed',
-  'Extension Installation',
-  'Highlights',
-  'Men\'s Haircut'
-];
-
-/*const rows = [
-  createData(1, 'Brazillian Blowout', 'Starrie Le'),
-  createData(2, 'Cleanup', 'Sil Baron, Nicole Mata, Starrie Le'),
-  createData(3, 'Color', 'Starrie Le'),
-  createData(4, 'Color Touch Up', 'Victoria Saeturn, Nicole Mata'),
-];*/
+import { Check } from '@mui/icons-material';
 
 const Booking = () => {
+  useEffect(() => {
+    const fetchStylists = async () => {
+      try {
+        const response = await fetch(`https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/get_all_staff`, { method: 'GET' });
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const data = await response.json();
+        setStylists(data);
+      } catch (error) {
+        console.error("Could not fetch stylists: ", error);
+      }
+    };
+
+    const fetchServices = async () => {
+      try {
+        const response = await fetch(`https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/service`, { method: 'GET' });
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const data = await response.json();
+        setServicesList(data);
+      } catch (error) {
+        console.error("Could not fetch services: ", error);
+      }
+    };
+
+    fetchStylists();
+    fetchServices();
+  }, []);
+
   const [times, setTimes] = React.useState([
     {id: 1, name: "9:00 AM"},
     {id: 2, name: "9:30 AM"},
@@ -63,6 +67,7 @@ const Booking = () => {
     {id: 21, name: "7:00 PM"},
     {id: 22, name: "7:30 PM"},
   ])
+
   function removeTime(id) {
     const newTimes = times.filter((l) => l.id !== id);
     setTimes(newTimes);
@@ -95,20 +100,23 @@ const Booking = () => {
 
   const [staffData, setStaffData] = useState(null);
   const [startDate, setStartDate] = useState(new Date());
-  const [service, setService] = React.useState([]);
   const [addDisabled, setAddDisabled] = React.useState(true);
+  const [servicesList, setServicesList] = useState([]);
+  const [selectedServices, setSelectedServices] = useState([]);
+
   const handleServiceChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setService(typeof value === 'string' ? value.split(',') : value,);
-    console.log(!value.length)
-    setAddDisabled(!value.length)
+    const { target: { value } } = event;
+    setSelectedServices(typeof value === 'string' ? value.split(',') : value);
   };
   const [stylist, setStylist] = React.useState('');
+  const [stylists, setStylists] = useState([]);
+  const [selectedStylist, setSelectedStylist] = useState('');
+  const [selectedStylists, setSelectedStylists] = useState([]);
+
   const handleStylistChange = (event) => {
-    setStylist(event.target.value);
+    setSelectedStylist(event.target.value);
   };
+
   const fetchData = async (staff_id) => {
     try {
       const response = await fetch(`https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/staff_availability/${staff_id}`, {
@@ -118,16 +126,44 @@ const Booking = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
+      console.log(data);
       return data; // Return the fetched data
     } catch (error) {
       console.error("Could not fetch data: ", error);
       return null; // Return null or appropriate error handling
     }
   };
+
   const handleSearchClick = async () => {
-    const data = await fetchData(stylist); // Assuming `stylist` holds the staff_id you want to fetch
-    setStaffData(data); // Update the state with the fetched data
-    
+    const requestData = {
+      date: startDate.toISOString().slice(0, 10),
+      services: selectedServices.map(service => ({
+        serviceID: service,
+        stylistIDs: [selectedStylist]
+      }))
+    };
+
+    try {
+      const response = await fetch('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/schedule', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          body: JSON.stringify(requestData) // Stringify the requestData object and set it as the value of the `body` field
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.error("Could not submit booking/search data: ", error);
+    }
+
     //Reset times
     const newTimes = [
       {id: 1, name: "9:00 AM"},
@@ -164,9 +200,9 @@ const Booking = () => {
       revealNoApt();
     }
   };
-  
+
   return (
-    <Container maxWidth="100%">
+      <Container maxWidth="100%">
         <Grid container spacing={2} style={{minHeight: "500px"}}>
           <Grid item xs={12}>
             <Grid container spacing={2}>
@@ -179,20 +215,20 @@ const Booking = () => {
               <Card style={{ height: "30%", width: "10%", minWidth: "180px", marginLeft: 20, marginTop: 20, backgroundColor: "#f2f2f2", display: 'flex', flexDirection: 'column' }}>
                 <CardContent>
                   <FormControl fullWidth>
-                  <InputLabel id="stylist-select-label">Select a Stylist</InputLabel>
-                <Select
-                  labelId="stylist-select-label"
-                  id="stylist-select"
-                  value={stylist}
-                  label="Stylists"
-                  onChange={handleStylistChange}
-                >
-                  <MenuItem value={1}>Kayla Nguyen</MenuItem>
-                  <MenuItem value={2}>Nicole Mata</MenuItem>
-                  <MenuItem value={3}>Victoria Saeturn</MenuItem>
-                  <MenuItem value={4}>Sil Baron</MenuItem>
-                  <MenuItem value={5}>Starrie Le</MenuItem>
-                </Select>
+                    <InputLabel id="stylist-select-label">Select a Stylist</InputLabel>
+                    <Select
+                        labelId="stylist-select-label"
+                        id="stylist-select"
+                        value={selectedStylist}
+                        label="Stylists"
+                        onChange={handleStylistChange}
+                    >
+                      {stylists.map((stylist) => (
+                          <MenuItem key={stylist.id} value={stylist.id}>
+                            {stylist.first_name} {stylist.last_name}
+                          </MenuItem>
+                      ))}
+                    </Select>
                   </FormControl>
                 </CardContent>
               </Card>
@@ -201,21 +237,19 @@ const Booking = () => {
                   <FormControl fullWidth>
                     <InputLabel id="service-select-label">Select One or More Services</InputLabel>
                     <Select
-                      labelId="service-select-label"
-                      id="service-select"
-                      name="service_select"
-                      multiple
-                      value={service}
-                      label="Services"
-                      onChange={handleServiceChange}
-                      input={<OutlinedInput label="Tag" />}
-                      renderValue={(selected) => selected.join(', ')}
+                        labelId="service-select-label"
+                        id="service-select"
+                        multiple
+                        value={selectedServices}
+                        onChange={handleServiceChange}
+                        input={<OutlinedInput label="Tag" />}
+                        renderValue={(selected) => selected.map(id => servicesList.find(service => service.id === id)?.name).join(', ')}
                     >
-                      {services.map((name) => (
-                        <MenuItem key={name} value={name}>
-                          <Checkbox checked={service.indexOf(name) > -1} />
-                          <ListItemText primary={name} />
-                        </MenuItem>
+                      {servicesList.map((service) => (
+                          <MenuItem key={service.id} value={service.id}>
+                            <Checkbox checked={selectedServices.indexOf(service.id) > -1} />
+                            <ListItemText primary={service.name} />
+                          </MenuItem>
                       ))}
                     </Select>
                   </FormControl>
@@ -224,18 +258,18 @@ const Booking = () => {
               <Card style={{ height: "30%", width: "10%", minWidth:"146px", padding: 17, marginLeft: 20, marginTop: 20, backgroundColor: "#f2f2f2", display: 'flex', flexDirection: 'column' }}>
                 <CardContent>
                   <FormControl fullWidth>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      value={startDate}
-                      onChange={(date) => setStartDate(date)}
-                      renderInput={(props) => (
-                        <input
-                          type="date"
-                        />
-                      )}
-                    />
-                  </LocalizationProvider>
-                    
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DatePicker
+                          value={startDate}
+                          onChange={(date) => setStartDate(date)}
+                          renderInput={(props) => (
+                              <input
+                                  type="date"
+                              />
+                          )}
+                      />
+                    </LocalizationProvider>
+
                   </FormControl>
                 </CardContent>
               </Card>
@@ -243,11 +277,11 @@ const Booking = () => {
                 <CardContent>
                   <FormControl fullWidth>
                     <Button variant='Contained'
-                      style={{
-                          backgroundColor: "#e95252",
-                          padding: "16px 24px"
-                      }}
-                      onClick={handleSearchClick}>
+                            style={{
+                              backgroundColor: "#e95252",
+                              padding: "16px 24px"
+                            }}
+                            onClick={handleSearchClick}>
                       <Typography color='white'>Search</Typography>
                     </Button>
                   </FormControl>
@@ -266,31 +300,31 @@ const Booking = () => {
                   {
                     times.map((time) => {
                       return <Button variant='Contained'
-                      id={time.id}
-                      type='submit'
-                      onClick={()=> removeTime(time.id)}
-                      style={{
-                        backgroundColor: "#e95252",
-                        width: "120px",
-                        padding: "10px 10px",
-                        margin: "10px",
-                      }}>
-                      <Typography color='white'>{time.name}</Typography>
-                    </Button>
+                                     id={time.id}
+                                     type='submit'
+                                     onClick={()=> removeTime(time.id)}
+                                     style={{
+                                       backgroundColor: "#e95252",
+                                       width: "120px",
+                                       padding: "10px 10px",
+                                       margin: "10px",
+                                     }}>
+                        <Typography color='white'>{time.name}</Typography>
+                      </Button>
                     })
                   }
                 </ul>
               </div>
               <script>
-              document.getElementById("p1").innerHTML = "New text!";
+                document.getElementById("p1").innerHTML = "New text!";
               </script>
               <h1 id="noApt" align="center" style={{width: "70%", marginTop: 0}}></h1><br/>
               <p id="callUs" align="center" style={{width: "70%", marginTop: 0}}></p>
             </Grid>
           </Stack>
         </Grid>
-        
-    </Container>
+
+      </Container>
   );
 }
 export default Booking;
