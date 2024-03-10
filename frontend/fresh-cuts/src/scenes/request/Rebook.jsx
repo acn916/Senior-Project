@@ -30,6 +30,12 @@ const Rebook = ({id, passedNames, service_id, scheduled_at, handleRebook}) => {
   const [date, setDate] = useState(dayjs(scheduled_at));
   const [services, setServices] = useState([]);
 
+  const [selectedTime, setSelectedTime] = useState(null);
+
+  const handleTimeChange = (newTime) => {
+    setSelectedTime(newTime);
+  };
+
   useEffect(() => { //
     axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/service')
       .then(response => {
@@ -165,13 +171,13 @@ const Rebook = ({id, passedNames, service_id, scheduled_at, handleRebook}) => {
                 <Box>
                   <Typography> Date </Typography>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      value={date}
-                      disablePast
-                      onChange={(newDate) => setDate(newDate)}
-                      slotProps={{ textField: { fullWidth: true } }}
-                      sx={{backgroundColor: "#F2F2F2", boxShadow: 2}}
-                    />
+                      <DatePicker
+                        value={date}
+                        disablePast
+                        onChange={(newDate) => setDate(newDate)}
+                        renderInput={(props) => <TextField {...props} fullWidth />}
+                        sx={{backgroundColor: "#F2F2F2", boxShadow: 2}}
+                      />
                   </LocalizationProvider>
                 </Box>
               </Grid>
@@ -180,12 +186,16 @@ const Rebook = ({id, passedNames, service_id, scheduled_at, handleRebook}) => {
                 <Box>
                   <Typography> Time </Typography>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <TimePicker
-                      value={time}
-                      onChange={(newTime) => setTime(newTime)}
-                      slotProps={{ textField: { fullWidth: true } }}
-                      sx={{backgroundColor: "#F2F2F2", boxShadow: 2}}
-                    />
+                      <TimePicker
+                        value={selectedTime}
+                        onChange={handleTimeChange}
+                        renderInput={(props) => <TextField {...props} fullWidth/>}
+                        inputFormat="HH:MM"
+                        // Example of custom styles
+                        style={{ marginTop: "20px", width: "200px"}}
+                        textFieldStyle={{ width: "100%" }} // Custom style for the TextField
+                        ampm
+                      />
                   </LocalizationProvider>
                 </Box>
               </Grid>
