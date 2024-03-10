@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Grid,
   Box,
   List,
   ListItem,
@@ -11,10 +10,12 @@ import {
   ThemeProvider,
   createTheme,
   CssBaseline,
+  useMediaQuery,
 } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Setting from "../settings/index";
 import StylistEditor from './StylistEditor';
+import ScrollableRow from './components/ScrollableRow';
 
 const SettingsPage = () => {
   const [activePage, setActivePage] = useState("");
@@ -29,15 +30,65 @@ const SettingsPage = () => {
     },
   });
 
+  const matches = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const buttonsText = ['Add/Remove Stylist', 'Add/Remove Service'];
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Grid container sx={{ height: "100vh" }}>
-        <Grid item xs={2}>
+      {matches ? (
+        <>
+          <ScrollableRow
+            items={buttonsText}
+            onItemClick={(item, index) => {
+              console.log(`Item clicked: ${item}`);
+              // Example: Updating the activePage state based on the clicked item
+              if (item === 'Add/Remove Stylist') {
+                setActivePage('stylist');
+              } else if (item === 'Add/Remove Service') {
+                setActivePage('service');
+              }
+            }}
+          />
           <Box
             sx={{
-              width: "100%",
-              height: "100%",
+              bgcolor: "white",
+              p: 3,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+            }}
+          >
+            {activePage === "stylist" && <StylistEditor />}
+            {activePage === "service" && (
+              <>
+                <Typography variant="h4" gutterBottom fontWeight={700}>
+                  Add/Remove Service
+                </Typography>
+                <Box sx={{ height: "16px" }} />
+                <Setting />
+              </>
+            )}
+            {activePage === "" && (
+              <Typography variant="h4" gutterBottom fontWeight={700}>
+                Select a setting to edit
+              </Typography>
+            )}
+          </Box>
+        </>
+      ) : (
+        <Box
+          sx={{
+            display: 'flex',
+            height: '100vh',
+          }}
+        >
+          <Box
+            sx={{
+              width: '20%',
+              minWidth: 190,
+              height: '100%',
               pt: 3,
               bgcolor: "#FAFBFF",
             }}
@@ -51,7 +102,7 @@ const SettingsPage = () => {
                   primary={
                     <Typography
                       component="span"
-                      variant="subtitle1" // Changed to subtitle1 to match the default primary text size
+                      variant="subtitle1"
                       sx={{
                         display: "block",
                         color: "#E95252",
@@ -76,18 +127,17 @@ const SettingsPage = () => {
                   }
                 />
               </ListItem>
-              {/* Clickable Text for different settings pages */}
               <ListItemButton
                 selected={activePage === "stylist"}
                 sx={{
                   ".MuiTouchRipple-root": {
-                    display: "none", // Disables the ripple effect
+                    display: "none",
                   },
                 }}
                 onClick={() => handleTextClick("stylist")}
               >
                 <ListItemText
-                  primary="Add/Remove Stylist"
+                  primary={buttonsText[0]}
                   sx={{ textAlign: "center", color: "#052B74" }}
                 />
               </ListItemButton>
@@ -95,22 +145,21 @@ const SettingsPage = () => {
                 selected={activePage === "service"}
                 sx={{
                   ".MuiTouchRipple-root": {
-                    display: "none", // Disables the ripple effect
+                    display: "none",
                   },
                 }}
                 onClick={() => handleTextClick("service")}
               >
                 <ListItemText
-                  primary="Add/Remove Service"
+                  primary={buttonsText[1]}
                   sx={{ textAlign: "center", color: "#052B74" }}
                 />
               </ListItemButton>
             </List>
           </Box>
-        </Grid>
-        <Grid item xs={10}>
           <Box
             sx={{
+              width: '80%',
               bgcolor: "white",
               p: 3,
               display: "flex",
@@ -118,10 +167,7 @@ const SettingsPage = () => {
               alignItems: "flex-start",
             }}
           >
-            {/* Conditional rendering of the main content area */}
-            {activePage === "stylist" && (
-              <StylistEditor />
-            )}
+            {activePage === "stylist" && <StylistEditor />}
             {activePage === "service" && (
               <>
                 <Typography variant="h4" gutterBottom fontWeight={700}>
@@ -137,8 +183,8 @@ const SettingsPage = () => {
               </Typography>
             )}
           </Box>
-        </Grid>
-      </Grid>
+        </Box>
+      )}
     </ThemeProvider>
   );
 };

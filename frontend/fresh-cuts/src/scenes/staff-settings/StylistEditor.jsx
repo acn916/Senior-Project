@@ -125,12 +125,9 @@ const StylistEditor = () => {
     return (
         <>
             <Typography
-
                 variant="h4" gutterBottom fontWeight={700}>
                 Add/Remove Stylist
-            </Typography
-
-            >
+            </Typography>
             <Box sx={{ height: "16px" }} />
             <Box
                 sx={{
@@ -143,7 +140,9 @@ const StylistEditor = () => {
             >
                 <Box
                     sx={{
-                        width: 697,
+                        width: '100%',
+                        minWidth: 400,
+                        maxWidth: 697,
                         display: "flex",
                         justifyContent: "flex-end",
                         marginBottom: 1,
@@ -175,7 +174,9 @@ const StylistEditor = () => {
                 ) : (
                     <List
                         sx={{
-                            width: 697,
+                            width: '100%',
+                            minWidth: 400,
+                            maxWidth: 697,
                             maxHeight: "637px",
                             overflow: "auto",
                             border: 1,
