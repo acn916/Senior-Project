@@ -22,7 +22,10 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
-import { TimeField } from "@mui/x-date-pickers/TimeField";
+//import { TimeField } from "@mui/x-date-pickers/TimeField";
+
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+
 
 import SettingsIcon from "@mui/icons-material/Settings";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
@@ -46,6 +49,8 @@ function addService(id, name, price, description, duration) {
   };
 }
 
+// **********Add popup start here
+
 function AddPopUp({ onSubmit, onClose }) {
   const [newServiceData, setNewServiceData] = useState({
     name: "",
@@ -60,9 +65,13 @@ function AddPopUp({ onSubmit, onClose }) {
       console.log(typeof event.$d);
       const selectedDate = dayjs(event.$d);
 
+
+      
+
       // Format the selected time as "HH:mm:ss"
       const formattedTime = selectedDate.format("HH:mm:ss");
-      console.log(typeof formattedTime);
+      console.log(formattedTime)
+     //console.log(typeof formattedTime);
       setNewServiceData((prevData) => ({
         ...prevData,
         duration: formattedTime,
@@ -92,6 +101,24 @@ function AddPopUp({ onSubmit, onClose }) {
     setError("");
   };
 
+  const [selectedTime, setSelectedTime] = useState(dayjs("HH:mm:00"));
+
+  const handleTimeChange = (newTime) => {
+
+    const formattedTime = newTime.format("HH:mm:00");
+      console.log("formattedTime:",formattedTime)
+     //console.log(typeof formattedTime);
+      setNewServiceData((prevData) => ({
+        ...prevData,
+        duration: formattedTime,
+      }));
+
+    //console.log(dayjs(newTime).format("HH:mm:ss"));
+    setSelectedTime(newTime);
+   
+  
+  };
+
   return (
     <Dialog open onClose={onClose} aria-labelledby="dialog-title" fullWidth>
       <Box sx={{ backgroundColor: "#E95252", color: "white", padding: 2 }}>
@@ -114,13 +141,13 @@ function AddPopUp({ onSubmit, onClose }) {
             onChange={handleChange("price")}
           />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <TimeField
-              label="Duration (hour/minute/seconds)"
-              format="hh:mm:ss"
-              value={dayjs(`2022-01-01T${newServiceData.duration}`, {
-                format: "HH:mm:ss",
-              })}
-              onChange={handleChange("duration")}
+            <TimePicker
+                value={dayjs(selectedTime, 'HH:mm:ss').toDate()} 
+                onChange={handleTimeChange}
+                renderInput={(props) => <TextField {...props} fullWidth/>}
+                style={{ marginTop: "20px", width: "200px"}}
+                textFieldStyle={{ width: "100%" }} 
+                ampm={false} // Set ampm to false to display only hours and minutes
             />
           </LocalizationProvider>
 
@@ -194,6 +221,24 @@ function EditServicePopUp({ selectedRow, onSubmit, onClose }) {
     }
   };
 
+  const [selectedTime, setSelectedTime] = useState(dayjs("HH:mm:00"));
+
+  const handleTimeChange = (newTime) => {
+
+    const formattedTime = newTime.format("HH:mm:00");
+      console.log("formattedTime:",formattedTime)
+     //console.log(typeof formattedTime);
+      setEditedData((prevData) => ({
+        ...prevData,
+        duration: formattedTime,
+      }));
+
+    //console.log(dayjs(newTime).format("HH:mm:ss"));
+    setSelectedTime(newTime);
+   
+  
+  };
+
   const handleSubmit = () => {
     // Submit the edited data
     console.log(editedData);
@@ -220,6 +265,16 @@ function EditServicePopUp({ selectedRow, onSubmit, onClose }) {
             onChange={handleChange("price")}
           />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <TimePicker
+              value={dayjs(editedData.duration, 'HH:mm:ss').toDate()} 
+              onChange={handleTimeChange}
+              renderInput={(props) => <TextField {...props} fullWidth/>}
+              style={{ marginTop: "20px", width: "200px"}}
+              textFieldStyle={{ width: "100%" }} 
+              ampm={false} // Set ampm to false to display only hours and minutes
+          />
+
+            {/*
             <TimeField
               label="Duration (hour/minute/seconds)"
               format="hh:mm:ss"
@@ -228,6 +283,7 @@ function EditServicePopUp({ selectedRow, onSubmit, onClose }) {
               })}
               onChange={handleChange("duration")}
             />
+            */}
           </LocalizationProvider>
           <TextField
             variant="outlined"
