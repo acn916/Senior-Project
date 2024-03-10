@@ -19,7 +19,6 @@ const Request = () => {
   const [services, setServices] = useState([]); 
   const [clients, setClients] = useState([]);  
   const [loading, setLoading] = useState(true);
-  const [names, setNames] = useState([]);
 
   const fetchAppointments = async () =>  {
     try{
@@ -109,9 +108,6 @@ const Request = () => {
     setRequests(values => {
       return values.filter(request => request.id !== id)
     })
-    setNames(values => {
-      return values.filter(name => name.id !== id)
-    })
   }
 
   //updates the service id and date. Name is also updated (needs to be fixed to permanently update)
@@ -155,7 +151,6 @@ const Request = () => {
                 <TableCell component="th" scope="row"> {request.confirmation_timestamp}</TableCell>
 
                 <TableCell align="left" sx={{color: "#2F65DD"}}>
-
                   {
                     clients.map((client) => request.client_id == client.id ? (
                       <React.Fragment key={request.id}>
@@ -165,7 +160,6 @@ const Request = () => {
                       null
                     ))
                   }
-
                 </TableCell>
                   
                 <TableCell align="left">
