@@ -60,7 +60,7 @@ export default function Login() {
   
   if (isLoggedIn) {
    
-    return <Navigate to="/dashboard" />;
+    return <Navigate to="/Dashboard" />;
   }
 
   return (
