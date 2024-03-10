@@ -115,7 +115,7 @@ const Request = () => {
   }
 
   //updates the service id and date. Name is also updated (needs to be fixed to permanently update)
-  const handleRebook = (id, service, dateTime, first_name, last_name) => {
+  const handleRebook = (id, service, dateTime) => {
     const currentRequestIndex = requests.findIndex((request) => request.id === id);
     const updatedRequest = {...requests[currentRequestIndex], service_id: service, scheduled_at: dateTime};
     const newRequests = [
@@ -124,20 +124,9 @@ const Request = () => {
       ...requests.slice(currentRequestIndex + 1)
     ];
 
-    const currentNameIndex = names.findIndex((request) => request.id === id);
-    const updatedName = {...names[currentNameIndex], first_name: first_name, last_name: last_name};
-    const newNames = [
-      ...names.slice(0, currentNameIndex),
-      updatedName,
-      ...names.slice(currentNameIndex + 1)
-    ];
-
     editAppointment(id, updatedRequest);
-    console.log("updated request", updatedRequest);
-    console.log("updated request", updatedName);
-
     setRequests(newRequests);
-    setNames(newNames);
+   
   }
 
   return (
@@ -203,9 +192,11 @@ const Request = () => {
                   <span>|</span>
                   <Rebook 
                     id={request.id} 
-                    passedNames={names}
                     service_id={request.service_id}
                     scheduled_at={request.scheduled_at}
+                    client_id={request.client_id}
+                    clients={clients}
+                    services={services}
                     handleRebook={handleRebook}
                   />
                 </TableCell>
