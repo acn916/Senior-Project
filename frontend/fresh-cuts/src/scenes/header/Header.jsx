@@ -62,7 +62,7 @@ const ResponsiveAppBar = () => {
         <AppBar style={{ background: 'white' }} position="static">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <a href="/home">
+                    <a href="/Home">
                         <Box
                             component="img"
                             sx={{
