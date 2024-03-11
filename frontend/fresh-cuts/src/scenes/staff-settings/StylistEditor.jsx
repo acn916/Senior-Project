@@ -24,7 +24,7 @@ const StylistEditor = () => {
     const [selectedItemToDelete, setDeleteSelectedItem] = useState(null);
 
     const [popupOpen, setPopupOpen] = useState(false);
-    const [itemToEdit, setItemToEdit] = useState(null);
+    const [itemToEdit, setItemToEdit] = useState({});
     const [action, setAction] = useState(null);
 
     const handleDeleteClick = (item) => {
@@ -44,31 +44,70 @@ const StylistEditor = () => {
     };
 
     const handleOpenPopup = (item) => {
-        setItemToEdit(item);
-        setAction(item === null ? 'add' : 'edit');
+
+        if(!item){
+            setItemToEdit({});
+            setAction('add');
+        }
+        else{
+            setItemToEdit(item);
+            setAction('edit');
+        }
+        
         setPopupOpen(true);
     };
+    
 
     const handleClosePopup = () => {
         setPopupOpen(false);
     };
 
     const handleFormSubmit = async (results) => {
-        await addUserToDatabase(results);
+
+        
+        if(action === 'add'){
+            await addUserToDatabase(results);
+
+        }
+        else if(action === 'edit'){
+            await editUserFromDatabase(results);
+
+        }
+        
         refresh();
         handleClosePopup();
     };
 
+    const editUserFromDatabase = async (userData) => {
+
+        const id = userData.id;
+        try{
+            const response = await axios.put(`https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/staff/${id}`, [{
+                cognito_user_id: userData.cognito_user_id,
+                email: userData.email,
+                first_name: userData.firstName,
+                last_name: userData.lastName,
+                phone: userData.phoneNumber,
+            }]);
+            
+            setItemToEdit(null);
+            setAction(null);
+        } catch (error) {
+            console.error("Error editting user", error);
+        }
+    }
+
     const addUserToDatabase = async (userData) => {
         try {
             const response = await axios.post('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/client', {
-                cognito_user_id: "fake",
+                cognito_user_id: "fake222", // <--- CHANGE LATER AFTER DB UDPATE
                 email: userData.email,
                 first_name: userData.firstName,
                 last_name: userData.lastName,
                 phone: userData.phoneNumber,
                 user_role: "Staff"
             })
+            
         } catch (error) {
             console.error(error.response.data);
         }
@@ -79,7 +118,7 @@ const StylistEditor = () => {
             const response = await axios.delete('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/client', {
                 data: { user_id: id }
             }); 
-            console.log(response.data);
+
         } catch (error) {
             console.error(error.response.data);
         }
@@ -157,7 +196,7 @@ const StylistEditor = () => {
                             padding: "2px",
                         }}
                         aria-label="add"
-                        onClick={handleOpenPopup}
+                        onClick={() => handleOpenPopup(null)}
                     >
                         <AddIcon />
                     </IconButton>
@@ -197,10 +236,12 @@ const StylistEditor = () => {
                                             sx={{ mr: 1 }}
                                             onClick={() =>
                                                 handleOpenPopup({
+                                                    id: stylist.id,
                                                     firstName: stylist.first_name,
                                                     lastName: stylist.last_name,
                                                     email: stylist.email,
                                                     phoneNumber: stylist.phone,
+                                                    cognito_user_id: stylist.cognito_user_id
                                                 })
                                             }
                                         >
