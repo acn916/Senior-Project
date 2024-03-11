@@ -24,21 +24,24 @@ const PopupForm = ({ open, handleClose, handleSubmit, data }) => {
         phoneNumber: data.phoneNumber || ''
       });
     }
-  }, [data]); // Only re-run if `data` changes
+  }, [data]);
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
+
+    try {
+      await handleSubmit(formData);
+    } catch (error) {
+      console.error('An error occurred during form submission:', error);
+    } finally {
       setLoading(false);
-      handleSubmit(formData); // Pass the form data to the parent component
-      handleClose(); // Close the dialog
-    }, 1000); // Simulate a 1-second loading process
+    }
   };
 
   return (
@@ -97,13 +100,20 @@ const PopupForm = ({ open, handleClose, handleSubmit, data }) => {
             </Grid>
           </Grid>
           <Box display="flex" justifyContent="flex-end" mt={2}>
-  <Button onClick={handleClose} color="secondary" variant="outlined" sx={{ borderColor: '#6B6767', color: '#6B6767', mr: 1 }}>
-    Cancel
-  </Button>
-  <Button type="submit" disabled={loading} variant="contained" sx={{ backgroundColor: loading ? undefined : '#E95252', color: 'white', '&:hover': { backgroundColor: '#C74444' } }}>
-    {loading ? <CircularProgress size={24} color="secondary" /> : 'Save'}
-  </Button>
-</Box>
+            <Button onClick={handleClose} color="secondary" variant="outlined" sx={{ borderColor: '#6B6767', color: '#6B6767', mr: 1 }}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={loading} variant="contained" sx={{ backgroundColor: loading ? undefined : '#E95252', color: 'white', '&:hover': { backgroundColor: '#C74444' } }}>
+              {loading ? (
+                <CircularProgress
+                  size={24}
+                  sx={{ color: 'white' }}
+                />
+              ) : (
+                'Save'
+              )}
+            </Button>
+          </Box>
         </Box>
       </form>
     </Dialog>
