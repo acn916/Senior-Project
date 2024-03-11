@@ -16,46 +16,31 @@ import Select from '@mui/material/Select';
 import axios from "axios";
 
 
-const Rebook = ({id,service_id, scheduled_at, handleRebook, client_id, clients, services}) => {
-
- 
+const Rebook = ({id, service_id, scheduled_at, client_id, clients, services, handleRebook}) => {
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const [loading, setLoading] = useState(true);
-  const [name, setName] = useState("");
   const [selectedService, setSelectedService] = useState(service_id);
   const [time, setTime] = useState(dayjs(scheduled_at));
   const [date, setDate] = useState(dayjs(scheduled_at));
-  const [selectedTime, setSelectedTime] = useState(dayjs(scheduled_at).format('HH:mm:ss'));
 
   const handleTimeChange = (newTime) => {
-    setSelectedTime(newTime);
     setTime(newTime);
-  
   };
 
   useEffect(() => { 
-
-  
- 
-      setLoading(false);
-      
+    setLoading(false);
   }, []);
 
   const handleServiceChange = (e) => {
     setSelectedService(e.target.value)
   }
 
-  const handleNameChange = (e) => {
-    setName(e.target.value)
-  }
-
   const handleBack = () => {
     setSelectedService(service_id);
-    setName("John Doe"); {/*Doesn't work, will have to use name from appointment db when its uploaded*/}
     setTime(dayjs(scheduled_at));
     setDate(dayjs(scheduled_at));
   }
@@ -100,22 +85,6 @@ const Rebook = ({id,service_id, scheduled_at, handleRebook, client_id, clients, 
       backgroundColor: "#E95252"
     }
   };
-  
-  function checkFirstName(name){
-    if (/\s/.test(name)){
-      return name.substring(0, name.indexOf(' '));
-    } else {
-      return name;
-    }
-  }
-
-  function checkLastName(name){
-    if (/\s/.test(name)){
-      return name.substring(name.indexOf(' ') + 1); 
-    } else {
-      return "";
-    }
-  }
 
   return (
     <>
@@ -134,17 +103,15 @@ const Rebook = ({id,service_id, scheduled_at, handleRebook, client_id, clients, 
                   <Typography> Name </Typography>
                   <TextField
                     id="name"
-                    
                     variant="outlined"
                     fullWidth
+                    sx={{backgroundColor: "#F2F2F2", boxShadow: 2}}
                     value={
                       clients.find(client => client.id === client_id)
                         ? `${clients.find(client => client.id === client_id).first_name} ${clients.find(client => client.id === client_id).last_name}`
                         : ''
                     }
-                    
                   />
-
                 </Box>
               </Grid>
 
@@ -173,6 +140,7 @@ const Rebook = ({id,service_id, scheduled_at, handleRebook, client_id, clients, 
                         value={date}
                         disablePast
                         onChange={(newDate) => setDate(newDate)}
+                        slotProps={{ textField: { fullWidth: true } }}
                         renderInput={(props) => <TextField {...props} fullWidth />}
                         sx={{backgroundColor: "#F2F2F2", boxShadow: 2}}
                       />
@@ -185,10 +153,11 @@ const Rebook = ({id,service_id, scheduled_at, handleRebook, client_id, clients, 
                   <Typography> Time </Typography>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <TimePicker
-                      value={dayjs(selectedTime, 'HH:mm:ss').toDate()} 
+                      value={time} 
                       onChange={handleTimeChange}
                       renderInput={(props) => <TextField {...props} fullWidth/>}
-                      style={{ marginTop: "20px", width: "200px"}}
+                      slotProps={{ textField: { fullWidth: true } }}
+                      sx={{backgroundColor: "#F2F2F2", boxShadow: 2}}
                       textFieldStyle={{ width: "100%" }} 
                       ampm
                   />
@@ -204,9 +173,7 @@ const Rebook = ({id,service_id, scheduled_at, handleRebook, client_id, clients, 
                 {handleRebook(
                   id, 
                   selectedService, 
-                  dayjs(date).format('YYYY/MM/DD') + " " + dayjs(time).format('HH:mm:ss'), 
-                  checkFirstName(name), 
-                  checkLastName(name))
+                  dayjs(date).format('YYYY/MM/DD') + " " + dayjs(time).format('HH:mm:ss'))
                   handleClose()
                 }} 
                 sx={confirmStyle}> 
