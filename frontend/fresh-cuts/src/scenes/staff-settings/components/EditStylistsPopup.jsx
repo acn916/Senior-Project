@@ -18,10 +18,12 @@ const PopupForm = ({ open, handleClose, handleSubmit, data }) => {
   useEffect(() => {
     if (data) {
       setFormData({
+        id: data.id || '',
         firstName: data.firstName || '',
         lastName: data.lastName || '',
         email: data.email || '',
-        phoneNumber: data.phoneNumber || ''
+        phoneNumber: data.phoneNumber || '',
+        cognito_user_id: data.cognito_user_id
       });
     }
   }, [data]);
