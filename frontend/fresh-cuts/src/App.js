@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { AuthProvider } from './AuthContext'; // Import AuthProvider
 import Home from "./scenes/home";
 import Services from "./scenes/services";
@@ -30,7 +30,7 @@ function App() {
         <div style={{minHeight:"700px"}}>
           <Routes>
             {/* Public routes */}
-            <Route path="/" element={<Home />} />
+  
             <Route path="/Home" element={<Home />} />
             <Route path="/Staff" element={<Staff />} />
             <Route path="/Confirmation" element={<Confirm />} />
@@ -41,10 +41,11 @@ function App() {
             <Route path="/Login" element={<Account><Login /></Account>} />
             <Route path="/Passwordreset" element={<Account><Passwordreset /></Account>}/>
             <Route path="/Error" element={<ErrorPage />} />
+            <Route path="/" element={<Navigate to="/Home" />} />
 
             {/* Private routes */}
             <Route element={<Account><PrivateRoutes /></Account>}>
-              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/Dashboard" element={<Dashboard />} />
               <Route path="/Settings" element={<SettingsPage/>}/>
               <Route path="/Request" element={<Request/>}/>
             </Route>
