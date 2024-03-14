@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid } from '@mui/material';
+import { Grid, Button } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -12,102 +12,12 @@ import Rebook from './Rebook.jsx';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import axios from "axios";
 
-export const rows = [ 
-  {id: 1,
-  confirmation_timestamp:'02/10/2023',
-  scheduled_at: "2023/09/17", 
-  status:"Pending",
-  service_id: 2,
-  client_id: 1},
-
-  {id: 2,
-  confirmation_timestamp:'02/10/2023',
-  scheduled_at: "2023/09/17", 
-  status:"Pending",
-  service_id: 15,
-  client_id: 1},
-
-  {id: 3,
-  confirmation_timestamp:'02/10/2023',
-  scheduled_at: "2023/09/17", 
-  status:"Pending",
-  service_id: 7,
-  client_id: 1},
-
-  {id: 4,
-  confirmation_timestamp:'02/10/2023',
-  scheduled_at: "2023/09/17", 
-  status:"Pending",
-  service_id: 10,
-  client_id: 1},
-
-  {id: 5,
-  confirmation_timestamp:'02/10/2023', 
-  scheduled_at: "2023/09/17", 
-  status:"Pending",
-  service_id: 27,
-  client_id: 1},
-
-  {id: 6,
-  confirmation_timestamp:'02/10/2023',
-  scheduled_at: "2023/09/17", 
-  status:"Pending",
-  service_id: 5,
-  client_id: 2},
-
-  {id: 7,
-  confirmation_timestamp:'test',
-  scheduled_at: "test", 
-  status:"Confirmed",
-  service_id: 7,
-  client_id: 1},
-]
-
-export const rows2 = [
-  {id: 2,
-  name: "Hair Extensions",
-  price: "200"},
-
-  {id: 15,
-  name: "Hair cut/color",
-  price: "100"},
-
-  {id: 7,
-  name: "Men's haircut",
-  price: "25"},
-
-  {id: 10,
-  name: "Highlight",
-  price: "120"},
-
-  {id: 27,
-  name: "Blowout",
-  price: "50"},
-
-  {id: 5,
-  name: "Hair Extension Move up",
-  price: "200"},
-]
-
-export const rows3 = [
-  {id: 1,
-  first_name: "Sara",
-  last_name: "Eastern"},
-
-  {id: 2,
-  first_name: "Test",
-  last_name: "Testing"}
-]
 
 const Request = () => { 
-
- // const [requests, setRequests] = useState(rows.filter(test => test.status === "Pending")); //with data above (fake data)
-  //const [services, setServices] = useState(rows2); //with data above (fake data)
-  //const [clients, setClients] = useState(rows3); //with data above (fake data)
   
-  const [requests, setRequests] = useState([]); //for get API (actual request data) //entire commented block is functional and will be used for database info
-  const [services, setServices] = useState([]); //for get API (actual service data)
-  const [clients, setClients] = useState([]); //for get API (actual client data) 
+  const [requests, setRequests] = useState([]); 
+  const [services, setServices] = useState([]); 
+  const [clients, setClients] = useState([]);  
   const [loading, setLoading] = useState(true);
 
   const fetchAppointments = async () =>  {
@@ -116,7 +26,7 @@ const Request = () => {
       
       const pending_request = response.data.filter(appointment => appointment.status === 'Pending');
       setRequests(pending_request);
-
+      
     } catch(error){
       console.error("Error fetching data:'", error);
       setLoading(false);
@@ -143,10 +53,11 @@ const Request = () => {
         console.error('Error fetching data:', error);
         setLoading(false);
       });
-
+    
     axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/client')
       .then(response => {
         setClients(response.data);
+        
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -158,7 +69,6 @@ const Request = () => {
       const intervalId = setInterval(fetchAppointments, 9000);
 
       return () => clearInterval(intervalId);  
-
   }, []);
   
   //changes status to Confirmed
@@ -173,30 +83,46 @@ const Request = () => {
     ];
 
     editAppointment(id, updatedRequest);
-
     setRequests(newRequests);
+    handleDelete(id);
   }
 
   //changes status to Denied
   const handleDeny = (id) => {
     const currentRequestIndex = requests.findIndex((request) => request.id === id);
     const updatedRequest = {...requests[currentRequestIndex], status: "Cancelled"};
+    console.log("updated request", updatedRequest);
     const newRequests = [
       ...requests.slice(0, currentRequestIndex),
       updatedRequest,
       ...requests.slice(currentRequestIndex + 1)
     ];
-    editAppointment(id, updatedRequest);
 
+    editAppointment(id, updatedRequest);
     setRequests(newRequests);
+    handleDelete(id);
   }
 
   //deletes the row from the array
   const handleDelete = (id) => {
-    handleDeny(id)
     setRequests(values => {
       return values.filter(request => request.id !== id)
     })
+  }
+
+  //updates the service id and date. Name is also updated (needs to be fixed to permanently update)
+  const handleRebook = (id, service, dateTime) => {
+    const currentRequestIndex = requests.findIndex((request) => request.id === id);
+    const updatedRequest = {...requests[currentRequestIndex], service_id: service, scheduled_at: dateTime};
+    const newRequests = [
+      ...requests.slice(0, currentRequestIndex),
+      updatedRequest,
+      ...requests.slice(currentRequestIndex + 1)
+    ];
+
+    editAppointment(id, updatedRequest);
+    setRequests(newRequests);
+   
   }
 
   return (
@@ -224,34 +150,54 @@ const Request = () => {
               >
                 <TableCell component="th" scope="row"> {request.confirmation_timestamp}</TableCell>
 
-                {clients.map((client) => request.client_id === client.id ? (
-                  <React.Fragment key={client.id}>
-                    <TableCell align="left" sx={{color: "#2F65DD"}}>
-                      <AccountCircleIcon sx={{marginBottom: -1}}/> {' ' + client.first_name + " " + client.last_name}
-                    </TableCell>
-                  </React.Fragment>
-                ): null)}
-
-                {services.map((service) => request.service_id === service.id ? (
-                  <React.Fragment key={service.id}>
-                    <TableCell align="left">{service.name}</TableCell>
-                    <TableCell align="left">{'$'+ service.price}</TableCell>
-                  </React.Fragment>
-                ): null)}
+                <TableCell align="left" sx={{color: "#2F65DD"}}>
+                  {
+                    clients.map((client) => request.client_id == client.id ? (
+                      <React.Fragment key={request.id}>
+                        <AccountCircleIcon sx={{marginBottom: -1}}/> {' ' + client.first_name + " " + client.last_name}
+                      </React.Fragment>
+                    ):(
+                      null
+                    ))
+                  }
+                </TableCell>
+                  
+                <TableCell align="left">
+                  {services.map((service) => request.service_id == service.id ? (
+                    <React.Fragment key={service.id}>
+                      {service.name}
+                    </React.Fragment>
+                  ): null)}
+                </TableCell>
+                    
+                <TableCell align="left">
+                  {services.map((service) => request.service_id == service.id ? (
+                    <React.Fragment key={service.id}>
+                      {'$'+ service.price}
+                    </React.Fragment>
+                  ): null)}
+                </TableCell>
                 
                 <TableCell align="left">{request.scheduled_at}</TableCell>
                 <TableCell align="left">
                   <Accept id={request.id} handleConfirm={handleConfirm}/>
                   <span>|</span>
-                  <Decline id={request.id} handleDelete={handleDelete}/>
+                  <Decline id={request.id} handleDeny={handleDeny}/>
                   <span>|</span>
-                  <Rebook/>
+                  <Rebook 
+                    id={request.id} 
+                    service_id={request.service_id}
+                    scheduled_at={request.scheduled_at}
+                    client_id={request.client_id}
+                    clients={clients}
+                    services={services}
+                    handleRebook={handleRebook}
+                  />
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-
       </TableContainer>
     </Grid>
   );

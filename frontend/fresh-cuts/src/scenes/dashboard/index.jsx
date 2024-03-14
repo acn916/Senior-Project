@@ -1,13 +1,11 @@
 import {useState, useEffect} from 'react'
 import axios from "axios";
-
 import { Paper } from '@mui/material';
 import {
     EditingState,
     IntegratedEditing,
     ViewState,
 } from '@devexpress/dx-react-scheduler';
-
 import {
     Scheduler,
     DayView,
@@ -20,23 +18,29 @@ import {
     ViewSwitcher,
     MonthView,
 } from '@devexpress/dx-react-scheduler-material-ui';
-
 import { FormControl, Select, MenuItem } from '@mui/material';
 import CustomBasicLayout from './CustomAppointmentForm';
 import { ConfirmationDialog } from '@devexpress/dx-react-scheduler-material-ui';
 import { AppsSharp } from '@mui/icons-material';
 
+
+// Component start
 function Dashboard() {
 
+  // create state variables to hold data from api call
     const [appointments, setAppointments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentDate, setCurrentDate] = useState(new Date());
-    const [currentStylist, setCurrentStylist] = useState(null);
+    const [currentStylist, setCurrentStylist] = useState('All');
     const [stylist, setStylist] = useState([]);
    
+
+
     const fetchAppointments = async () =>  {
+
       try{
         const response = await axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/appointments');
+
         const formattedAppointments = response.data.map(appointment => {
             const [year, month, day, hour, minute] = appointment.scheduled_at
                 .match(/\d+/g)
@@ -54,14 +58,43 @@ function Dashboard() {
                   status: `${appointment.status}`,
               };
         });
+    
+        let confirmedAppointments = [];
+        for(let i = 0; i < formattedAppointments.length; ++i){
 
-        setAppointments(formattedAppointments);
+          if(formattedAppointments[i].status === 'Confirmed'){
+            confirmedAppointments.push(formattedAppointments[i])
+          }
+        }
 
+        if(currentStylist === 'All'){
+          setAppointments(confirmedAppointments)
+        }
+        else{
+
+          let stylistAppointments = [];
+          for(let i = 0; i < confirmedAppointments.length; ++i){
+
+            if(parseInt(confirmedAppointments[i].staff_id) === currentStylist){
+              stylistAppointments.push(confirmedAppointments[i]);
+            }
+          }
+          setAppointments(stylistAppointments);
+        }
       } catch(error){
         console.error("Error fetching data:'", error);
         setLoading(false);
       }
     }
+
+    const fetchClients = async () => {
+      try {
+          const clientResponse = await axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/client');
+          
+      } catch (error) {
+          console.error("Error fetching clients:", error);
+      }
+  };
 
     useEffect(() => {
 
@@ -76,17 +109,26 @@ function Dashboard() {
         });
 
 
-
       fetchAppointments();
+
       setLoading(false);
       const intervalId = setInterval(fetchAppointments, 9000);
 
       return () => clearInterval(intervalId);  
 
 
-    },[]);
+    },[currentStylist]);
 
-    const CustomToolbar = () => (
+    const CustomToolbar = () => {
+
+
+      const handleStylistChange = (event) => {
+        const selectedStylistId = event.target.value;
+        setCurrentStylist(selectedStylistId); // Update currentStylist state
+        fetchAppointments(); // Fetch appointments based on selected stylist
+      };
+    
+      return (
         <Toolbar.FlexibleSpace style={{ display: 'flex', alignItems: 'center' }}>
           <FormControl style={{ marginRight: '20px', width: '150px' }}>
             <Select
@@ -94,7 +136,7 @@ function Dashboard() {
               id="stylist-select"
               value={currentStylist || 'All'}  
               onChange={handleStylistChange}
-              sx ={{height: '44px'}}
+              sx={{ height: '44px' }}
             >
               <MenuItem value="All">
                 <em>All</em>
@@ -107,13 +149,11 @@ function Dashboard() {
             </Select>
           </FormControl>
         </Toolbar.FlexibleSpace>
-    );
-
-    const handleStylistChange = (event) => {
-        const selectedStylistId = event.target.value;
-        // You can perform any additional actions when a stylist is selected
-        setCurrentStylist(selectedStylistId);
+      );
     };
+    
+
+   
     
     const commitChanges = ({ added, changed, deleted }) => {
         let updatedData = [...appointments]; // Copy the current state of appointments
@@ -165,6 +205,7 @@ function Dashboard() {
               newStartDate = prevData.startDate.toISOString().split('T')[0] + ' ' + prevData.startDate.toTimeString().split(' ')[0];
           }
           
+          
           const newData = {
             
             client_id: changedData.client_id !== undefined ? changedData.client_id : prevData.client_id,
@@ -172,7 +213,7 @@ function Dashboard() {
             service_id: changedData.service_id !== undefined ? changedData.service_id : prevData.service_id,
             scheduled_at: newStartDate,
             status: prevData.status,
-            notes: "none",
+            notes: changedData.notes !== undefined ? changedData.notes : prevData.notes,
             confirmation_timestamp: newStartDate,
             cancellation_reason: "none"
           }
@@ -183,10 +224,9 @@ function Dashboard() {
             })
             .catch(error =>{
               console.error("Error updating", error);
-            })   
+            })
+            
         });
-
-
       }
 
       if (deleted) {
