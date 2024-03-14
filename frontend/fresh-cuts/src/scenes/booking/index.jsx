@@ -34,6 +34,7 @@ export default function Booking() {
         'Men\'s Haircut'
       ];
 
+
 /*const rows = [
   createData(1, 'Brazillian Blowout', 'Starrie Le'),
   createData(2, 'Cleanup', 'Sil Baron, Nicole Mata, Starrie Le'),
@@ -41,7 +42,7 @@ export default function Booking() {
   createData(4, 'Color Touch Up', 'Victoria Saeturn, Nicole Mata'),
 ];*/
 
-  const Booking = () => {
+
     useEffect(() => {
       const fetchStylists = async () => {
         try {
@@ -190,7 +191,7 @@ export default function Booking() {
       <Paper elevation={2} style={paperStyle}>
         <Grid wrap='wrap' align='center'>
           <h1 align="center"> Schedule an Appointment </h1>
-          <FormControl fullWidth>
+          <FormControl sx={{width:'300px', maxWidth:'90%', margin:'10px'}}>
             <InputLabel id="stylist-select-label">Select a Stylist</InputLabel>
             <Select
                 labelId="stylist-select-label"
@@ -207,7 +208,7 @@ export default function Booking() {
             </Select>
           </FormControl>
 
-          <FormControl fullWidth>
+          <FormControl sx={{width:'300px', maxWidth:'90%', margin:'10px'}}>
             <InputLabel id="service-select-label">Select One or More Services</InputLabel>
             <Select
                 labelId="service-select-label"
