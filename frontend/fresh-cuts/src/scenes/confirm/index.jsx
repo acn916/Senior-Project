@@ -27,7 +27,7 @@ const Confirmation = () => {
            Please feel free to reach out directly at (916)451-1517 or email us at redalonart@gmail.com
           </Typography>
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: '50px' }}>
-          <Link to="/home">
+          <Link to="/Home">
             <Button
                 variant="contained"
                 style={{
