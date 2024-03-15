@@ -18,13 +18,19 @@ export default function Login() {
   const { authenticate, getSession } = useContext(AccountContext);
 
   useEffect(() => {
+
+    // this function will check if the user is "logged in" or has a "session"
     const checkAuthentication = async () => {
       try {
         const session = await getSession();
         if (session && session.user) {
 
+          // if the user is logged in then save all of the user information inside of AuthContext
+          // all this user information is coming form aws cogito (session).
           const role = session["custom:user_role"];
           const { given_name, family_name, email, phone_number } = session;
+
+          // these mutator functions will change the value of the state variable inside AuthContext.
           setName(`${given_name} ${family_name}`); 
           setUserRole(role);
           setIsLoggedIn(true); 
