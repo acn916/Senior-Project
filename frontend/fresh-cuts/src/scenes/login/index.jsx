@@ -12,7 +12,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState(false);
-  const {isLoggedIn, setIsLoggedIn, setUserRole, setName} = useContext(AuthContext)
+  const {isLoggedIn, setIsLoggedIn, setUserRole, setName, setUserEmail, setUserPhone} = useContext(AuthContext)
   
 
   const { authenticate, getSession } = useContext(AccountContext);
@@ -22,12 +22,15 @@ export default function Login() {
       try {
         const session = await getSession();
         if (session && session.user) {
-          
+
           const role = session["custom:user_role"];
-          const { given_name, family_name } = session;
+          const { given_name, family_name, email, phone_number } = session;
           setName(`${given_name} ${family_name}`); 
           setUserRole(role);
           setIsLoggedIn(true); 
+          setUserEmail(email);
+          setUserPhone(phone_number);
+                   
         } else {
           setIsLoggedIn(false);
         }
@@ -43,9 +46,12 @@ export default function Login() {
   const onSubmit = (event) => {
     event.preventDefault();
 
+
+
     authenticate(email, password)
       .then((data) => {
         
+        setUserEmail(email);
         setLoginError(false);
         setIsLoggedIn(true); 
       })
