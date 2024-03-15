@@ -12,8 +12,11 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState(false);
+
+  // THIS IS AUTH CONTEXT. This is how you access the state variables and their setters. Must be SAME exact
+  // name inside the AuthContext.js file.
   const {isLoggedIn, setIsLoggedIn, setUserRole, setName, setUserEmail, setUserPhone} = useContext(AuthContext)
-  
+
 
   const { authenticate, getSession } = useContext(AccountContext);
 
