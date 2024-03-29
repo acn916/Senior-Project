@@ -9,12 +9,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import axios from "axios";
-
 
 const Rebook = ({id, service_id, scheduled_at, client_id, clients, services, handleRebook}) => {
 
@@ -173,7 +170,7 @@ const Rebook = ({id, service_id, scheduled_at, client_id, clients, services, han
                 {handleRebook(
                   id, 
                   selectedService, 
-                  dayjs(date).format('YYYY/MM/DD') + " " + dayjs(time).format('HH:mm:ss'))
+                  dayjs(date).format('YYYY-MM-DD') + " " + dayjs(time).format('HH:mm:ss'))
                   handleClose()
                 }} 
                 sx={confirmStyle}> 
