@@ -24,8 +24,7 @@ import {
 } from "@mui/material";
 //import { TimeField } from "@mui/x-date-pickers/TimeField";
 
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 
 import SettingsIcon from "@mui/icons-material/Settings";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
@@ -65,13 +64,10 @@ function AddPopUp({ onSubmit, onClose }) {
       console.log(typeof event.$d);
       const selectedDate = dayjs(event.$d);
 
-
-      
-
       // Format the selected time as "HH:mm:ss"
       const formattedTime = selectedDate.format("HH:mm:ss");
-      console.log(formattedTime)
-     //console.log(typeof formattedTime);
+      console.log(formattedTime);
+      //console.log(typeof formattedTime);
       setNewServiceData((prevData) => ({
         ...prevData,
         duration: formattedTime,
@@ -104,19 +100,8 @@ function AddPopUp({ onSubmit, onClose }) {
   const [selectedTime, setSelectedTime] = useState(dayjs("HH:mm:00"));
 
   const handleTimeChange = (newTime) => {
-
-    const formattedTime = newTime.format("HH:mm:00");
-      console.log("formattedTime:",formattedTime)
-     //console.log(typeof formattedTime);
-      setNewServiceData((prevData) => ({
-        ...prevData,
-        duration: formattedTime,
-      }));
-
-    //console.log(dayjs(newTime).format("HH:mm:ss"));
-    setSelectedTime(newTime);
-   
-  
+    const formattedTime = dayjs(newTime).format("HH:mm");
+    console.log(formattedTime); // Log the formatted time in HH:mm format
   };
 
   return (
@@ -142,12 +127,12 @@ function AddPopUp({ onSubmit, onClose }) {
           />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <TimePicker
-                value={dayjs(selectedTime, 'HH:mm:ss').toDate()} 
-                onChange={handleTimeChange}
-                renderInput={(props) => <TextField {...props} fullWidth/>}
-                style={{ marginTop: "20px", width: "200px"}}
-                textFieldStyle={{ width: "100%" }} 
-                ampm={false} // Set ampm to false to display only hours and minutes
+              value={selectedTime}
+              onChange={handleChange("duration")}
+              renderInput={(props) => <TextField {...props} fullWidth />}
+              style={{ marginTop: "20px", width: "200px" }}
+              textFieldStyle={{ width: "100%" }}
+              ampm={false} // Set ampm to false to display only hours and minutes
             />
           </LocalizationProvider>
 
@@ -202,6 +187,7 @@ function EditServicePopUp({ selectedRow, onSubmit, onClose }) {
 
   const handleChange = (field) => (event) => {
     if (field === "duration") {
+      console.log();
       console.log(typeof event.$d);
       const selectedDate = dayjs(event.$d);
 
@@ -223,22 +209,6 @@ function EditServicePopUp({ selectedRow, onSubmit, onClose }) {
 
   const [selectedTime, setSelectedTime] = useState(dayjs("HH:mm:00"));
 
-  const handleTimeChange = (newTime) => {
-
-    const formattedTime = newTime.format("HH:mm:00");
-      console.log("formattedTime:",formattedTime)
-     //console.log(typeof formattedTime);
-      setEditedData((prevData) => ({
-        ...prevData,
-        duration: formattedTime,
-      }));
-
-    //console.log(dayjs(newTime).format("HH:mm:ss"));
-    setSelectedTime(newTime);
-   
-  
-  };
-
   const handleSubmit = () => {
     // Submit the edited data
     console.log(editedData);
@@ -249,7 +219,9 @@ function EditServicePopUp({ selectedRow, onSubmit, onClose }) {
 
   return (
     <Dialog open={Boolean(selectedRow)} onClose={onClose} fullWidth>
-      <DialogTitle id="dialog-title">Edit Service</DialogTitle>
+      <Box sx={{ backgroundColor: "#E95252", color: "white", padding: 2 }}>
+        <Typography variant="h6">Edit Service</Typography>
+      </Box>
       <DialogContent>
         <Stack spacing={2} margin={2}>
           <TextField
@@ -265,25 +237,14 @@ function EditServicePopUp({ selectedRow, onSubmit, onClose }) {
             onChange={handleChange("price")}
           />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <TimePicker
-              value={dayjs(editedData.duration, 'HH:mm:ss').toDate()} 
-              onChange={handleTimeChange}
-              renderInput={(props) => <TextField {...props} fullWidth/>}
-              style={{ marginTop: "20px", width: "200px"}}
-              textFieldStyle={{ width: "100%" }} 
-              ampm={false} // Set ampm to false to display only hours and minutes
-          />
-
-            {/*
-            <TimeField
-              label="Duration (hour/minute/seconds)"
-              format="hh:mm:ss"
-              value={dayjs(`2022-01-01T${editedData.duration}`, {
-                format: "HH:mm:ss",
-              })}
+            <TimePicker
+              value={dayjs(editedData.duration, "HH:mm:ss")}
               onChange={handleChange("duration")}
+              renderInput={(props) => <TextField {...props} fullWidth />}
+              style={{ marginTop: "20px", width: "200px" }}
+              textFieldStyle={{ width: "100%" }}
+              ampm={false} // Set ampm to false to display only hours and minutes
             />
-            */}
           </LocalizationProvider>
           <TextField
             variant="outlined"
@@ -376,8 +337,6 @@ const Setting = () => {
     const updatedRows = rows.map((row) =>
       row === selectedRow ? { ...row, ...editedData } : row
     );
-
-    //console.log("Here", editedData);
 
     // Make a PUT request to update the service on the server //
     const updateServiceUrl = `https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/service/${id}`;
