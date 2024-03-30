@@ -22,7 +22,6 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
-//import { TimeField } from "@mui/x-date-pickers/TimeField";
 
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -47,7 +46,6 @@ function addService(id, name, price, description, duration) {
   };
 }
 // Call API
-// -----------------------------------------------------------------------------------------------------
 
 const Setting = () => {
   const [rows, setRows] = useState([]);

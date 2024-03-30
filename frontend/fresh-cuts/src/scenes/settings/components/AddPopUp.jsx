@@ -48,6 +48,7 @@ function AddPopUp({ onSubmit, onClose }) {
   const handleSubmit = () => {
     if (!newServiceData.name.trim()) {
       setError("Service name is required");
+
       return;
     }
 
