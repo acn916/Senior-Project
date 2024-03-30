@@ -1,6 +1,7 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react";
+import { render, fireEvent, waitFor, screen } from "@testing-library/react";
 import EditServicePopUp from "./EditServicePopUp";
+import "@testing-library/jest-dom";
 
 describe("EditServicePopUp", () => {
   it("renders without crashing", () => {
@@ -64,5 +65,29 @@ describe("EditServicePopUp", () => {
     fireEvent.click(getByText("Cancel"));
 
     expect(onClose).toHaveBeenCalled();
+  });
+
+  it("renders an error message when no service name is provided", () => {
+    const onSubmit = jest.fn();
+    const onClose = jest.fn();
+    const selectedRow = {
+      id: "123",
+      name: "", // Empty service name
+      price: 10,
+      duration: "01:30:00",
+      description: "Service Description",
+    };
+
+    const { getByText } = render(
+      <EditServicePopUp
+        selectedRow={selectedRow}
+        onSubmit={onSubmit}
+        onClose={onClose}
+      />
+    );
+
+    fireEvent.click(getByText("Submit"));
+
+    expect(screen.getByText("Service name is required")).toBeInTheDocument();
   });
 });
