@@ -27,6 +27,7 @@ function EditServicePopUp({ selectedRow, onSubmit, onClose }) {
     description: selectedRow ? selectedRow.description : "",
   });
 
+  const [error, setError] = useState("");
   const handleChange = (field) => (event) => {
     if (field === "duration") {
       console.log();
@@ -52,9 +53,19 @@ function EditServicePopUp({ selectedRow, onSubmit, onClose }) {
   const [selectedTime, setSelectedTime] = useState(dayjs("HH:mm:00"));
 
   const handleSubmit = () => {
-    // Submit the edited data
-    console.log(editedData);
+    if (!editedData.name.trim()) {
+      setError("Service name is required");
+      return;
+    }
     onSubmit(editedData);
+    setEditedData({
+      id: "",
+      name: "",
+      price: 0,
+      duration: "",
+      description: "",
+    });
+    setError("");
   };
 
   return (
@@ -94,6 +105,11 @@ function EditServicePopUp({ selectedRow, onSubmit, onClose }) {
             value={editedData.description}
             onChange={handleChange("description")}
           />
+          {error && (
+            <Typography variant="caption" color="error">
+              {error}
+            </Typography>
+          )}
         </Stack>
       </DialogContent>
       <DialogActions>
