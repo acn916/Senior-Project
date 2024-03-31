@@ -1,0 +1,23 @@
+.MuiIconButton-root.MuiIconButton-colorPrimary.NavigationButton-button {
+    color: #E95252;
+  }
+  
+  /* Target the button text */
+.MuiButtonBase-root.MuiButton-root.MuiButton-text.OpenButton-textButton {
+    /* Change text color to red */
+    color: #E95252;
+   
+  }
+  
+.Cell-dayOfWeek.Cell-highlightedText{
+
+    color:#E95252;
+}
+  
+.Cell-dayOfMonth.Cell-highlightedText{
+    color: #E95252;
+}
+
+.Cell-today {
+    background: #E95252;
+}
