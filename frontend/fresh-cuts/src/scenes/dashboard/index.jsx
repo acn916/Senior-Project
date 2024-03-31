@@ -171,6 +171,8 @@ function Dashboard() {
             confirmation_timestamp: added.confirmation_timestamp,
           }
         ];
+
+        console.log(newAppointment)
             
         axios.post('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/appointment', newAppointment)
           .then(response => {
