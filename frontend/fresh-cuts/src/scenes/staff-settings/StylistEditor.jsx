@@ -163,11 +163,6 @@ const StylistEditor = () => {
 
     return (
         <>
-            <Typography
-                variant="h4" gutterBottom fontWeight={700}>
-                Add/Remove Stylist
-            </Typography>
-            <Box sx={{ height: "16px" }} />
             <Box
                 sx={{
                     display: "flex",
