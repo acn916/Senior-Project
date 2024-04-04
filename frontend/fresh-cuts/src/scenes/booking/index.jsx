@@ -33,10 +33,10 @@ export default function Booking() {
     const [selectedStylist, setSelectedStylist] = useState('');
     const [selectedServices, setSelectedServices] = useState('');
     const [selectedDate, setSelectedDate] = useState(initialSelectedDate);
-    const [selectedTime, setSelectedTime] = useState('');
+   //const [selectedTime, setSelectedTime] = useState('');
 
     // state variable holding all available time slots
-    const [timeslots, setTimeslots] = useState([]);
+   // const [timeslots, setTimeslots] = useState([]);
 
     // state variables to hold timeslots for morning, afternoon, and evening
     const [morningSlots, setMorningSlots] = useState([]);
@@ -74,11 +74,13 @@ export default function Booking() {
 
     // use Effect to fetch the stylist list and services list
     useEffect(() => {
+        console.log(selectedDate)
         setIsLoading(true);
         fetchStylists();
         fetchServices();
         setIsLoading(false);
-    }, []);
+
+    }, [selectedDate]);
 
     // functions are for displaying message is there are no available time slots
     function revealNoApt() {
@@ -97,6 +99,7 @@ export default function Booking() {
         // Convert the selected date to a string in the format 'YY-MM-DD'
         const formattedDate = date.toISOString().split('T')[0];
         setSelectedDate(formattedDate);
+       
     };
 
     const handleServiceChange = (event) => {
@@ -151,20 +154,9 @@ export default function Booking() {
 
     const handleSearchClick = async () => {
 
-        // Create a new Date object from the selectedDate string
-        const selectedDateTime = new Date(selectedDate);
-
-        // Extract year, month, and day from the selected date
-        const year = selectedDateTime.getFullYear().toString(); // Get last two digits of the year
-        const month = ('0' + (selectedDateTime.getMonth() + 1)).slice(-2); // Add leading zero if needed
-        const day = ('0' + selectedDateTime.getDate()).slice(-2); // Add leading zero if needed
-
-        // Format the date to "YY-MM-DD" format
-        const formattedDate = `${year}-${month}-${day}`;
-
         try {
             setIsLoading(true);
-            const response = await axios.get(`https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/time_slots?service=${selectedServices}&stylist=${selectedStylist}&date=${formattedDate}`);
+            const response = await axios.get(`https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/time_slots?service=${selectedServices}&stylist=${selectedStylist}&date=${selectedDate}`);
             console.log(response)
 
             // Organize timeslots into morning, afternoon, and evening
@@ -236,7 +228,7 @@ export default function Booking() {
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
                             label="Start Date"
-                            value={today}
+                            value={selectedDate}
                             onChange={handleDateChange}
                             renderInput={(params) => (
                                 <TextField {...params} variant="outlined" fullWidth />
@@ -335,20 +327,31 @@ function organizeTimeSlots(slots) {
     const afternoonSlots = [];
     const eveningSlots = [];
 
+    // Get the current time
+    const currentTime = new Date();
+    const currentHours = currentTime.getHours();
+    const currentMinutes = currentTime.getMinutes();
+
     slots.forEach((time) => {
-        const [hour] = time.split(':');
+        const [hour, minute] = time.split(':');
         const hourNum = parseInt(hour);
-        if (hourNum >= 0 && hourNum < 12) {
-            morningSlots.push(convertToRegularTime(time));
-        } else if (hourNum >= 12 && hourNum < 18) {
-            afternoonSlots.push(convertToRegularTime(time));
-        } else {
-            eveningSlots.push(convertToRegularTime(time));
+        const minuteNum = parseInt(minute);
+
+        // Check if the slot time is after the current time
+        if (hourNum > currentHours || (hourNum === currentHours && minuteNum > currentMinutes)) {
+            if (hourNum >= 0 && hourNum < 12) {
+                morningSlots.push(convertToRegularTime(time));
+            } else if (hourNum >= 12 && hourNum < 18) {
+                afternoonSlots.push(convertToRegularTime(time));
+            } else {
+                eveningSlots.push(convertToRegularTime(time));
+            }
         }
     });
 
     return { morningSlots, afternoonSlots, eveningSlots };
 }
+
 
 function convertToRegularTime(militaryTime) {
     // Split the military time into hours and minutes
