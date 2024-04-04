@@ -12,7 +12,6 @@
     "@mui/material": "^5.14.16",
     "@mui/styled-engine-sc": "^6.0.0-alpha.5",
     "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "amazon-cognito-identity-js": "^6.3.7",
     "axios": "^1.6.1",
@@ -32,7 +31,7 @@
   "scripts": {
     "start": "GENERATE_SOURCEMAP=false react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!axios)/'",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -52,5 +51,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.24.3",
+    "@babel/preset-react": "^7.24.1",
+    "@testing-library/react": "^14.2.2",
+    "babel-jest": "^29.7.0",
+    "jest": "^27.5.1",
+    "react-test-renderer": "^18.2.0"
   }
 }

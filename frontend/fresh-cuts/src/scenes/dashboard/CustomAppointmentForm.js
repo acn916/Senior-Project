@@ -138,16 +138,6 @@ const CustomStyledLayout = (props) => {
           onChange={handleNameChange}
         />
       </div>
-      <div style={{ marginBottom: '16px', marginTop: "16px" }}>
-        <TextField
-          id="client-id"
-          label="Client Id"
-          variant="outlined"
-          fullWidth
-          value={appointmentData.client_id || ''}
-          onChange={(e) => onFieldChange({ client_id: e.target.value })}
-        />
-     </div>
 
       <div style={{ marginBottom: '16px', marginTop: "16px" }}>
         <TextField

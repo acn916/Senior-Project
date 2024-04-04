@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+import React, {useState, useEffect} from 'react'
 import axios from "axios";
 import { Paper } from '@mui/material';
 import {
@@ -18,14 +18,21 @@ import {
     ViewSwitcher,
     MonthView,
 } from '@devexpress/dx-react-scheduler-material-ui';
-import { FormControl, Select, MenuItem } from '@mui/material';
+import { FormControl, Select, MenuItem, useMediaQuery, useTheme} from '@mui/material';
 import CustomBasicLayout from './CustomAppointmentForm';
 import { ConfirmationDialog } from '@devexpress/dx-react-scheduler-material-ui';
 import { AppsSharp } from '@mui/icons-material';
+import CustomAppointmentTooltipContent from './CustomToolTip';
+import './styles.css'; 
+
+
 
 
 // Component start
 function Dashboard() {
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   // create state variables to hold data from api call
     const [appointments, setAppointments] = useState([]);
@@ -33,18 +40,33 @@ function Dashboard() {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [currentStylist, setCurrentStylist] = useState('All');
     const [stylist, setStylist] = useState([]);
-   
-
-
+    const [clients, setClients] = useState([]);
+    const [name, setName] = useState("");
+  
     const fetchAppointments = async () =>  {
 
       try{
         const response = await axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/appointments');
+        const clientsResponse = await axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/client');
+        const clientsData = clientsResponse.data; 
+
+        const serviceResponse =  await axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/service');
+        const serviceData = serviceResponse.data;
+       
 
         const formattedAppointments = response.data.map(appointment => {
+
+            const client = clientsData && clientsData.length > 0 ? clientsData.find(client => client.id === appointment.client_id) : null;
+            
+            const clientName = client ? `${client.first_name} ${client.last_name}` : ''; 
+
+            const service = serviceData && serviceData.length > 0 ? serviceData.find(service => service.id === appointment.service_id) : null; 
+            const serviceName = service ? service.name : '';
+
             const [year, month, day, hour, minute] = appointment.scheduled_at
                 .match(/\d+/g)
                 .map(Number);
+            
     
               return {
                   id: appointment.id,
@@ -56,6 +78,8 @@ function Dashboard() {
                   client_id:`${appointment.client_id}`,
                   notes: `${appointment.notes}`,
                   status: `${appointment.status}`,
+                  client_name: clientName, 
+                  service_name: serviceName, 
               };
         });
     
@@ -90,6 +114,7 @@ function Dashboard() {
     const fetchClients = async () => {
       try {
           const clientResponse = await axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/client');
+          setClients(clientResponse);
           
       } catch (error) {
           console.error("Error fetching clients:", error);
@@ -185,7 +210,6 @@ function Dashboard() {
           });
       }
     
-      
       if (changed) {    
         Object.keys(changed).forEach(appointmentId => {
 
@@ -247,19 +271,35 @@ function Dashboard() {
       
       setAppointments(updatedData);
     };
+    
+    const appointmentCellColor = ({children, style,  data, ...restProps }) => {
+      //console.log("Client Name:", client_name); // Add console log for debugging
+      //console.log("Props in appointmentCellColor:", data); // Add console log to check received props
+    
+      const {client_name, service_name, } = data; 
+      
 
-    const appointmentCellColor = ({children, style, ...restProps }) => (
-      <Appointments.Appointment
+      //console.log("Client Name:",client_name);
+    
+      return (
+        <Appointments.Appointment
         {...restProps}
+        data={data}
         style={{
           ...style,
           backgroundColor: '#F43F5E',
           borderRadius: '8px',
         }}
       >
-        {children}
+        <div style={{textAlign: 'center'}}>
+          <h3 style={{ color: 'white',fontSize: '12px' }}>{client_name} - {service_name} {children}</h3>
+         
+        </div>
       </Appointments.Appointment>
-    );
+      );
+    };
+    
+   
 
     const CustomTimeTableCellWeek = ({ startDate, ...restProps }) => {
       const currentTime = new Date();
@@ -291,7 +331,7 @@ function Dashboard() {
               <Paper style={{ flex: '1 0 auto', overflow: 'auto' }}>
                 <Scheduler
                   data={appointments}
-                  height={'100%'}
+                  height={isMobile ? 'auto' : '100%'}
                 >
                   <ViewState
                     defaultCurrentDate={currentDate}
@@ -316,8 +356,11 @@ function Dashboard() {
                   <ViewSwitcher />
                   <Appointments
                     appointmentComponent={appointmentCellColor}
+                    
                   />
                   <AppointmentTooltip
+                    
+                    contentComponent={CustomAppointmentTooltipContent}
                     showCloseButton
                     showOpenButton
                     showDeleteButton
