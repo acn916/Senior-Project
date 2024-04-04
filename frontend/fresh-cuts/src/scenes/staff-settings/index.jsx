@@ -203,7 +203,7 @@ const SettingsPage = () => {
                 <Setting />
               </>
             )}
-            {activePage === "profile" && (
+            {(activePage === "" || activePage === "profile") && (
               <>
                 <Typography variant="h4" gutterBottom fontWeight={700}>
                   Profile
@@ -211,11 +211,6 @@ const SettingsPage = () => {
                 <Box sx={{ height: "16px" }} />
                 <UserProfile />
               </>
-            )}
-            {activePage === "" && (
-              <Typography variant="h4" gutterBottom fontWeight={700}>
-                Select a setting to edit
-              </Typography>
             )}
           </Box>
         </Box>
