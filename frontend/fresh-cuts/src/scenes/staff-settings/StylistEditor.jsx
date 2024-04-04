@@ -7,7 +7,8 @@ import {
     ListItem,
     ListItemText,
     Typography,
-    CircularProgress
+    CircularProgress,
+    CssBaseline
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -63,8 +64,6 @@ const StylistEditor = () => {
     };
 
     const handleFormSubmit = async (results) => {
-
-        
         if(action === 'add'){
             await addUserToDatabase(results);
 
@@ -79,7 +78,6 @@ const StylistEditor = () => {
     };
 
     const editUserFromDatabase = async (userData) => {
-
         const id = userData.id;
         try{
             const response = await axios.put(`https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/staff/${id}`, [{
@@ -147,7 +145,7 @@ const StylistEditor = () => {
 
     if (loading) {
         return (
-            <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" width="100%">
+            <Box display="flex" justifyContent="center" alignItems="center" height="100%" width="100%">
                 <CircularProgress />
             </Box>
         );
@@ -155,14 +153,14 @@ const StylistEditor = () => {
 
     if (error) {
         return (
-            <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" width="100%">
+            <Box display="flex" justifyContent="center" alignItems="center" height="100%" width="100%">
                 {error}
             </Box>
         );
     }
 
     return (
-        <>
+        <CssBaseline>
             <Box
                 sx={{
                     display: "flex",
@@ -271,7 +269,7 @@ const StylistEditor = () => {
                 handleClose={handleCloseDialog}
                 handleConfirm={handleConfirmDelete}
             />
-        </>
+        </CssBaseline>
     );
 };
 

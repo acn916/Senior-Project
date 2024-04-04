@@ -56,6 +56,7 @@ const ConfirmDeleteDialog = ({ open, handleClose, handleConfirm }) => {
               '&:hover': { backgroundColor: '#C74444' } 
             }}
             disabled={loading}
+            aria-label='deletepopupbutton'
           >
             {loading ? <CircularProgress size={24} sx={{ color: 'white' }} /> : 'Delete'}
           </Button>
