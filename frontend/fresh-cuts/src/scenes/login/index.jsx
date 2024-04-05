@@ -12,22 +12,34 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState(false);
-  const {isLoggedIn, setIsLoggedIn, setUserRole, setName} = useContext(AuthContext)
-  
+
+  // THIS IS AUTH CONTEXT. This is how you access the state variables and their setters. Must be SAME exact
+  // name inside the AuthContext.js file.
+  const {isLoggedIn, setIsLoggedIn, setUserRole, setName, setUserEmail, setUserPhone} = useContext(AuthContext)
+
 
   const { authenticate, getSession } = useContext(AccountContext);
 
   useEffect(() => {
+
+    // this function will check if the user is "logged in" or has a "session"
     const checkAuthentication = async () => {
       try {
         const session = await getSession();
         if (session && session.user) {
-          
+
+          // if the user is logged in then save all of the user information inside of AuthContext
+          // all this user information is coming form aws cogito (session).
           const role = session["custom:user_role"];
-          const { given_name, family_name } = session;
+          const { given_name, family_name, email, phone_number } = session;
+
+          // these mutator functions will change the value of the state variable inside AuthContext.
           setName(`${given_name} ${family_name}`); 
           setUserRole(role);
           setIsLoggedIn(true); 
+          setUserEmail(email);
+          setUserPhone(phone_number);
+                   
         } else {
           setIsLoggedIn(false);
         }
@@ -43,9 +55,12 @@ export default function Login() {
   const onSubmit = (event) => {
     event.preventDefault();
 
+
+
     authenticate(email, password)
       .then((data) => {
         
+        setUserEmail(email);
         setLoginError(false);
         setIsLoggedIn(true); 
       })

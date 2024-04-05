@@ -62,10 +62,14 @@ const PopupForm = ({ open, handleClose, handleSubmit, data }) => {
             <Grid item xs={6}>
               <TextField
                 fullWidth
+                id="first-name"
                 label="First Name"
                 name="firstName"
                 value={formData.firstName}
                 onChange={handleFormChange}
+                inputProps={{
+                  'data-testid': 'firstnametextfield',
+                }}
                 required
               />
             </Grid>
@@ -76,6 +80,9 @@ const PopupForm = ({ open, handleClose, handleSubmit, data }) => {
                 name="lastName"
                 value={formData.lastName}
                 onChange={handleFormChange}
+                inputProps={{
+                  'data-testid': 'lastnametextfield',
+                }}
                 required
               />
             </Grid>
@@ -87,6 +94,9 @@ const PopupForm = ({ open, handleClose, handleSubmit, data }) => {
                 value={formData.email}
                 onChange={handleFormChange}
                 type="email"
+                inputProps={{
+                  'data-testid': 'emailtextfield',
+                }}
                 required
               />
             </Grid>
@@ -97,6 +107,9 @@ const PopupForm = ({ open, handleClose, handleSubmit, data }) => {
                 name="phoneNumber"
                 value={formData.phoneNumber}
                 onChange={handleFormChange}
+                inputProps={{
+                  'data-testid': 'phonenumbertextfield',
+                }}
                 required
               />
             </Grid>
@@ -105,7 +118,18 @@ const PopupForm = ({ open, handleClose, handleSubmit, data }) => {
             <Button onClick={handleClose} color="secondary" variant="outlined" sx={{ borderColor: '#6B6767', color: '#6B6767', mr: 1 }}>
               Cancel
             </Button>
-            <Button type="submit" disabled={loading} variant="contained" sx={{ backgroundColor: loading ? undefined : '#E95252', color: 'white', '&:hover': { backgroundColor: '#C74444' } }}>
+            <Button
+              type="submit"
+              disabled={loading}
+              variant="contained"
+              aria-label='save'
+              sx={{
+                backgroundColor: loading ? undefined : '#E95252',
+                color: 'white',
+                '&:hover': {
+                  backgroundColor: '#C74444'
+                }
+              }}>
               {loading ? (
                 <CircularProgress
                   size={24}

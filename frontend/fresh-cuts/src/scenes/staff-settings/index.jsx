@@ -16,6 +16,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import Setting from "../settings/index";
 import StylistEditor from './StylistEditor';
 import ScrollableRow from './components/ScrollableRow';
+import UserProfile from './profile';
 
 const SettingsPage = () => {
   const [activePage, setActivePage] = useState("");
@@ -32,7 +33,7 @@ const SettingsPage = () => {
 
   const matches = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const buttonsText = ['Add/Remove Stylist', 'Add/Remove Service'];
+  const buttonsText = ['Add/Remove Stylist', 'Add/Remove Service', 'Profile'];
 
   return (
     <ThemeProvider theme={theme}>
@@ -48,6 +49,8 @@ const SettingsPage = () => {
                 setActivePage('stylist');
               } else if (item === 'Add/Remove Service') {
                 setActivePage('service');
+              } else if (item === 'Profile') {
+                setActivePage('profile')
               }
             }}
           />
@@ -75,6 +78,7 @@ const SettingsPage = () => {
                 Select a setting to edit
               </Typography>
             )}
+            {activePage === "profile" && <UserProfile />}
           </Box>
         </>
       ) : (
@@ -128,6 +132,20 @@ const SettingsPage = () => {
                 />
               </ListItem>
               <ListItemButton
+                selected={activePage === "profile"}
+                sx={{
+                  ".MuiTouchRipple-root": {
+                    display: "none",
+                  },
+                }}
+                onClick={() => handleTextClick("profile")}
+              >
+                <ListItemText
+                  primary={buttonsText[2]}
+                  sx={{ textAlign: "center", color: "#052B74" }}
+                />
+              </ListItemButton>
+              <ListItemButton
                 selected={activePage === "stylist"}
                 sx={{
                   ".MuiTouchRipple-root": {
@@ -167,7 +185,15 @@ const SettingsPage = () => {
               alignItems: "flex-start",
             }}
           >
-            {activePage === "stylist" && <StylistEditor />}
+            {activePage === "stylist" && (
+              <>
+                <Typography variant="h4" gutterBottom fontWeight={700}>
+                  Add/Remove Stylist
+                </Typography>
+                <Box sx={{ height: "16px" }} />
+                <StylistEditor />
+              </>
+            )}
             {activePage === "service" && (
               <>
                 <Typography variant="h4" gutterBottom fontWeight={700}>
@@ -175,6 +201,15 @@ const SettingsPage = () => {
                 </Typography>
                 <Box sx={{ height: "16px" }} />
                 <Setting />
+              </>
+            )}
+            {activePage === "profile" && (
+              <>
+                <Typography variant="h4" gutterBottom fontWeight={700}>
+                  Profile
+                </Typography>
+                <Box sx={{ height: "16px" }} />
+                <UserProfile />
               </>
             )}
             {activePage === "" && (
