@@ -90,7 +90,7 @@ const SettingsPage = () => {
         >
           <Box
             sx={{
-              width: '20%',
+              width: '15%',
               minWidth: 190,
               height: '100%',
               pt: 3,
@@ -177,7 +177,7 @@ const SettingsPage = () => {
           </Box>
           <Box
             sx={{
-              width: '80%',
+              width: '85%',
               bgcolor: "white",
               p: 3,
               display: "flex",
