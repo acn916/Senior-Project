@@ -2,7 +2,7 @@ import React from "react";
 import { Container, Typography, Button, Grid, Box, Divider, Paper } from "@mui/material";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import IconButton from "@mui/material/IconButton";
-import { Link } from "react-router-dom";
+//import { Link } from "react-router-dom";
 
 const staffMembers = [
   {name: "Kayla Nguyen",
@@ -59,13 +59,15 @@ const Staff = () => {
         {staffMembers.map((staff, index) => (
           <Grid item xs={12} md={4} key={index}>
             <Paper style={{ background: "#f5f5f5", padding: "1rem" }}> {}
-              <Typography variant="h6" component="div" textAlign="center" color={"#000000"}>
+              <Typography aria-label={staff.name} variant="h6" component="div" textAlign="center" color={"#000000"}>
                 {staff.name}
               </Typography>
               <Typography textAlign="center" variant="body2" color="textSecondary">
                 
                 <IconButton
                   component="a"
+                  aria-label={`INSTA${index}`}
+                  //href={`https://www.instagram.com/${staff.instagram.slice(1)}`}
                   href={`https://www.instagram.com/${staff.instagram.slice(1)}`}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -75,18 +77,18 @@ const Staff = () => {
                 </IconButton>
               </Typography>
               <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
-                <Link to="/booking">
-                    <Button
-                    variant="contained"
-                    style={{
-                        backgroundColor: "#E95252",
-                        color: "white",
-                        transition: "background-color 0.3s",
-                    }}
-                    >
-                    Book
-                    </Button>
-                </Link>
+                <Button
+                variant="contained"
+                aria-label={`BOOK${index}`}
+                href={`http://localhost:3000/booking`}
+                style={{
+                    backgroundColor: "#E95252",
+                    color: "white",
+                    transition: "background-color 0.3s",
+                }}
+                >
+                Book
+                </Button>
               </div>
             </Paper>
           </Grid>
