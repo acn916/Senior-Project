@@ -1,3 +1,8 @@
+.disabled-button {
+    background-color: grey;
+    color: white;
+}
+
 .selected-services{
     margin-left: 50px;
     margin-top: 50px;

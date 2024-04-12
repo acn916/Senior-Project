@@ -16,6 +16,10 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 export default function Booking() {
+    // To display morning, afternoon, and evening labels after search button is clicked
+    const [showMorning, setShowMorning] = useState(false);
+    const [showAfternoon, setShowAfternoon] = useState(false);
+    const [showEvening, setShowEvening] = useState(false);
 
     // Create a Date object representing today and format it for the selectedDate
     const today = new Date(); // Get today's date
@@ -127,8 +131,6 @@ export default function Booking() {
         });
     };
     
-
-    
     const handleTimeClick = (time) => {
         // Split the time string to separate hours and minutes
         const formattedDateTime = `${selectedDate} ${convertToMilitaryTime(time)}`
@@ -143,12 +145,6 @@ export default function Booking() {
         });
     };
     
-    
-    
-    
-    
-    
-
     const handleSearchClick = async () => {
 
         // Create a new Date object from the selectedDate string
@@ -173,6 +169,11 @@ export default function Booking() {
             setAfternoonSlots(afternoonSlots);
             setEveningSlots(eveningSlots);
 
+            // Update visibility based on whether each list of timeslots contains any slots
+            setShowMorning(morningSlots.length > 0);
+            setShowAfternoon(afternoonSlots.length > 0);
+            setShowEvening(eveningSlots.length > 0);
+
             setIsLoading(false);
         } catch (error) {
             console.error("Error:", error);
@@ -189,7 +190,11 @@ export default function Booking() {
         revealNoApt();
     }
 */
+    // Style for paper box container items
     const paperStyle = { padding: 20, maxHeight: '10000px', maxWidth: '90%', margin: "10px auto" }
+
+    // Checks if stylist and service is not selected in order to enable search button
+    const isDisabled = !selectedStylist || !selectedServices;
 
     return (
         <Paper elevation={2} style={paperStyle}>
@@ -232,7 +237,7 @@ export default function Booking() {
                     </FormControl>
                 </Grid>
 
-                <Grid item xs={12} md={4}>
+                <Grid item xs={12} md={2}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
                             label="Start Date"
@@ -246,82 +251,92 @@ export default function Booking() {
                     </LocalizationProvider>
                 </Grid>
 
-                <Grid item xs={12} md={4}>
-                    <Button variant='contained'
+                <Grid item xs={12} md={2}>
+                    <Button
+                        variant='contained'
                         style={{
-                            backgroundColor: "#e95252",
-                            padding: "16px 24px"
+                            padding: "16px 24px",
+                            backgroundColor: isDisabled ? 'grey' : '#e95252' // Use grey if disabled, original color otherwise
                         }}
-                        onClick={handleSearchClick}>
+                        className={isDisabled ? 'disabled-button' : ''}
+                        onClick={handleSearchClick}
+                        disabled={isDisabled}
+                    >
                         <Typography color='white'>Search</Typography>
                     </Button>
                 </Grid>
             </Grid>
 
-            <Grid container spacing={2} justifyContent="center">
-                <Grid item xs={12} md={4}>
-                    <h2>Morning</h2>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                        {morningSlots.map((time, index) => (
-                            <Button
-                                key={index}
-                                variant='contained'
-                                onClick={() =>handleTimeClick(time)}
-                                style={{
-                                    backgroundColor: "#e95252",
-                                    width: "100px",
-                                    padding: "10px 10px"
-                                }}
-                            >
-                                <Typography color='white'>{time}</Typography>
-                            </Button>
-                        ))}
-                    </div>
-                </Grid>
+            <Grid container spacing={2} justifyContent="left">
+                {showMorning && (
+                    <Grid item xs={12} md={12}>
+                        <h2>Morning</h2>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                            {morningSlots.map((time, index) => (
+                                <Button
+                                    key={index}
+                                    variant='contained'
+                                    onClick={() => handleTimeClick(time)}
+                                    style={{
+                                        backgroundColor: "#e95252",
+                                        width: "100px",
+                                        padding: "10px 10px"
+                                    }}
+                                >
+                                    <Typography color='white'>{time}</Typography>
+                                </Button>
+                            ))}
+                        </div>
+                    </Grid>
+                )}
             </Grid>
 
-            <Grid container spacing={2} justifyContent="center">
-                <Grid item xs={12} md={4}>
-                    <h2>Afternoon</h2>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                        {afternoonSlots.map((time, index) => (
-                            <Button
-                                key={index}
-                                variant='contained'
-                                onClick={() =>handleTimeClick(time)}
-                                style={{
-                                    backgroundColor: "#e95252",
-                                    width: "100px",
-                                    padding: "10px 10px"
-                                }}
-                            >
-                                <Typography color='white'>{time}</Typography>
-                            </Button>
-                        ))}
-                    </div>
-                </Grid>
+            <Grid container spacing={2} justifyContent="left">
+                {showAfternoon && (
+                    <Grid item xs={12} md={12}>
+                        <h2>Afternoon</h2>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                            {afternoonSlots.map((time, index) => (
+                                <Button
+                                    key={index}
+                                    variant='contained'
+                                    onClick={() => handleTimeClick(time)}
+                                    style={{
+                                        backgroundColor: "#e95252",
+                                        width: "100px",
+                                        padding: "10px 10px"
+                                    }}
+                                >
+                                    <Typography color='white'>{time}</Typography>
+                                </Button>
+                            ))}
+                        </div>
+                    </Grid>
+                )}
             </Grid>
 
-            <Grid container spacing={2} justifyContent="center">
-                <Grid item xs={12} md={4}>
-                    <h2>Evening</h2>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                        {eveningSlots.map((time, index) => (
-                            <Button
-                                key={index}
-                                variant='contained'
-                                onClick={() =>handleTimeClick(time)}
-                                style={{
-                                    backgroundColor: "#e95252",
-                                    width: "100px",
-                                    padding: "10px 10px"
-                                }}
-                            >
-                                <Typography color='white'>{time}</Typography>
-                            </Button>
-                        ))}
-                    </div>
-                </Grid>
+            <Grid container spacing={2} justifyContent="left">
+                {showEvening && (
+                    <Grid item xs={12} md={12}>
+                        <h2>Evening</h2>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                            {eveningSlots.map((time, index) => (
+                                <Button
+                                    key={index}
+                                    variant='contained'
+                                    onClick={() => handleTimeClick(time)}
+                                    style={{
+                                        backgroundColor: "#e95252",
+                                        width: "100px",
+                                        padding: "10px 10px"
+                                    }}
+                                >
+                                    <Typography color='white'>{time}</Typography>
+                                </Button>
+                            ))}
+                        </div>
+                    </Grid>
+                )}
             </Grid>
 
             <h1 id="noApt" align="center" style={{ width: "70%", marginTop: 0 }}></h1><br />
