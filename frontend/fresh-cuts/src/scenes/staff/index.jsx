@@ -87,6 +87,7 @@ const Staff = () => {
                     transition: "background-color 0.3s",
                 }}
                 >
+                {/*<Link style={{textDecoration: "none", color: "white"}} to="/booking">Book</Link>*/}
                 Book
                 </Button>
               </div>
