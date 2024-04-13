@@ -17,14 +17,12 @@ const CustomStyledLayout = (props) => {
   const [stylist, setStylist] = useState([]);
   const [selectedStylist, setSelectedStylist] = useState(appointmentData.staff_id);
   const [selectedServices, setSelectedServices] = useState('');
- 
   const [loading, setLoading] = useState(true);
   const [services, setServices] = useState([]);
-  
-
   const [name, setName] = useState("");
   const [service, setService] = useState("");
   const [clientEmail, setClientEmail] = useState("");
+  const [phone, setPhone] = useState("");
 
 
   useEffect(() =>{
@@ -73,6 +71,7 @@ const CustomStyledLayout = (props) => {
             if(response.data[i].id == appointmentData.client_id){
                 setName(response.data[i].first_name + " " + response.data[i].last_name );
                 setClientEmail(response.data[i].email);
+                setPhone(response.data[i].phone);
             }
             
         }
@@ -87,8 +86,6 @@ const CustomStyledLayout = (props) => {
     setLoading(false);
 
   }, [appointmentData.client_id]);
- 
-
  
   const handleServiceChange = (event) => {
     const selectedServiceName = event.target.value;
@@ -115,12 +112,24 @@ const CustomStyledLayout = (props) => {
   };
 
   const handleEmailChange = (event) => {
-    setClientEmail(event.target.value); 
+    
+    const email_input = event.target.value;
+    setClientEmail(email_input); 
+    onFieldChange({email: email_input})
   };
 
   const handleNameChange = (event) => {
-    setName(event.target.value); 
+    
+    const name_input = event.target.value
+    setName(name_input); 
+    onFieldChange({name: name_input})
   };
+
+  const handlePhoneChange = (event) => {
+    const phone_input = event.target.value;
+    setPhone(phone_input);
+    onFieldChange({phone: phone_input});
+  }
 
 
   return (
@@ -147,6 +156,17 @@ const CustomStyledLayout = (props) => {
           fullWidth
           value={clientEmail}
           onChange={handleEmailChange}
+        />
+     </div>
+
+     <div style={{ marginBottom: '16px', marginTop: "16px" }}>
+        <TextField
+          id="client-phone"
+          label="Phone"
+          variant="outlined"
+          fullWidth
+          value={phone}
+          onChange={handlePhoneChange}
         />
      </div>
 
