@@ -86,24 +86,25 @@ const Staff = () => {
         {staffMembers.map((staff, index) => (
           <Grid item xs={12} md={4} key={index}>
             <Paper style={{ background: "#f5f5f5", padding: "1rem" }}> {}
-              <Typography variant="h6" component="div" textAlign="center" color={"#000000"}>
+              <Typography aria-label={staff.name} variant="h6" component="div" textAlign="center" color={"#000000"}>
                 {staff.name}
               </Typography>
               <Typography textAlign="center" variant="body2" color="textSecondary">
               </Typography>
               <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
-                <Link to="/booking">
-                    <Button
-                    variant="contained"
-                    style={{
-                        backgroundColor: "#E95252",
-                        color: "white",
-                        transition: "background-color 0.3s",
-                    }}
-                    >
-                    Book
-                    </Button>
-                </Link>
+                <Button
+                variant="contained"
+                aria-label={`BOOK${index}`}
+                href={`http://localhost:3000/booking`}
+                style={{
+                    backgroundColor: "#E95252",
+                    color: "white",
+                    transition: "background-color 0.3s",
+                }}
+                >
+                {/*<Link style={{textDecoration: "none", color: "white"}} to="/booking">Book</Link>*/}
+                Book
+                </Button>
               </div>
             </Paper>
           </Grid>

@@ -37,8 +37,8 @@ const Services = () => {
             {services.map((service) => (
               <Grid item xs={12} sm={6} md={4} key={service.id}>
                 <Card style={{ height: "100%", backgroundColor: "#f2f2f2", display: 'flex', flexDirection: 'column' }}>
-                  <CardContent> 
-                    <Typography variant="h6" component="div">
+                  <CardContent>
+                    <Typography variant="h6" component="div" aria-label={service.name}>
                       {service.name}
                     </Typography>
                     {service.description && (
@@ -55,13 +55,16 @@ const Services = () => {
                   <div style={{ marginTop: 'auto', textAlign: 'right', padding: '15px' }}>
                     <Button
                       variant="contained"
+                      aria-label={`REQUEST${service.id}`}
+                      href={`http://localhost:3000/booking`}
                       style={{
                         backgroundColor: "#E95252",
                         color: "white",
                         transition: "background-color 0.3s",
                       }}
                     >
-                      <Link style={{ textDecoration: "none", color: "white" }} to="/booking">Request</Link>
+                      {/*<Link style={{textDecoration: "none", color: "white"}} to="/booking">Request</Link>*/}
+                      Request
                     </Button>
                   </div>
                 </Card>
