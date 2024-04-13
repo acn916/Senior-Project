@@ -2,15 +2,18 @@ import * as React from 'react';
 import { useContext, useState, useEffect } from 'react';
 import { AppBar, Box, Toolbar, IconButton, Typography, Menu, MenuItem, Button, Avatar, Container } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Image from '../../pictures/redsalonart.png';
 import { AccountContext } from '../login/Account';
 import { AuthContext } from '../../AuthContext';
 import './Header.css';
+import axios from "axios";
 
 const pages = {
   Client: ['Home', 'Services', 'Staff'],
-  Stylist: ['Dashboard', 'Settings', 'Request'],
+  Stylist: ['Dashboard', 'Request', 'Settings'],
+  Admin: ['Dashboard', 'Request', 'Settings'],
 };
 
 const ResponsiveAppBar = () => {
@@ -20,6 +23,10 @@ const ResponsiveAppBar = () => {
     const [userFullName, setUserFullName] = useState('');
     const navigate = useNavigate();
     const location = useLocation();
+    const [loading, setLoading] = useState(true);
+    const [checkAppointment, setCheckAppointment] = useState(0);
+    const [sessionRole, setSessionRole] = useState('');
+    const [firstInitial, setFirstInitial] = useState('');
 
     useEffect(() => {
         const checkAuthentication = async () => {
@@ -35,7 +42,46 @@ const ResponsiveAppBar = () => {
             }
         };
 
+        const fetchAppointments = async () =>  {
+            try{
+              const response = await axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/appointments');
+
+              const session = await getSession();
+              const staffEmail = session.email;
+    
+              const staffResponse = await axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/get_all_staff');
+              const staffId = staffResponse.data.find(staff => staff.email === staffEmail).id;
+              //const staffId = staffResponse.data.find(staff => (staff.first_name + " " + staff.last_name) === name).id;
+
+              setCheckAppointment(response.data.filter(appointment => appointment.status === 'Pending' && appointment.staff_id === staffId).length);
+    
+            } catch(error){
+              console.error("Error fetching data:'", error);
+              setLoading(false);
+            }
+          }
+
+          const gettingSession = async () =>  {
+            try{
+
+                const session = await getSession();
+                const sessionUserRole = session['custom:user_role'];
+                setSessionRole(sessionUserRole);
+                setFirstInitial(session.given_name[0]);
+                
+            } catch(error){
+              console.error("Error fetching data:'", error);
+              setLoading(false);
+            }
+          }
+
         checkAuthentication();
+        fetchAppointments();
+        gettingSession();
+        setLoading(false);
+        const intervalId = setInterval(fetchAppointments, 9000);
+
+        return () => clearInterval(intervalId);  
     }, []);
 
     const handleOpenNavMenu = (event) => {
@@ -62,7 +108,7 @@ const ResponsiveAppBar = () => {
         <AppBar style={{ background: 'white' }} position="static">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <a href="/Home">
+                    <a {...userRole === "Stylist" ? {href: "/Home"} : {...sessionRole === "Stylist" ? {href: "/Dashboard"} : {href: "/Home"} }}>
                         <Box
                             component="img"
                             sx={{
@@ -106,20 +152,30 @@ const ResponsiveAppBar = () => {
                             {pages[userRole].map((page) => (
                                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                                     <Typography textAlign="center" className={isPageActive(page) ? 'active-link' : ''}>
-                                        <Link style={{ textDecoration: 'none', color: 'black' }} to={`/${page}`}>{page}</Link>
+                                        {
+                                            page === 'Request' && checkAppointment > 0 ? <Link style={{ textDecoration: 'none', color: 'black' }} to={`/${page}`}>{page} <NotificationsActiveIcon sx={{marginBottom: -0.75}}/></Link> 
+                                            : <Link style={{ textDecoration: 'none', color: 'black' }} to={`/${page}`}>{page}</Link>
+                                        }
                                     </Typography>
                                 </MenuItem>
                             ))}
                         </Menu>
                     </Box>
 
-                    <Box component="img" sx={{ display: { xs: 'flex', md: 'none' }, mr: 1, height: 60, width: 75 }} src={Image}></Box>
+                    <a {...userRole === "Stylist" ? {href: "/Home"} : {...sessionRole === "Stylist" ? {href: "/Dashboard"} : {href: "/Home"} }}>
+                        <Box component="img" sx={{ display: { xs: 'flex', md: 'none' }, mr: 1, height: 60, width: 75 }} src={Image}></Box>
+                    </a>
+
+                    <Typography sx={{mr: 2, display: { xs: 'flex', md: 'none' }, flexGrow: 1}}/> {/* will keep logo in the center on small screens */}
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                       {pages[userRole].map((page) => (
                         <MenuItem key={page} onClick={handleCloseNavMenu}>
                             <Typography textAlign="center" className={isPageActive(page) ? 'active-link' : ''}>
-                                <Link style={{ textDecoration: 'none', color: 'black' }} to={`/${page}`}>{page}</Link>
+                                {
+                                    page === 'Request' && checkAppointment > 0 ? <Link style={{ textDecoration: 'none', color: 'black' }} to={`/${page}`}>{page} <NotificationsActiveIcon sx={{marginBottom: -0.75}}/></Link> 
+                                    : <Link style={{ textDecoration: 'none', color: 'black' }} to={`/${page}`}>{page}</Link>
+                                }
                             </Typography>
                         </MenuItem>
                       ))}
@@ -127,7 +183,7 @@ const ResponsiveAppBar = () => {
 
                     {isLoggedIn ? (
                         <>
-                          <Avatar>{name[0]}</Avatar>
+                          <Avatar>{firstInitial}</Avatar>
                           <Button onClick={handleSignOut} style={{ color: 'black' }}> Sign Out </Button>
                         </>
                     ) : (

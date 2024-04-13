@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Grid, Button } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -11,6 +11,8 @@ import Decline from './Decline.jsx';
 import Rebook from './Rebook.jsx';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import axios from "axios";
+import { AuthContext } from '../../AuthContext';
+import { AccountContext } from '../login/Account.js';
 
 
 const Request = () => { 
@@ -19,12 +21,21 @@ const Request = () => {
   const [services, setServices] = useState([]); 
   const [clients, setClients] = useState([]);  
   const [loading, setLoading] = useState(true);
+  const { name, setName } = useContext(AuthContext);
+  const { getSession } = useContext(AccountContext);
 
   const fetchAppointments = async () =>  {
     try{
       const response = await axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/appointments');
-      
-      const pending_request = response.data.filter(appointment => appointment.status === 'Pending');
+
+      const session = await getSession();
+      const staffEmail = session.email;
+
+      const staffResponse = await axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/get_all_staff');
+      const staffId = staffResponse.data.find(staff => staff.email === staffEmail).id; {/* find staff id with user's email */}
+      //const staffId = staffResponse.data.find(staff => (staff.first_name + " " + staff.last_name) === name).id; {/* find staff id with user's name */}
+
+      const pending_request = response.data.filter(appointment => appointment.status === 'Pending' && appointment.staff_id === staffId);
       setRequests(pending_request);
       
     } catch(error){
@@ -57,13 +68,12 @@ const Request = () => {
     axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/client')
       .then(response => {
         setClients(response.data);
-        
       })
       .catch(error => {
         console.error('Error fetching data:', error);
         setLoading(false);
       });
-
+  
       fetchAppointments();
       setLoading(false);
       const intervalId = setInterval(fetchAppointments, 9000);
@@ -114,6 +124,7 @@ const Request = () => {
   const handleRebook = (id, service, dateTime) => {
     const currentRequestIndex = requests.findIndex((request) => request.id === id);
     const updatedRequest = {...requests[currentRequestIndex], service_id: service, scheduled_at: dateTime};
+    console.log("updated request", updatedRequest);
     const newRequests = [
       ...requests.slice(0, currentRequestIndex),
       updatedRequest,

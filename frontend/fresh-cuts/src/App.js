@@ -27,31 +27,36 @@ function App() {
         <Account>
           <ResponsiveAppBar />
         </Account>
-        <div style={{minHeight:"700px"}}>
-          <Routes>
-            {/* Public routes */}
-  
-            <Route path="/Home" element={<Home />} />
-            <Route path="/Staff" element={<Staff />} />
-            <Route path="/Confirmation" element={<Confirm />} />
-            <Route path="/Services" element={<Services />} />
-            <Route path="/Booking" element={<Booking />} />
-            <Route path="/Summary" element={<Requestsummary />} />
-            <Route path="/Signup" element={<Signup />} />
-            <Route path="/Login" element={<Account><Login /></Account>} />
-            <Route path="/Passwordreset" element={<Account><Passwordreset /></Account>}/>
-            <Route path="/Error" element={<ErrorPage />} />
-            <Route path="/" element={<Navigate to="/Home" />} />
+        <div className="flex-wrapper">
+          <div>
+            <Routes>
+              {/* Public routes */}
+    
+              <Route path="/Home" element={<Home />} />
+              <Route path="/Staff" element={<Staff />} />
+              <Route path="/Confirmation" element={<Confirm />} />
+              <Route path="/Services" element={<Services />} />
+              <Route path="/Booking" element={<Booking />} />
+              <Route path="/Summary" element={<Requestsummary />} />
+              <Route path="/Signup" element={<Signup />} />
+              <Route path="/Login" element={<Account><Login /></Account>} />
+              <Route path="/Passwordreset" element={<Account><Passwordreset /></Account>}/>
+              <Route path="/Error" element={<ErrorPage />} />
+              <Route path="/" element={<Navigate to="/Home" />} />
 
-            {/* Private routes */}
-            <Route element={<Account><PrivateRoutes /></Account>}>
-              <Route path="/Dashboard" element={<Dashboard />} />
-              <Route path="/Settings" element={<SettingsPage/>}/>
-              <Route path="/Request" element={<Request/>}/>
-            </Route>
-          </Routes>
-        </div>     
-        <Footer />
+              {/* Private routes */}
+              <Route element={<Account><PrivateRoutes /></Account>}>
+                <Route path="/Dashboard" element={<Dashboard />} />
+                <Route path="/Settings" element={<SettingsPage/>}/>
+                <Route path="/Request" element={<Request/>}/>
+              </Route>
+            </Routes>
+          </div>   
+            
+          <div>
+            <Footer />
+          </div>
+        </div>
       </div>
     </AuthProvider>
   );
