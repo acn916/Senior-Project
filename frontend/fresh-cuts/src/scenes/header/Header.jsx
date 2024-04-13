@@ -25,6 +25,8 @@ const ResponsiveAppBar = () => {
     const location = useLocation();
     const [loading, setLoading] = useState(true);
     const [checkAppointment, setCheckAppointment] = useState(0);
+    const [sessionRole, setSessionRole] = useState('');
+    const [firstInitial, setFirstInitial] = useState('');
 
     useEffect(() => {
         const checkAuthentication = async () => {
@@ -59,8 +61,23 @@ const ResponsiveAppBar = () => {
             }
           }
 
+          const gettingSession = async () =>  {
+            try{
+
+                const session = await getSession();
+                const sessionUserRole = session['custom:user_role'];
+                setSessionRole(sessionUserRole);
+                setFirstInitial(session.given_name[0]);
+                
+            } catch(error){
+              console.error("Error fetching data:'", error);
+              setLoading(false);
+            }
+          }
+
         checkAuthentication();
         fetchAppointments();
+        gettingSession();
         setLoading(false);
         const intervalId = setInterval(fetchAppointments, 9000);
 
@@ -91,7 +108,7 @@ const ResponsiveAppBar = () => {
         <AppBar style={{ background: 'white' }} position="static">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <a href="/Home">
+                    <a {...userRole === "Stylist" ? {href: "/Home"} : {...sessionRole === "Stylist" ? {href: "/Dashboard"} : {href: "/Home"} }}>
                         <Box
                             component="img"
                             sx={{
@@ -145,7 +162,9 @@ const ResponsiveAppBar = () => {
                         </Menu>
                     </Box>
 
-                    <Box component="img" sx={{ display: { xs: 'flex', md: 'none' }, mr: 1, height: 60, width: 75 }} src={Image}></Box>
+                    <a {...userRole === "Stylist" ? {href: "/Home"} : {...sessionRole === "Stylist" ? {href: "/Dashboard"} : {href: "/Home"} }}>
+                        <Box component="img" sx={{ display: { xs: 'flex', md: 'none' }, mr: 1, height: 60, width: 75 }} src={Image}></Box>
+                    </a>
 
                     <Typography sx={{mr: 2, display: { xs: 'flex', md: 'none' }, flexGrow: 1}}/> {/* will keep logo in the center on small screens */}
 
@@ -164,7 +183,7 @@ const ResponsiveAppBar = () => {
 
                     {isLoggedIn ? (
                         <>
-                          <Avatar>{name[0]}</Avatar>
+                          <Avatar>{firstInitial}</Avatar>
                           <Button onClick={handleSignOut} style={{ color: 'black' }}> Sign Out </Button>
                         </>
                     ) : (
