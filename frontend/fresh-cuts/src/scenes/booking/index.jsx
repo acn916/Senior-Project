@@ -12,7 +12,6 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useNavigate } from 'react-router-dom'; 
-
 import axios from 'axios';
 
 export default function Booking() {
@@ -26,6 +25,7 @@ export default function Booking() {
     const year = today.getFullYear(); // Get the year
     const month = String(today.getMonth() + 1).padStart(2, '0'); // Get the month and pad with zero if needed
     const day = String(today.getDate()).padStart(2, '0'); // Get the day and pad with zero if needed
+
     // Create the initialSelectedDate string in 'YYYY-MM-DD' format
     const initialSelectedDate = `${year}-${month}-${day}`;
 
@@ -37,10 +37,7 @@ export default function Booking() {
     const [selectedStylist, setSelectedStylist] = useState('');
     const [selectedServices, setSelectedServices] = useState('');
     const [selectedDate, setSelectedDate] = useState(initialSelectedDate);
-    const [selectedTime, setSelectedTime] = useState('');
-
-    // state variable holding all available time slots
-    const [timeslots, setTimeslots] = useState([]);
+    const [searchClick, setSearchClick] = useState(false);
 
     // state variables to hold timeslots for morning, afternoon, and evening
     const [morningSlots, setMorningSlots] = useState([]);
@@ -52,6 +49,18 @@ export default function Booking() {
 
     // state variable to determine if time is selected
     const [isTimeSelected, setIsTimeSelected] = useState(false);
+
+    // craete a navigate hook object
+    const navigate = useNavigate();
+
+    // use Effect to fetch the stylist list and services list
+    useEffect(() => {
+        console.log(selectedDate)
+        setIsLoading(true);
+        fetchStylists();
+        fetchServices();
+        setIsLoading(false);
+    }, [selectedDate]);
 
     // functions for fetching data from api
     const fetchStylists = async () => {
@@ -76,31 +85,12 @@ export default function Booking() {
         }
     };
 
-    // use Effect to fetch the stylist list and services list
-    useEffect(() => {
-        setIsLoading(true);
-        fetchStylists();
-        fetchServices();
-        setIsLoading(false);
-    }, []);
-
-    // functions are for displaying message is there are no available time slots
-    function revealNoApt() {
-        document.getElementById("noApt").innerHTML = "Sorry, there are no available appointments, please try another date.";
-        document.getElementById("callUs").innerHTML = "Call to see if there are any last minute openings at (916) 451-1517";
-    }
-
-    function hideNoApt() {
-        document.getElementById("noApt").innerHTML = "";
-        document.getElementById("callUs").innerHTML = "";
-    }
-
     // handler fuctions for the select service, select stylist and search button click
-
     const handleDateChange = (date) => {
         // Convert the selected date to a string in the format 'YY-MM-DD'
         const formattedDate = date.toISOString().split('T')[0];
         setSelectedDate(formattedDate);
+       
     };
 
     const handleServiceChange = (event) => {
@@ -111,26 +101,7 @@ export default function Booking() {
         setSelectedStylist(event.target.value);
     };
 
-    const dummySelectedService = "Haircut";
-    const dummySelectedStylist = "John Doe";
-    const dummySelectedDate = "2024-04-01";
-    const dummySelectedTime = "10:00 AM";
-
-    const navigate = useNavigate();
-    const handleNavigateToSummary = (selectedTime) => {
-
-       
-        console.log(selectedDate)
-        navigate('/summary', {
-            state: {
-                selectedService: dummySelectedService,
-                selectedStylist: dummySelectedStylist,
-                selectedDate: dummySelectedDate,
-                selectedTime: dummySelectedTime // Pass the selected time as an argument
-            }
-        });
-    };
-    
+   
     const handleTimeClick = (time) => {
         // Split the time string to separate hours and minutes
         const formattedDateTime = `${selectedDate} ${convertToMilitaryTime(time)}`
@@ -144,27 +115,16 @@ export default function Booking() {
             }
         });
     };
-    
+   
     const handleSearchClick = async () => {
-
-        // Create a new Date object from the selectedDate string
-        const selectedDateTime = new Date(selectedDate);
-
-        // Extract year, month, and day from the selected date
-        const year = selectedDateTime.getFullYear().toString(); // Get last two digits of the year
-        const month = ('0' + (selectedDateTime.getMonth() + 1)).slice(-2); // Add leading zero if needed
-        const day = ('0' + selectedDateTime.getDate()).slice(-2); // Add leading zero if needed
-
-        // Format the date to "YY-MM-DD" format
-        const formattedDate = `${year}-${month}-${day}`;
-
+        setSearchClick(true);
         try {
             setIsLoading(true);
-            const response = await axios.get(`https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/time_slots?service=${selectedServices}&stylist=${selectedStylist}&date=${formattedDate}`);
+            const response = await axios.get(`https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/time_slots?service=${selectedServices}&stylist=${selectedStylist}&date=${selectedDate}`);
             console.log(response)
 
             // Organize timeslots into morning, afternoon, and evening
-            const { morningSlots, afternoonSlots, eveningSlots } = organizeTimeSlots(response.data);
+            const { morningSlots, afternoonSlots, eveningSlots } = organizeTimeSlots(response.data, selectedDate);
             setMorningSlots(morningSlots);
             setAfternoonSlots(afternoonSlots);
             setEveningSlots(eveningSlots);
@@ -179,18 +139,8 @@ export default function Booking() {
             console.error("Error:", error);
             setIsLoading(false);
         }
-
-        
     };
-    /*
-    //Handle interaction with the removeTime() function based on availability
-    if (morningSlots.length !== 0 && afternoonSlots.length !== 0 && eveningSlots !== 0) { //Reveal no available appointments if our list of times is empty
-        hideNoApt();
-    } else {
-        revealNoApt();
-    }
-*/
-    // Style for paper box container items
+   
     const paperStyle = { padding: 20, maxHeight: '10000px', maxWidth: '90%', margin: "10px auto" }
 
     // Checks if stylist and service is not selected in order to enable search button
@@ -241,7 +191,7 @@ export default function Booking() {
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
                             label="Start Date"
-                            value={today}
+                            value={selectedDate}
                             onChange={handleDateChange}
                             renderInput={(params) => (
                                 <TextField {...params} variant="outlined" fullWidth />
@@ -345,25 +295,59 @@ export default function Booking() {
     )
 }
 
-function organizeTimeSlots(slots) {
+function organizeTimeSlots(slots, selectedDate) {
     const morningSlots = [];
     const afternoonSlots = [];
     const eveningSlots = [];
 
+    // Get the current date
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth() + 1; // Months are zero-indexed, so add 1
+    const currentDay = currentDate.getDate();
+
+    // Split the selectedDate into year, month, and day
+    const [year, month, day] = selectedDate.split('-').map(Number);
+
+    // Function to convert time to minutes
+    function timeToMinutes(time) {
+        const [hour, minute] = time.split(':').map(Number);
+        return hour * 60 + minute;
+    }
+
+    const currentTimeInMinutes = currentDate.getHours() * 60 + currentDate.getMinutes();
+
     slots.forEach((time) => {
-        const [hour] = time.split(':');
-        const hourNum = parseInt(hour);
-        if (hourNum >= 0 && hourNum < 12) {
-            morningSlots.push(convertToRegularTime(time));
-        } else if (hourNum >= 12 && hourNum < 18) {
-            afternoonSlots.push(convertToRegularTime(time));
+        const [hour, minute] = time.split(':').map(Number);
+        const slotTimeInMinutes = timeToMinutes(time);
+
+        // Check if the date matches the current date or no date is provided
+        if (!selectedDate || (year === currentYear && month === currentMonth && day === currentDay)) {
+            // Check if the time slot is in the future
+            if (slotTimeInMinutes >= currentTimeInMinutes) {
+                if (hour >= 0 && hour < 12) {
+                    morningSlots.push(convertToRegularTime(time));
+                } else if (hour >= 12 && hour < 18) {
+                    afternoonSlots.push(convertToRegularTime(time));
+                } else {
+                    eveningSlots.push(convertToRegularTime(time));
+                }
+            }
         } else {
-            eveningSlots.push(convertToRegularTime(time));
+            // Organize all time slots with available times
+            if (hour >= 0 && hour < 12) {
+                morningSlots.push(convertToRegularTime(time));
+            } else if (hour >= 12 && hour < 18) {
+                afternoonSlots.push(convertToRegularTime(time));
+            } else {
+                eveningSlots.push(convertToRegularTime(time));
+            }
         }
     });
 
     return { morningSlots, afternoonSlots, eveningSlots };
 }
+
 
 function convertToRegularTime(militaryTime) {
     // Split the military time into hours and minutes

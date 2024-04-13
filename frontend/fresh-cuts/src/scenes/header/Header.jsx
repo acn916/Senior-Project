@@ -12,7 +12,8 @@ import axios from "axios";
 
 const pages = {
   Client: ['Home', 'Services', 'Staff'],
-  Stylist: ['Dashboard', 'Settings', 'Request'],
+  Stylist: ['Dashboard', 'Request', 'Settings'],
+  Admin: ['Dashboard', 'Request', 'Settings'],
 };
 
 const ResponsiveAppBar = () => {
