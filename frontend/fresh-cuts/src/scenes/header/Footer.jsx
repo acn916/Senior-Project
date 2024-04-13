@@ -24,13 +24,13 @@ const Servicepage = ['Services']
 
 const Footer = () => {
 
-	const { isLoggedIn} = useContext(AuthContext);
+	const { userRole } = useContext(AuthContext);
 
 	return (
 
 		
 		<Box>
-			{(!isLoggedIn && 
+			{(userRole !== "Stylist" && 
 				<FooterContainer>
 				<Row>
 					<Column>

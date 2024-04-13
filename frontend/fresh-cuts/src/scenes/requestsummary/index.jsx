@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
     Grid, Paper, TextField, FormControlLabel, FormGroup, Checkbox, Button, Typography, List, ListItem, Divider, ListItemText, ListItemAvatar, Avatar, Container
@@ -22,9 +22,6 @@ export default function Requestsummary() {
     const [notes, setNotes] = useState("");
     const [id_from_email, set_id_from_email] = useState(-1);
     const [clientId, setClientId] = useState();
-
-
-
     const location = useLocation();
     const {
         selectedService, 
@@ -35,37 +32,55 @@ export default function Requestsummary() {
         
     } = location.state
 
-    //const [clientID, setClientID] = useState("");
-    //console.log(selectedService, selectedStylist, selectedDate, selectedTime, selectedDateTime);
+    const [stylist, setStylist] = useState({});
+    const [service, setService] = useState({});
+
+/* ********************* USE EFFECT *********************** */
+
+useEffect(() => {
+
+    fetchService();
+    fetchStaff();
 
 
+}, [])
+
+/* ********************* FETCH FUNCTIONS *********************** */
+const fetchService = async () => {
+    try{
+        const response = await axios.get(`https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/service/${selectedService}`);
+        setService(response.data);
+        
+
+    }catch (error) {
+        console.error("error fetching service", error);
+    }
+}
+
+const fetchStaff = async () => {
+    try{
+        const response = await axios.get(`https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/staff/${selectedStylist}`)
+        setStylist(response.data)
+    }catch (error){
+        console.error("error fetching staff", error);
+    }
+}
+
+ 
 /* ********************* HANDLER FUNCTIONS *********************** */
    
     const handleCheckboxChange = (event) => {
         setChecked(event.target.checked);
     };
 
-    const fetchIDFromEmail = async () =>{
-        try{
-            const response = null; // api request to retrieve the id based on email.
-        } catch (error) {
-            console.error('Error fetching id:', error);
-        }
-
-    }
-
     const has_email = async () => {
-
         try{
-
             const response = await axios.get(`https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/has_email?email=${email}`);
             return response.data.has_email;
-            
 
         } catch (error){
             console.error("Error calling has_email", error);
         }     
-        
     }
 
     const get_id_from_email = async () => {
@@ -79,7 +94,6 @@ export default function Requestsummary() {
     }
 
     const handleAddClient = async (client) =>{
-
         try{
             const response = await axios.post('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/client', client)
             console.log(response.data)
@@ -89,7 +103,6 @@ export default function Requestsummary() {
             console.error("Error adding client", error);
 
         }
-
     }
 
     const handleRequestSubmit = async (event) =>{
@@ -97,15 +110,9 @@ export default function Requestsummary() {
          // if (true) then do not create an account and add the appointment
          // else (false) then create an account first and the create the appointment
 
-
-        event.preventDefault();
        if(await has_email() === 1){
-
-        console.log("found");
         // if true then get the id of the client based on the email
         const id = await get_id_from_email();
-        
-
         //create the new appointment
         const newAppointment = [{
             service_id: selectedService,
@@ -118,7 +125,6 @@ export default function Requestsummary() {
             
         }];
 
-        console.log(newAppointment);
         axios.post('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/appointment', newAppointment)
           .then(response => {
             console.log(response);
@@ -160,7 +166,6 @@ export default function Requestsummary() {
             .catch(error => {
                 console.error('Error adding appointment:', error);
             });
-        
        }
     }
 
@@ -207,8 +212,6 @@ export default function Requestsummary() {
     const handleNotes = (event) => {
         setNotes(event.target.value);
     }
-
-
 
     return (
         <>
@@ -317,23 +320,28 @@ export default function Requestsummary() {
                         
                         <ListItem>
                             <ListItemAvatar><Avatar></Avatar></ListItemAvatar>
-                            <ListItemText>Stylist: {selectedStylist}</ListItemText>
+                            <ListItemText>Stylist: {stylist.first_name + " " + stylist.last_name}</ListItemText>
                             <ListItemText>
-                                <Typography align="right">
-                                    Service Price
-                                </Typography>
+                                
+                            </ListItemText>
+                        </ListItem>
+                        <Divider/>
+                        <ListItem>
+                            
+                            <ListItemText>Service: {service.name}</ListItemText>
+                            <ListItemText>
+                                
                             </ListItemText>
                         </ListItem>
 
                         <Divider/>
                         
                         <ListItem>
-                            <ListItemText>Total</ListItemText>
-                            <ListItemText>
-                                <Typography align="right">
-                                    Total Price
-                                </Typography>
-                            </ListItemText>
+                            
+                            <Typography align="right">
+                                Total Price: ${service.price}
+                            </Typography>
+                           
                         </ListItem>
                     </List>
                 </Paper>
