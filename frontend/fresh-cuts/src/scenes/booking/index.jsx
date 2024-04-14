@@ -288,6 +288,19 @@ export default function Booking() {
                     </Grid>
                 )}
             </Grid>
+            {morningSlots.length === 0 && afternoonSlots.length === 0 && eveningSlots.length === 0 && searchClick === true ? 
+                (<div style={{textAlign: 'center', marginTop: '100px'}}>
+
+                    <div style={{fontWeight: 'bold', fontSize: '30px'}}>
+                        Sorry, there are no available appointments, please try another date.
+                    </div>
+                    <div style={{marginTop: '30px', fontSize: '20px'}}>
+                        Call to see if there are any last minute openings at (916) 451-1517
+                    </div>
+
+                </div>)
+                :
+            (<div></div>)}
 
             <h1 id="noApt" align="center" style={{ width: "70%", marginTop: 0 }}></h1><br />
             <p id="callUs" align="center" style={{ width: "70%", marginTop: 0 }}></p>
