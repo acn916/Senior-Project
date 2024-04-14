@@ -185,7 +185,40 @@ export default function Signup() {
                                 value={password}
                                 onChange={(event) => setPassword(event.target.value)}
                             />
-                            
+                            <TextField
+                                id="password-signup"
+                                margin="normal"
+                                label="Password"
+                                type="password"
+                                autoComplete="current-password"
+                                fullWidth required
+                                value={password}
+                                onChange={(event) => setPassword(event.target.value)}
+                            />
+
+                            <FormGroup>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox color='default' size='small' onChange={handleCheckboxChange} />
+                                    }
+                                    label={
+                                        <Typography variant='caption'>I agree to the Terms of Service and Privacy Policy.</Typography>
+                                    }
+                                />
+
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            type="checkbox"
+                                            checked={isStylist}
+                                            onChange={(event) => setIsStylist(event.target.checked)}
+                                            color='default'
+                                            size='small'
+                                        />
+                                    }
+                                    label={<Typography variant='caption'>I am a stylist.</Typography>}
+                                />
+                            </FormGroup>
                             <FormGroup>
                                 <FormControlLabel
                                     control={
