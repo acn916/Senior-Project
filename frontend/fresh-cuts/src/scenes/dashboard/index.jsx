@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import axios from "axios";
 import { Paper } from '@mui/material';
 import {
@@ -22,7 +22,8 @@ import { FormControl, Select, MenuItem, useMediaQuery, useTheme, Button} from '@
 import CustomBasicLayout from './CustomAppointmentForm';
 import { ConfirmationDialog } from '@devexpress/dx-react-scheduler-material-ui';
 import { AppsSharp } from '@mui/icons-material';
-import CustomAppointmentTooltipContent from './CustomToolTip';
+import CustomAppointmentTooltipContent from './CustomToolTip.js';
+import { AuthContext } from '../../AuthContext.js';
 import './styles.css'; 
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
@@ -45,13 +46,15 @@ function Dashboard() {
     const [name, setName] = useState("");
     const [openForm, setOpenForm] = useState(false);
 
+    const { userRole, staffId, userEmail } = useContext(AuthContext);
+
+   
   
     const fetchAppointments = async () =>  {
 
       try{
         const response = await axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/dashboard');
-        const clientsResponse = await axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/client');
-        const clientsData = clientsResponse.data; 
+       
 
         const serviceResponse =  await axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/service');
         const serviceData = serviceResponse.data;
@@ -59,8 +62,7 @@ function Dashboard() {
 
         const formattedAppointments = response.data.map(appointment => {
 
-            const client = clientsData && clientsData.length > 0 ? clientsData.find(client => client.id === appointment.client_id) : null;
-            const clientName = client ? `${client.first_name} ${client.last_name}` : ''; 
+            
             const service = serviceData && serviceData.length > 0 ? serviceData.find(service => service.id === appointment.service_id) : null; 
             const serviceName = service ? service.name : '';
 
@@ -93,19 +95,37 @@ function Dashboard() {
           }
         }
 
-        if(currentStylist === 'All'){
-          setAppointments(confirmedAppointments)
+        if(userRole !== 'Admin'){
+          setCurrentStylist(staffId)
+          let stylistAppointments = [];
+            for(let i = 0; i < confirmedAppointments.length; ++i){
+
+              if(parseInt(confirmedAppointments[i].staff_id) === currentStylist){
+                stylistAppointments.push(confirmedAppointments[i]);
+              }
+            }
+            console.log('stylistAppointments', stylistAppointments)
+            setAppointments(stylistAppointments);
         }
         else{
 
-          let stylistAppointments = [];
-          for(let i = 0; i < confirmedAppointments.length; ++i){
+          if(currentStylist !== 'All'){
+            let stylistAppointments = [];
+            for(let i = 0; i < confirmedAppointments.length; ++i){
 
-            if(parseInt(confirmedAppointments[i].staff_id) === currentStylist){
-              stylistAppointments.push(confirmedAppointments[i]);
+              if(parseInt(confirmedAppointments[i].staff_id) === currentStylist){
+                stylistAppointments.push(confirmedAppointments[i]);
+              }
             }
+            console.log('stylistAppointments', stylistAppointments)
+            setAppointments(stylistAppointments);
           }
-          setAppointments(stylistAppointments);
+          else{
+            setAppointments(confirmedAppointments);
+
+          }
+          
+
         }
       } catch(error){
         console.error("Error fetching data:'", error);
@@ -139,12 +159,12 @@ function Dashboard() {
       fetchAppointments();
 
       setLoading(false);
-      //const intervalId = setInterval(fetchAppointments, 9000);
+      const intervalId = setInterval(fetchAppointments, 9000);
 
-      //return () => clearInterval(intervalId);  
+      return () => clearInterval(intervalId);  
 
 
-    },[currentStylist]);
+    },[currentStylist, staffId]);
 
     const CustomToolbar = () => {
 
@@ -505,7 +525,11 @@ function Dashboard() {
                     startDayHour={12} endDayHour={20} 
                     timeTableCellComponent={CustomTimeTableCellMonth}
                   />
-                  <Toolbar flexibleSpaceComponent={CustomToolbar} />
+                  {userRole === 'Admin' ? 
+                    (<Toolbar flexibleSpaceComponent={CustomToolbar} />)
+                    :
+                    (<Toolbar/>)
+                  }
                   
                   <ViewSwitcher />
                   <Appointments

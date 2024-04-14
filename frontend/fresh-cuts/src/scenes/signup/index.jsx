@@ -3,7 +3,8 @@ import {
     Grid, Paper, TextField, FormControlLabel, FormGroup, Checkbox, Button, Typography, LinearProgress
 } from '@mui/material';
 import UserPool from "./UserPool.js";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from "axios";
 
 function phoneFormat(input) {
     input = input.replace(/\D/g, '').substring(0, 10);
@@ -21,52 +22,73 @@ function reformatNumber(input) {
 
 export default function Signup() {
     const [isChecked, setChecked] = useState(false);
+    const navigate = useNavigate();
 
     const handleCheckboxChange = (event) => {
         setChecked(event.target.checked);
     };
-    const [isStylist, setIsStylist] = useState(false); // Updated state for the checkbox
+    const [isStylist, setIsStylist] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [formatNum, setFormatNum] = useState("");
+    const [cognitoId, setCognitoId] = useState("");
+
     const [loading, setLoading] = useState(false);
     const paperStyle = { padding: 30, height: '620px', maxWidth: '350px' };
     //console.log(formatNum);
     const onSubmit = (event) => {
+        const newStylist = {
+            first_name: firstName,
+            last_name: lastName,
+            email: email,
+            phone: formatNum,
+        };
+
+        const addStylist = async () => {
+            try {
+                const response = await axios.post(`https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/staff`, newStylist);
+                console.log(response);
+            } catch (error) {
+                console.error("Error adding stylist", error);
+            }
+        };
+
         event.preventDefault();
 
         setLoading(true)
 
         const attributes = [
             {
-                Name: "given_name", // First Name attribute
+                Name: "given_name",
                 Value: firstName,
             },
             {
-                Name: "family_name", // Last Name attribute
+                Name: "family_name",
                 Value: lastName,
             },
             {
-                Name: "phone_number", // Phone Number attribute
+                Name: "phone_number",
                 Value: formatNum,
             },
             {
-                Name: "custom:user_role", // Custom role attribute
+                Name: "custom:user_role",
                 Value: isStylist ? "Stylist" : "Customer",
             },
-
         ];
+
         UserPool.signUp(email, password, attributes, null, (err, data) => {
             if (err) {
                 console.error(err);
                 alert("Invalid information entered.")
-            }
-            else {
-                // console.log(data);
+            } else {
+                console.log("data.user.pool.clientId",data.user.pool.clientId )
+                setCognitoId(data.user.pool.clientId);
                 alert("Please check your email to verify your account.");
+                addStylist();
+                navigate('/Login');
             }
 
         })
@@ -163,7 +185,40 @@ export default function Signup() {
                                 value={password}
                                 onChange={(event) => setPassword(event.target.value)}
                             />
+                            <TextField
+                                id="password-signup"
+                                margin="normal"
+                                label="Password"
+                                type="password"
+                                autoComplete="current-password"
+                                fullWidth required
+                                value={password}
+                                onChange={(event) => setPassword(event.target.value)}
+                            />
 
+                            <FormGroup>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox color='default' size='small' onChange={handleCheckboxChange} />
+                                    }
+                                    label={
+                                        <Typography variant='caption'>I agree to the Terms of Service and Privacy Policy.</Typography>
+                                    }
+                                />
+
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            type="checkbox"
+                                            checked={isStylist}
+                                            onChange={(event) => setIsStylist(event.target.checked)}
+                                            color='default'
+                                            size='small'
+                                        />
+                                    }
+                                    label={<Typography variant='caption'>I am a stylist.</Typography>}
+                                />
+                            </FormGroup>
                             <FormGroup>
                                 <FormControlLabel
                                     control={
