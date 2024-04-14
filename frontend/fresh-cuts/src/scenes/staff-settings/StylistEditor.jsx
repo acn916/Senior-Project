@@ -97,13 +97,12 @@ const StylistEditor = () => {
 
     const addUserToDatabase = async (userData) => {
         try {
-            const response = await axios.post('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/client', {
-                cognito_user_id: "fake222", // <--- CHANGE LATER AFTER DB UDPATE
+            const response = await axios.post('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/staff', {
                 email: userData.email,
                 first_name: userData.firstName,
                 last_name: userData.lastName,
                 phone: userData.phoneNumber,
-                user_role: "Staff"
+                
             })
             
         } catch (error) {

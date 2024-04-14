@@ -10,16 +10,17 @@ import { AuthContext } from '../../AuthContext';
 import './Header.css';
 import axios from "axios";
 
+
 const pages = {
   Client: ['Home', 'Services', 'Staff'],
-  Stylist: ['Dashboard', 'Request', 'Settings'],
-  Admin: ['Dashboard', 'Request', 'Settings'],
+  Stylist: ['Dashboard', 'Settings', 'Request'],
+  Admin: ['Dashboard', 'Settings', 'Request']
 };
 
 const ResponsiveAppBar = () => {
     const [anchorElNav, setAnchorElNav] = useState(null);
     const { logout, getSession } = useContext(AccountContext);
-    const { isLoggedIn, setIsLoggedIn, userRole, setUserRole, name, setName } = useContext(AuthContext);
+    const { isLoggedIn, setIsLoggedIn, userRole, setUserRole, setStaffId, name, setName } = useContext(AuthContext);
     const [userFullName, setUserFullName] = useState('');
     const navigate = useNavigate();
     const location = useLocation();
@@ -73,7 +74,7 @@ const ResponsiveAppBar = () => {
               console.error("Error fetching data:'", error);
               setLoading(false);
             }
-          }
+        }
 
         checkAuthentication();
         fetchAppointments();
@@ -81,7 +82,7 @@ const ResponsiveAppBar = () => {
         setLoading(false);
         const intervalId = setInterval(fetchAppointments, 9000);
 
-        return () => clearInterval(intervalId);  
+        return () => clearInterval(intervalId);
     }, []);
 
     const handleOpenNavMenu = (event) => {
@@ -97,6 +98,7 @@ const ResponsiveAppBar = () => {
         setIsLoggedIn(false);
         setUserRole("Client");
         setName("");
+        setStaffId("");
         navigate('/login');
     };
 
@@ -108,7 +110,23 @@ const ResponsiveAppBar = () => {
         <AppBar style={{ background: 'white' }} position="static">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <a {...userRole === "Stylist" ? {href: "/Home"} : {...sessionRole === "Stylist" ? {href: "/Dashboard"} : {href: "/Home"} }}>
+                    {userRole === 'Client' ? 
+                    (
+                        <a href="/Home">
+                            <Box
+                                component="img"
+                                sx={{
+                                    display: { xs: 'none', md: 'flex' },
+                                    mr: 1, height: 100,
+                                    width: 140, marginLeft: 5
+                                }}
+                                src={Image}
+                            />
+                        </a>
+                    )
+                    :
+                    (
+                    <a href="/Dashboard">
                         <Box
                             component="img"
                             sx={{
@@ -118,7 +136,10 @@ const ResponsiveAppBar = () => {
                             }}
                             src={Image}
                         />
-                    </a>
+                     </a>
+                    )
+                }
+                    
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                         <IconButton
@@ -155,18 +176,14 @@ const ResponsiveAppBar = () => {
                                         {
                                             page === 'Request' && checkAppointment > 0 ? <Link style={{ textDecoration: 'none', color: 'black' }} to={`/${page}`}>{page} <NotificationsActiveIcon sx={{marginBottom: -0.75}}/></Link> 
                                             : <Link style={{ textDecoration: 'none', color: 'black' }} to={`/${page}`}>{page}</Link>
-                                        }
+                                        }                                    
                                     </Typography>
                                 </MenuItem>
                             ))}
                         </Menu>
                     </Box>
 
-                    <a {...userRole === "Stylist" ? {href: "/Home"} : {...sessionRole === "Stylist" ? {href: "/Dashboard"} : {href: "/Home"} }}>
-                        <Box component="img" sx={{ display: { xs: 'flex', md: 'none' }, mr: 1, height: 60, width: 75 }} src={Image}></Box>
-                    </a>
-
-                    <Typography sx={{mr: 2, display: { xs: 'flex', md: 'none' }, flexGrow: 1}}/> {/* will keep logo in the center on small screens */}
+                    <Box component="img" sx={{ display: { xs: 'flex', md: 'none' }, mr: 1, height: 60, width: 75 }} src={Image}></Box>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                       {pages[userRole].map((page) => (
@@ -183,7 +200,7 @@ const ResponsiveAppBar = () => {
 
                     {isLoggedIn ? (
                         <>
-                          <Avatar>{firstInitial}</Avatar>
+                          <Avatar>{name[0]}</Avatar>
                           <Button onClick={handleSignOut} style={{ color: 'black' }}> Sign Out </Button>
                         </>
                     ) : (
