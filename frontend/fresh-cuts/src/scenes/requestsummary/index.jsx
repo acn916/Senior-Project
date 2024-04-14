@@ -124,6 +124,25 @@ const fetchStaff = async () => {
             confirmation_timestamp: selectedDateTime
             
         }];
+        
+
+
+        // Email Confirmation
+        const customerSummary ={
+            service_name: service.name,
+            confirmation_timestamp: selectedDateTime,
+            stylist_name: stylist.first_name + " " + stylist.last_name,
+            email: email
+        }
+        console.log(customerSummary);
+        axios.post("https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/send_email", customerSummary)
+            .then(response => {
+                console.log(response);
+                console.log("Email sent sucessfully!");
+            })
+            .catch(error => {
+                console.error("Email was not sent:", error);
+            })
 
         axios.post('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/appointment', newAppointment)
           .then(response => {
