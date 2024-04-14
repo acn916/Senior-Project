@@ -255,24 +255,26 @@ function Dashboard() {
               data={null} 
             />
           </div>
-          <FormControl style={{ marginRight: '20px', width: '150px' }}>
-            <Select
-              labelId="stylist-select-label"
-              id="stylist-select"
-              value={currentStylist || 'All'}  
-              onChange={handleStylistChange}
-              sx={{ height: '44px' }}
-            >
-              <MenuItem value="All">
-                <em>All</em>
-              </MenuItem>
-              {stylist.map((stylistItem) => (
-                <MenuItem key={stylistItem.id} value={stylistItem.id}>
-                  {stylistItem.first_name + " "  + stylistItem.last_name}
+          {userRole === 'Admin' &&
+            <FormControl style={{ marginRight: '20px', width: '150px' }}>
+              <Select
+                labelId="stylist-select-label"
+                id="stylist-select"
+                value={currentStylist || 'All'}  
+                onChange={handleStylistChange}
+                sx={{ height: '44px' }}
+              >
+                <MenuItem value="All">
+                  <em>All</em>
                 </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+                {stylist.map((stylistItem) => (
+                  <MenuItem key={stylistItem.id} value={stylistItem.id}>
+                    {stylistItem.first_name + " "  + stylistItem.last_name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+         }
         </Toolbar.FlexibleSpace>
       );
     };
@@ -525,11 +527,9 @@ function Dashboard() {
                     startDayHour={12} endDayHour={20} 
                     timeTableCellComponent={CustomTimeTableCellMonth}
                   />
-                  {userRole === 'Admin' ? 
-                    (<Toolbar flexibleSpaceComponent={CustomToolbar} />)
-                    :
-                    (<Toolbar/>)
-                  }
+                  
+                    <Toolbar flexibleSpaceComponent={CustomToolbar} />
+                  
                   
                   <ViewSwitcher />
                   <Appointments
