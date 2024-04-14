@@ -7,6 +7,7 @@ import {
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../AuthContext.js';
+import axios from 'axios';
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -16,9 +17,7 @@ export default function Login() {
 
   // THIS IS AUTH CONTEXT. This is how you access the state variables and their setters. Must be SAME exact
   // name inside the AuthContext.js file.
-  const { isLoggedIn, setIsLoggedIn, setUserRole, setName, setUserEmail, setUserPhone } = useContext(AuthContext)
-
-
+  const { isLoggedIn, setIsLoggedIn, setUserRole, setName, setUserEmail, setUserPhone, setStaffId } = useContext(AuthContext)
   const { authenticate, getSession } = useContext(AccountContext);
 
   useEffect(() => {
@@ -32,6 +31,7 @@ export default function Login() {
           // if the user is logged in then save all of the user information inside of AuthContext
           // all this user information is coming form aws cogito (session).
           const role = session["custom:user_role"];
+          console.log(role);
           const { given_name, family_name, email, phone_number } = session;
 
           // these mutator functions will change the value of the state variable inside AuthContext.
@@ -40,6 +40,8 @@ export default function Login() {
           setIsLoggedIn(true);
           setUserEmail(email);
           setUserPhone(phone_number);
+          const userID = await get_id_from_email(email);
+          setStaffId(userID);
 
         } else {
           setIsLoggedIn(false);
@@ -53,6 +55,16 @@ export default function Login() {
     checkAuthentication();
   }, [getSession]);
 
+  const get_id_from_email = async (email) => {
+    try{
+        const response = await axios.get(`https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/get_id_from_email?email=${email}`)
+        return (response.data.id)
+
+    }catch (error){
+        console.error("Error retrieving client id", error);
+    }
+}
+
   const onSubmit = (event) => {
     event.preventDefault();
 
@@ -63,6 +75,7 @@ export default function Login() {
         setUserEmail(email);
         setLoginError(false);
         setIsLoggedIn(true);
+        
       })
       .catch((err) => {
         //console.error("Failed to login", err);
