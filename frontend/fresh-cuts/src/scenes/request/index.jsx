@@ -124,6 +124,7 @@ const Request = () => {
   const handleRebook = (id, service, dateTime) => {
     const currentRequestIndex = requests.findIndex((request) => request.id === id);
     const updatedRequest = {...requests[currentRequestIndex], service_id: service, scheduled_at: dateTime};
+    console.log("updated request", updatedRequest);
     const newRequests = [
       ...requests.slice(0, currentRequestIndex),
       updatedRequest,

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import axios from "axios";
 import { Paper } from '@mui/material';
 import {
@@ -18,14 +18,16 @@ import {
     ViewSwitcher,
     MonthView,
 } from '@devexpress/dx-react-scheduler-material-ui';
-import { FormControl, Select, MenuItem, useMediaQuery, useTheme} from '@mui/material';
+import { FormControl, Select, MenuItem, useMediaQuery, useTheme, Button} from '@mui/material';
 import CustomBasicLayout from './CustomAppointmentForm';
 import { ConfirmationDialog } from '@devexpress/dx-react-scheduler-material-ui';
 import { AppsSharp } from '@mui/icons-material';
-import CustomAppointmentTooltipContent from './CustomToolTip';
+import CustomAppointmentTooltipContent from './CustomToolTip.js';
+import { AuthContext } from '../../AuthContext.js';
 import './styles.css'; 
-
-
+import IconButton from '@mui/material/IconButton';
+import AddIcon from '@mui/icons-material/Add';
+import PopupForm from './AddAppointments';
 
 
 // Component start
@@ -42,13 +44,17 @@ function Dashboard() {
     const [stylist, setStylist] = useState([]);
     const [clients, setClients] = useState([]);
     const [name, setName] = useState("");
+    const [openForm, setOpenForm] = useState(false);
+
+    const { userRole, staffId, userEmail } = useContext(AuthContext);
+
+   
   
     const fetchAppointments = async () =>  {
 
       try{
-        const response = await axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/appointments');
-        const clientsResponse = await axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/client');
-        const clientsData = clientsResponse.data; 
+        const response = await axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/dashboard');
+       
 
         const serviceResponse =  await axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/service');
         const serviceData = serviceResponse.data;
@@ -56,10 +62,7 @@ function Dashboard() {
 
         const formattedAppointments = response.data.map(appointment => {
 
-            const client = clientsData && clientsData.length > 0 ? clientsData.find(client => client.id === appointment.client_id) : null;
             
-            const clientName = client ? `${client.first_name} ${client.last_name}` : ''; 
-
             const service = serviceData && serviceData.length > 0 ? serviceData.find(service => service.id === appointment.service_id) : null; 
             const serviceName = service ? service.name : '';
 
@@ -78,11 +81,12 @@ function Dashboard() {
                   client_id:`${appointment.client_id}`,
                   notes: `${appointment.notes}`,
                   status: `${appointment.status}`,
-                  client_name: clientName, 
+                  email: `${appointment.email}`,
+                  phone: `${appointment.phone}`,
+                  client_name: `${appointment.first_name + appointment.last_name}`,
                   service_name: serviceName, 
               };
         });
-    
         let confirmedAppointments = [];
         for(let i = 0; i < formattedAppointments.length; ++i){
 
@@ -91,19 +95,37 @@ function Dashboard() {
           }
         }
 
-        if(currentStylist === 'All'){
-          setAppointments(confirmedAppointments)
+        if(userRole !== 'Admin'){
+          setCurrentStylist(staffId)
+          let stylistAppointments = [];
+            for(let i = 0; i < confirmedAppointments.length; ++i){
+
+              if(parseInt(confirmedAppointments[i].staff_id) === currentStylist){
+                stylistAppointments.push(confirmedAppointments[i]);
+              }
+            }
+            console.log('stylistAppointments', stylistAppointments)
+            setAppointments(stylistAppointments);
         }
         else{
 
-          let stylistAppointments = [];
-          for(let i = 0; i < confirmedAppointments.length; ++i){
+          if(currentStylist !== 'All'){
+            let stylistAppointments = [];
+            for(let i = 0; i < confirmedAppointments.length; ++i){
 
-            if(parseInt(confirmedAppointments[i].staff_id) === currentStylist){
-              stylistAppointments.push(confirmedAppointments[i]);
+              if(parseInt(confirmedAppointments[i].staff_id) === currentStylist){
+                stylistAppointments.push(confirmedAppointments[i]);
+              }
             }
+            console.log('stylistAppointments', stylistAppointments)
+            setAppointments(stylistAppointments);
           }
-          setAppointments(stylistAppointments);
+          else{
+            setAppointments(confirmedAppointments);
+
+          }
+          
+
         }
       } catch(error){
         console.error("Error fetching data:'", error);
@@ -142,7 +164,7 @@ function Dashboard() {
       return () => clearInterval(intervalId);  
 
 
-    },[currentStylist]);
+    },[currentStylist, staffId]);
 
     const CustomToolbar = () => {
 
@@ -152,64 +174,217 @@ function Dashboard() {
         setCurrentStylist(selectedStylistId); // Update currentStylist state
         fetchAppointments(); // Fetch appointments based on selected stylist
       };
+
+      const handleOpenForm = () => {
+        setOpenForm(true);
+      };
     
+      const handleCloseForm = () => {
+        setOpenForm(false);
+      };
+    
+    const handleSubmitForm = async (formData) => {
+      //console.log('start date', formData.startDate);
+      
+      try {
+        // Check if the client already exists in the database
+        let clientId;
+        if (await has_email(formData.email) === 1) {
+          clientId = await get_id_from_email(formData.email);
+        } else {
+          // If the client doesn't exist, add them to the database
+          const nameParts = formData.name.split(" ");
+          const firstName = nameParts[0];
+          const lastName = nameParts.slice(1).join(" ");
+          const userInfo = {
+            first_name: firstName,
+            last_name: lastName,
+            email: formData.email,
+            phone: formData.phone
+          };
+          clientId = await handleAddClient(userInfo);
+        }
+        
+        const [startDate, startTime] = formData.startDate.split('T');
+        // Create a new appointment object
+        const newAppointment = {
+          service_id: formData.service_id,
+          client_id: clientId,
+          staff_id: formData.stylist,
+          notes: formData.notes ? formData.notes : null,
+          scheduled_at: startDate + ' ' + startTime.split(':')[0] + ':' + startTime.split(':')[1] + ':00',
+          status: "Confirmed",
+          confirmation_timestamp: startDate + ' ' + startTime.split(':')[0] + ':' + startTime.split(':')[1] + ":00", 
+        };
+    
+        console.log(newAppointment)
+        axios.post('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/appointment', [newAppointment])
+        .then(response => {
+            console.log(response);
+          
+
+        })
+        .catch(error => {
+            console.error('Error adding appointment:', error);
+        });
+
+    
+    
+        // Close the form
+        handleCloseForm();
+      } catch (error) {
+        console.error('Error submitting form:', error);
+      }
+    };
+
       return (
         <Toolbar.FlexibleSpace style={{ display: 'flex', alignItems: 'center' }}>
-          <FormControl style={{ marginRight: '20px', width: '150px' }}>
-            <Select
-              labelId="stylist-select-label"
-              id="stylist-select"
-              value={currentStylist || 'All'}  
-              onChange={handleStylistChange}
-              sx={{ height: '44px' }}
+          <div>
+            <IconButton
+              color="primary"
+              aria-label="add appointment"
+              style={{ color: '#F43F5E' }}
+              onClick={handleOpenForm} 
             >
-              <MenuItem value="All">
-                <em>All</em>
-              </MenuItem>
-              {stylist.map((stylistItem) => (
-                <MenuItem key={stylistItem.id} value={stylistItem.id}>
-                  {stylistItem.first_name + " "  + stylistItem.last_name}
+              <AddIcon />
+            </IconButton>
+            <PopupForm
+              open={openForm}
+              handleClose={handleCloseForm}
+              handleSubmit={handleSubmitForm}
+              data={null} 
+            />
+          </div>
+          {userRole === 'Admin' &&
+            <FormControl style={{ marginRight: '20px', width: '150px' }}>
+              <Select
+                labelId="stylist-select-label"
+                id="stylist-select"
+                value={currentStylist || 'All'}  
+                onChange={handleStylistChange}
+                sx={{ height: '44px' }}
+              >
+                <MenuItem value="All">
+                  <em>All</em>
                 </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+                {stylist.map((stylistItem) => (
+                  <MenuItem key={stylistItem.id} value={stylistItem.id}>
+                    {stylistItem.first_name + " "  + stylistItem.last_name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+         }
         </Toolbar.FlexibleSpace>
       );
     };
-    
 
-   
+    const has_email = async (email) => {
+      try{
+
+          const response = await axios.get(`https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/has_email?email=${email}`);
+          return response.data.has_email;
+      } catch (error){
+          console.error("Error calling has_email", error);
+      }     
+      
+    }
+    const get_id_from_email = async (email) => {
+      try{
+          const response = await axios.get(`https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/get_id_from_email?email=${email}`)
+          return (response.data.id)
+
+      }catch (error){
+          console.error("Error retrieving client id", error);
+      }
+  }
+  const handleAddClient = async (client) =>{
+    try{
+        const response = await axios.post('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/client', client)
+        console.log(response.data)
+        return response.data.id
+    }catch (error){
+        console.error("Error adding client", error);
+    }
+}
     
     const commitChanges = ({ added, changed, deleted }) => {
         let updatedData = [...appointments]; // Copy the current state of appointments
-      
       if (added) {
+        console.log("added", added)
 
-        const newAppointment = [
-          {
-            client_id: added.client_id,
-            staff_id: added.staff_id,
-            service_id: added.service_id,
-            scheduled_at: added.startDate.toISOString().split('T')[0] + ' ' + added.startDate.toTimeString().split(' ')[0], // Adjust date format
-            status: "Pending",
-            notes: added.notes,
-            confirmation_timestamp: added.confirmation_timestamp,
+        const handleAddAppointment = async () => {
+
+          if(await has_email(added.email) === 1){
+            console.log("found");
+            const id = await get_id_from_email(added.email);
+
+
+            const newAppointment = [{
+              service_id: added.service_id,
+              client_id: id,
+              staff_id: added.staff_id,
+              notes: added.notes ? added.notes : null,
+              scheduled_at: added.startDate.toISOString().split('T')[0] + ' ' + added.startDate.toTimeString().split(' ')[0], // Adjust date format, 
+              status: "Confirmed",
+              confirmation_timestamp: added.startDate.toISOString().split('T')[0] + ' ' + added.startDate.toTimeString().split(' ')[0], // Adjust date format
+              
+            }];
+
+            console.log(newAppointment)
+            axios.post('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/appointment', newAppointment)
+            .then(response => {
+                console.log(response);
+            })
+            .catch(error => {
+                console.error('Error adding appointment:', error);
+            });
+
           }
-        ];
+          else{
 
-        console.log(newAppointment)
-            
-        axios.post('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/appointment', newAppointment)
-          .then(response => {
-            const updatedAppointment = { ...added, id: response.data.id };
-            updatedData = [...updatedData, updatedAppointment]; 
-            setAppointments(updatedData); 
-          })
-          .catch(error => {
-            console.error('Error adding appointment:', error);
-          });
+            console.log("Not Found");
+            const nameParts = added.name.split(" ");
+            const firstName = nameParts[0]; // Extract the first part as the first name
+            const lastName = nameParts.slice(1).join(" "); // Extract the remaining parts as the last name
+            const userInfo = {
+              first_name: firstName,
+              last_name: lastName,
+              email: added.email,
+              phone: added.phone
+            }
+
+            const id = await handleAddClient(userInfo)
+            const newAppointment = [{
+              service_id: added.service_id,
+              client_id: id,
+              staff_id: added.staff_id,
+              notes: added.notes ? added.notes : null,
+              scheduled_at: added.startDate.toISOString().split('T')[0] + ' ' + added.startDate.toTimeString().split(' ')[0], // Adjust date format, 
+              status: "Confirmed",
+              confirmation_timestamp: added.startDate.toISOString().split('T')[0] + ' ' + added.startDate.toTimeString().split(' ')[0], // Adjust date format
+              
+            }];
+            console.log(newAppointment);
+            axios.post('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/appointment', newAppointment)
+            .then(response => {
+                console.log(response);
+                
+            })
+            .catch(error => {
+                console.error('Error adding appointment:', error);
+            });
+
+
+
+          }
+
+        }
+
+        handleAddAppointment();
+        
       }
-    
+      
       if (changed) {    
         Object.keys(changed).forEach(appointmentId => {
 
@@ -352,7 +527,10 @@ function Dashboard() {
                     startDayHour={12} endDayHour={20} 
                     timeTableCellComponent={CustomTimeTableCellMonth}
                   />
-                  <Toolbar flexibleSpaceComponent={CustomToolbar} />
+                  
+                    <Toolbar flexibleSpaceComponent={CustomToolbar} />
+                  
+                  
                   <ViewSwitcher />
                   <Appointments
                     appointmentComponent={appointmentCellColor}
@@ -365,13 +543,19 @@ function Dashboard() {
                     showOpenButton
                     showDeleteButton
                   />
-                  <AppointmentForm basicLayoutComponent={CustomBasicLayout} />
+
+                  <AppointmentForm basicLayoutComponent={CustomBasicLayout}/>
+
+
                   <DateNavigator />
                 </Scheduler>
               </Paper>
               <footer style={{ flexShrink: 0, height: '100px', overflow: 'hidden' }}></footer>
             </div>
          )}
+
+        
+
         </div>
       );
       

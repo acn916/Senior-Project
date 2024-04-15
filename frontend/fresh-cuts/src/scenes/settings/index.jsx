@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import {
   Box,
   Container,
+  CircularProgress,
   Grid,
   Paper,
   Typography,
@@ -330,10 +331,15 @@ const Setting = () => {
   const [open, setOpen] = useState(false);
   const [addServicePopupOpen, setAddServicePopupOpen] = useState(false);
   const [services, setServices] = useState([]);
+  const [error, setError] = useState();
+  const [loading, setLoading] = useState(true);
+
 
   const fetchServiceData = () => {
     const get_all_services_url =
       "https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/service";
+
+    setLoading(true)
 
     axios
       .get(get_all_services_url)
@@ -355,9 +361,14 @@ const Setting = () => {
         });
 
         setRows(mappedRows);
+        setError(null);
       })
       .catch((error) => {
+        setError("Failed to get all services")
         console.error("Failed to get all services: ", error);
+      })
+      .finally(() => {
+        setLoading(false)
       });
   };
 
@@ -436,6 +447,22 @@ const Setting = () => {
     // Update the state with the new rows
     setRows(updatedRows);
   };
+
+  if (loading) {
+    return (
+        <Box display="flex" justifyContent="center" alignItems="center" height="100%" width="100%">
+            <CircularProgress />
+        </Box>
+    );
+}
+
+if (error) {
+    return (
+        <Box display="flex" justifyContent="center" alignItems="center" height="100%" width="100%">
+            {error}
+        </Box>
+    );
+}
 
   return (
     <Container maxWidth="90" sx={{}}>
