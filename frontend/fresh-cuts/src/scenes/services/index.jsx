@@ -56,7 +56,7 @@ const Services = () => {
                     <Button
                       variant="contained"
                       aria-label={`REQUEST${service.id}`}
-                      href={`http://localhost:3000/booking`}
+                      href={`/booking`}
                       style={{
                         backgroundColor: "#E95252",
                         color: "white",
