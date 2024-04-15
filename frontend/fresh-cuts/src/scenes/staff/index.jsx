@@ -95,7 +95,7 @@ const Staff = () => {
                 <Button
                 variant="contained"
                 aria-label={`BOOK${index}`}
-                href={`http://localhost:3000/booking`}
+                href={`/booking`}
                 style={{
                     backgroundColor: "#E95252",
                     color: "white",
