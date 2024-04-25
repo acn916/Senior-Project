@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Box,
   List,
@@ -17,9 +17,13 @@ import Setting from "../settings/index";
 import StylistEditor from './StylistEditor';
 import ScrollableRow from './components/ScrollableRow';
 import UserProfile from './profile';
+import { AuthContext } from '../../AuthContext';
 
 const SettingsPage = () => {
   const [activePage, setActivePage] = useState("");
+
+  const { userRole } = useContext(AuthContext);
+
 
   const handleTextClick = (page) => {
     setActivePage(page);
@@ -33,7 +37,7 @@ const SettingsPage = () => {
 
   const matches = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const buttonsText = ['Add/Remove Stylist', 'Add/Remove Service', 'Profile'];
+  const buttonsText = (userRole === 'Admin' ? ['Add/Remove Stylist', 'Add/Remove Service', 'Profile'] : ['Profile']);
 
   return (
     <ThemeProvider theme={theme}>
