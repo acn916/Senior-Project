@@ -23,6 +23,9 @@ const CustomStyledLayout = (props) => {
   const [service, setService] = useState("");
   const [clientEmail, setClientEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [clientName, setClientName] = useState("");
+
+  const [foundClient, setFoundClient] = useState(false);
 
 
   useEffect(() =>{
@@ -65,13 +68,14 @@ const CustomStyledLayout = (props) => {
     axios.get('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/client')
     .then(response => {
         setClient(response.data);
-        //console.log('client name',response.data);
         for(let i = 0; i < response.data.length; ++i){
 
             if(response.data[i].id == appointmentData.client_id){
-                setName(response.data[i].first_name + " " + response.data[i].last_name );
+                setClientName(response.data[i].first_name + " " + response.data[i].last_name );
                 setClientEmail(response.data[i].email);
                 setPhone(response.data[i].phone);
+
+                setFoundClient(true);
             }
             
         }
@@ -121,7 +125,7 @@ const CustomStyledLayout = (props) => {
   const handleNameChange = (event) => {
     
     const name_input = event.target.value
-    setName(name_input); 
+    setClientName(name_input); 
     onFieldChange({name: name_input})
   };
 
@@ -143,8 +147,10 @@ const CustomStyledLayout = (props) => {
           label="Name"
           variant="outlined"
           fullWidth
-          value={name || ''}
+          value={clientName || ''}
           onChange={handleNameChange}
+          disabled={foundClient}
+          
         />
       </div>
 
@@ -156,8 +162,11 @@ const CustomStyledLayout = (props) => {
           fullWidth
           value={clientEmail}
           onChange={handleEmailChange}
+          disabled={foundClient}
         />
      </div>
+
+
 
      <div style={{ marginBottom: '16px', marginTop: "16px" }}>
         <TextField
@@ -167,6 +176,8 @@ const CustomStyledLayout = (props) => {
           fullWidth
           value={phone}
           onChange={handlePhoneChange}
+          disabled={foundClient}
+          
         />
      </div>
 

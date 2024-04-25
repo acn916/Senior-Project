@@ -28,6 +28,8 @@ import './styles.css';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import PopupForm from './AddAppointments';
+import dayjs from 'dayjs';
+
 
 
 // Component start
@@ -45,6 +47,7 @@ function Dashboard() {
     const [clients, setClients] = useState([]);
     const [name, setName] = useState("");
     const [openForm, setOpenForm] = useState(false);
+    
 
     const { userRole, staffId, userEmail } = useContext(AuthContext);
 
@@ -65,6 +68,7 @@ function Dashboard() {
             
             const service = serviceData && serviceData.length > 0 ? serviceData.find(service => service.id === appointment.service_id) : null; 
             const serviceName = service ? service.name : '';
+            
 
             const [year, month, day, hour, minute] = appointment.scheduled_at
                 .match(/\d+/g)
@@ -74,7 +78,7 @@ function Dashboard() {
               return {
                   id: appointment.id,
                   startDate: new Date(year, month - 1, day, hour, minute),
-                  endDate: new Date(year, month - 1, day, hour + 1, minute),
+                  endDate: new Date(year, month - 1, day, hour, minute + 45),
                   title: `${appointment.client_id}`,
                   service_id: `${appointment.service_id}`,
                   staff_id: `${appointment.staff_id}`,
@@ -104,7 +108,6 @@ function Dashboard() {
                 stylistAppointments.push(confirmedAppointments[i]);
               }
             }
-            console.log('stylistAppointments', stylistAppointments)
             setAppointments(stylistAppointments);
         }
         else{
@@ -117,7 +120,6 @@ function Dashboard() {
                 stylistAppointments.push(confirmedAppointments[i]);
               }
             }
-            console.log('stylistAppointments', stylistAppointments)
             setAppointments(stylistAppointments);
           }
           else{
@@ -161,13 +163,12 @@ function Dashboard() {
       setLoading(false);
 
       if(openForm === false){
-        console.log(openForm)
+        
         const intervalId = setInterval(fetchAppointments, 9000);
 
         return () => clearInterval(intervalId); 
 
       }
-       console.log(openForm);
 
     },[currentStylist, staffId, openForm]);
 
@@ -186,10 +187,10 @@ function Dashboard() {
     
       const handleCloseForm = () => {
         setOpenForm(false);
+        fetchAppointments()
       };
     
     const handleSubmitForm = async (formData) => {
-      //console.log('start date', formData.startDate);
       
       try {
         // Check if the client already exists in the database
@@ -222,12 +223,10 @@ function Dashboard() {
           confirmation_timestamp: startDate + ' ' + startTime.split(':')[0] + ':' + startTime.split(':')[1] + ":00", 
         };
     
-        console.log(newAppointment)
         axios.post('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/appointment', [newAppointment])
         .then(response => {
-            console.log(response);
-          
-
+            console.log("Successfully added new appointment");
+        
         })
         .catch(error => {
             console.error('Error adding appointment:', error);
@@ -306,7 +305,7 @@ function Dashboard() {
   const handleAddClient = async (client) =>{
     try{
         const response = await axios.post('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/client', client)
-        console.log(response.data)
+        console.log("Successfully added new client");
         return response.data.id
     }catch (error){
         console.error("Error adding client", error);
@@ -316,12 +315,12 @@ function Dashboard() {
     const commitChanges = ({ added, changed, deleted }) => {
         let updatedData = [...appointments]; // Copy the current state of appointments
       if (added) {
-        console.log("added", added)
+        
 
         const handleAddAppointment = async () => {
 
           if(await has_email(added.email) === 1){
-            console.log("found");
+            
             const id = await get_id_from_email(added.email);
 
 
@@ -336,10 +335,9 @@ function Dashboard() {
               
             }];
 
-            console.log(newAppointment)
             axios.post('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/appointment', newAppointment)
             .then(response => {
-                console.log(response);
+                console.log("Successfully added new appointment", response);
             })
             .catch(error => {
                 console.error('Error adding appointment:', error);
@@ -348,7 +346,6 @@ function Dashboard() {
           }
           else{
 
-            console.log("Not Found");
             const nameParts = added.name.split(" ");
             const firstName = nameParts[0]; // Extract the first part as the first name
             const lastName = nameParts.slice(1).join(" "); // Extract the remaining parts as the last name
@@ -370,7 +367,6 @@ function Dashboard() {
               confirmation_timestamp: added.startDate.toISOString().split('T')[0] + ' ' + added.startDate.toTimeString().split(' ')[0], // Adjust date format
               
             }];
-            console.log(newAppointment);
             axios.post('https://f3lmrt7u96.execute-api.us-west-1.amazonaws.com/appointment', newAppointment)
             .then(response => {
                 console.log(response);
@@ -392,7 +388,7 @@ function Dashboard() {
       
       if (changed) {    
         Object.keys(changed).forEach(appointmentId => {
-
+          
           let id = parseInt(appointmentId);
           let prevData = {};
 
@@ -405,8 +401,9 @@ function Dashboard() {
           let changedData = changed[id];
           let newStartDate;
           
-          if (changedData.startDate instanceof Date) {
-              newStartDate = changedData.startDate.toISOString().split('T')[0] + ' ' + changedData.startDate.toTimeString().split(' ')[0];
+          if (changedData.startDate instanceof dayjs) {
+              const r = changedData.startDate.format('YYYY-MM-DD HH:mm:ss')
+              newStartDate = r
           } else {
               newStartDate = prevData.startDate.toISOString().split('T')[0] + ' ' + prevData.startDate.toTimeString().split(' ')[0];
           }
@@ -453,14 +450,9 @@ function Dashboard() {
     };
     
     const appointmentCellColor = ({children, style,  data, ...restProps }) => {
-      //console.log("Client Name:", client_name); // Add console log for debugging
-      //console.log("Props in appointmentCellColor:", data); // Add console log to check received props
-    
+   
       const {client_name, service_name, } = data; 
-      
-
-      //console.log("Client Name:",client_name);
-    
+          
       return (
         <Appointments.Appointment
         {...restProps}
