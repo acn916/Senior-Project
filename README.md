@@ -75,13 +75,25 @@ npm start
 
 ## Application Views
 
-<a href="https://ibb.co/8KjzYcL"><img src="https://i.ibb.co/HFrNhdf/Image1.png" alt="Image1" border="0"></a>
-
-<a href="https://ibb.co/M7JbfZ2"><img src="https://i.ibb.co/w42T7B0/Image2.png" alt="Image2" border="0"></a>
-
-<a href="https://imgbb.com/"><img src="https://i.ibb.co/0cfSFZT/Image3.png" alt="Image3" border="0"></a>
-
-<a href="https://imgbb.com/"><img src="https://i.ibb.co/f0Fcc2H/Image4.png" alt="Image4" border="0"></a>
+<a href="https://imgbb.com/"><img src="https://ibb.co/vQtFTHf" alt="Home1" border="0"></a>
+<a href="https://imgbb.com/"><img src="https://ibb.co/GV9zd9x" alt="Home2" border="0"></a>
+The home page is what every visiting user will first see, providing access to salon information, site navigation, and contact info. By selecting either 'services', 'staff', 'login', or 'book now', the user will be directed to the respective page.
+<a href="https://imgbb.com/"><img src="https://ibb.co/S559YSy" alt="Services" border="0"></a>
+The services page provides a detailed look at the various options the salon offers, while also providing an estimated price. From here a potential customer can select 'request' to navigate to the booking page.
+<a href="https://imgbb.com/"><img src="https://ibb.co/WKM5WfJ" alt="Stylists" border="0"></a>
+The staff page provides details on all current stylists at the salon, giving the user the option to 'book' with that stylist, or navigate to that stylists Instagram page via the associated Instagram logo.
+<a href="https://imgbb.com/"><img src="https://ibb.co/4fsTLZY" alt="Booking" border="0"></a>
+The booking page allows a customer to select their preferred stylist, picking out one or more services for that stylist to perform, and what date they would like to have that work done. Once these options are selected, the user can hit 'search'. This will populate all available times for that stylist given the selected options. If no times are available, a message will be displayed informing the user as such. Once a valid time is selected, the user will be navigated to the request page.
+<a href="https://imgbb.com/"><img src="https://ibb.co/TM6C8Kr" alt="Request" border="0"></a>
+The request page is where a customer finalizes their appointment request, inserting first and last name, a phone number and email, and any other notes they have regarding the appointment. From here, the user may either click 'request' to send the appointment info to the stylist of choice, or select 'back' to return to the booking page. In addition, the service price summary will be displayed on the right hand side of the page.
+<a href="https://imgbb.com/"><img src="https://ibb.co/NmsQX6v" alt="Thanks" border="0"></a>
+After the request has been sent, a user will be shown this brief thank you popup with a handful of helpful details including contact information.
+<a href="https://imgbb.com/"><img src="https://ibb.co/JcnzJ2w" alt="Signup" border="0"></a>
+The signup page allows users that have not yet registered an account to create one. By entering name, number, email, and a password of their choosing, the user will be allowed to create an account after agreeing to the terms of service, and optionally marking themselves as a stylist if they are an employee.
+<a href="https://imgbb.com/"><img src="https://ibb.co/C7jD21k" alt="Login" border="0"></a>
+The login page is similar to manyof its kind, simply requesting an email and password before being granted access to their account if the login is authorized successfully. In addition, a user may check the 'remember me' box to have the site remember their login details. In addition, the user may select 'forgot password' to enter the password reset page.
+<a href="https://imgbb.com/"><img src="https://ibb.co/jg9vzVq" alt="PasswordReset" border="0"></a>
+On the password reset page, a user may enter their email, after which they will receive a link via that email to be assigned a new password. After resetting their password, they may proceed to the login page as normal.
 
 <div align="right"> <a href="#team-entrecodeurs-csc-senior-project">Back to top</a> </div>
 
