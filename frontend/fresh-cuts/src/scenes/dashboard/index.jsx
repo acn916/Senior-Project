@@ -157,14 +157,19 @@ function Dashboard() {
 
 
       fetchAppointments();
-
+      
       setLoading(false);
-      const intervalId = setInterval(fetchAppointments, 9000);
 
-      return () => clearInterval(intervalId);  
+      if(openForm === false){
+        console.log(openForm)
+        const intervalId = setInterval(fetchAppointments, 9000);
 
+        return () => clearInterval(intervalId); 
 
-    },[currentStylist, staffId]);
+      }
+       console.log(openForm);
+
+    },[currentStylist, staffId, openForm]);
 
     const CustomToolbar = () => {
 
