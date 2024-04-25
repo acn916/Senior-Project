@@ -77,22 +77,39 @@ npm start
 
 <a href="https://ibb.co/album/DGKxNV"><img src="https://i.ibb.co/rcWjzmq/Home-Page1.png" alt="Home1" border="0"></a>
 <a href="https://ibb.co/album/DGKxNV"><img src="https://i.ibb.co/RCNRgNv/Home-Page2.png" alt="Home2" border="0"></a>
+
 The home page is what every visiting user will first see, providing access to salon information, site navigation, and contact info. By selecting either 'services', 'staff', 'login', or 'book now', the user will be directed to the respective page.
+
 <a href="https://ibb.co/album/DGKxNV"><img src="https://i.ibb.co/k55WbZB/Services.png" alt="Services" border="0"></a>
+
 The services page provides a detailed look at the various options the salon offers, while also providing an estimated price. From here a potential customer can select 'request' to navigate to the booking page.
+
 <a href="https://ibb.co/album/DGKxNV"><img src="https://i.ibb.co/BsQ3VBM/Stylists.png" alt="Stylists" border="0"></a>
+
 The staff page provides details on all current stylists at the salon, giving the user the option to 'book' with that stylist, or navigate to that stylists Instagram page via the associated Instagram logo.
+
 <a href="https://ibb.co/album/DGKxNV"><img src="https://i.ibb.co/hMXWNRZ/Booking.png" alt="Booking" border="0"></a>
+
 The booking page allows a customer to select their preferred stylist, picking out one or more services for that stylist to perform, and what date they would like to have that work done. Once these options are selected, the user can hit 'search'. This will populate all available times for that stylist given the selected options. If no times are available, a message will be displayed informing the user as such. Once a valid time is selected, the user will be navigated to the request page.
+
 <a href="https://ibb.co/album/DGKxNV"><img src="https://i.ibb.co/tpgdsZ3/Request.png" alt="Request" border="0"></a>
+
 The request page is where a customer finalizes their appointment request, inserting first and last name, a phone number and email, and any other notes they have regarding the appointment. From here, the user may either click 'request' to send the appointment info to the stylist of choice, or select 'back' to return to the booking page. In addition, the service price summary will be displayed on the right hand side of the page.
+
 <a href="https://ibb.co/album/DGKxNV"><img src="https://i.ibb.co/vQHgbxF/Thanks.png" alt="Thanks" border="0"></a>
+
 After the request has been sent, a user will be shown this brief thank you popup with a handful of helpful details including contact information.
+
 <a href="https://ibb.co/album/DGKxNV"><img src="https://i.ibb.co/VLVv4Dc/Signup.png" alt="Signup" border="0"></a>
+
 The signup page allows users that have not yet registered an account to create one. By entering name, number, email, and a password of their choosing, the user will be allowed to create an account after agreeing to the terms of service, and optionally marking themselves as a stylist if they are an employee.
+
 <a href="https://ibb.co/album/DGKxNV"><img src="https://i.ibb.co/DCBTpVx/Login.png" alt="Login" border="0"></a>
-The login page is similar to manyof its kind, simply requesting an email and password before being granted access to their account if the login is authorized successfully. In addition, a user may check the 'remember me' box to have the site remember their login details. In addition, the user may select 'forgot password' to enter the password reset page.
+
+The login page is similar to many of its kind, simply requesting an email and password before being granted access to their account if the login is authorized successfully. In addition, a user may check the 'remember me' box to have the site remember their login details. In addition, the user may select 'forgot password' to enter the password reset page.
+
 <a href="https://ibb.co/album/DGKxNV"><img src="https://i.ibb.co/2g07S8R/Password-Reset.png" alt="PasswordReset" border="0"></a>
+
 On the password reset page, a user may enter their email, after which they will receive a link via that email to be assigned a new password. After resetting their password, they may proceed to the login page as normal.
 
 <div align="right"> <a href="#team-entrecodeurs-csc-senior-project">Back to top</a> </div>
