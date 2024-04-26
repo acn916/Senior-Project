@@ -75,8 +75,8 @@ npm start
 
 Required Technologies
 - npm
+```
 
-...
 git clone git@github.com:acn916/Senior-Project.git
 
 cd Senior-Project/frontend/fresh-cuts
@@ -84,20 +84,20 @@ cd Senior-Project/frontend/fresh-cuts
 npm install
 
 npm run build
-...
+```
 
 
 [A build file should be created in the fresh-cuts directory]
 
 For MacOS:
-...
+```
 zip -r build.zip build
-...
+```
 
 For Windows:
-...
+```
 Compress-Archive -Path .\Senior-Project\frontend\fresh-cuts\build -DestinationPath .\Senior-Project\frontend\fresh-cuts\build.zip
-...
+```
 This will create a build file containing all the required javascript, html, css and images needed for deployment.
 
 Depending on what hosting website you would like to use:
