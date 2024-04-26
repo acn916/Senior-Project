@@ -12,7 +12,8 @@ This repository contains the codebase for an online scheduling system designed f
 <a href="#repository-structure">Repository Structure</a> &nbsp;&bull;&nbsp;
 <a href="#project-architecture">Project Architecture</a> &nbsp;&bull;&nbsp;
 <a href="#contributing">Contributing</a> &nbsp;&bull;&nbsp;
-<a href="#testing-and-deployment">Testing and Deployment</a> &nbsp;&bull;&nbsp;
+<a href="#deployment">Deployment</a> &nbsp;&bull;&nbsp;
+<a href="#testing">Testing</a> &bull;&nbsp;
 <a href="#application-views">Application Views</a>
 </p>
 
@@ -55,7 +56,7 @@ Please note that unsolicited pull requests are not allowed for this repository.
 
 <div align="right"> <a href="#team-entrecodeurs-csc-senior-project">Back to top</a> </div>
 
-## Testing and Deployment
+## Deployment
 
 Required Technologies
 - npm 
@@ -72,6 +73,16 @@ npm start
 
 
 <div align="right"> <a href="#team-entrecodeurs-csc-senior-project">Back to top</a> </div>
+
+## Testing
+Jest tests are named *.test.js. Each test will be found in the directory of the component they are testing.
+```
+npm install --save-dev @testing-library/react @testing-library/jest-dom axios-mock-adapter
+
+cd Senior-Project/front-end/fresh-cuts
+
+npm test
+```
 
 ## Application Views
 
