@@ -56,7 +56,7 @@ Please note that unsolicited pull requests are not allowed for this repository.
 
 <div align="right"> <a href="#team-entrecodeurs-csc-senior-project">Back to top</a> </div>
 
-## Deployment
+## Running the Software
 
 Required Technologies
 - npm 
@@ -70,6 +70,40 @@ npm install
 
 npm start
 ```
+
+## Deploying the Software
+
+Required Technologies
+- npm
+...
+git clone git@github.com:acn916/Senior-Project.git
+
+cd Senior-Project/frontend/fresh-cuts
+
+npm install
+
+Now that you have all the files of the software lets build the file ready for deployment.
+
+npm run build
+
+[A build file should be created in the fresh-cuts directory]
+
+For MacOS:
+
+zip -r build.zip build
+
+For Windows:
+
+Compress-Archive -Path .\Senior-Project\frontend\fresh-cuts\build -DestinationPath .\Senior-Project\frontend\fresh-cuts\build.zip
+
+This will create a build file containing all the required javascript, html, css and images needed for deployment.
+
+Depending on what hosting website you would like to use:
+
+Import the build.zip file and extract its contents into the public_html directory
+
+Done!
+
 
 
 <div align="right"> <a href="#team-entrecodeurs-csc-senior-project">Back to top</a> </div>
@@ -124,30 +158,6 @@ The login page is similar to many of its kind, simply requesting an email and pa
 On the password reset page, a user may enter their email, after which they will receive a link via that email to be assigned a new password. After resetting their password, they may proceed to the login page as normal.
 
 <div align="right"> <a href="#team-entrecodeurs-csc-senior-project">Back to top</a> </div>
-
-## Future Roadmap
-
-Sprint 5 Goals
-- [ ] All public facing pages should be completed
-- [ ] Users will be able to login
-- [ ] Clients will be able to change their password
-- [ ] Clients will be able to schedule an appointment
-
-Sprint 6 Goals
-- [ ] Clients panel UI will be completed
-- [ ] Stylists panel UI will be completed
-- [ ] Admin panel UI will be completed
-- [ ] Admin will be able to add new stylists
-- [ ] Admin will be able to add new services
-
-Sprint 7 Goals
-- [ ] Stylists will be able to confirm or deny their appointments
-- [ ] Clients will be able to cancel their appointments
-- [ ] Private routing is completed
-
-Sprint 8 Goals
-- [ ] Clients will get a reminder SMS before their appointment
-- [ ] Users will be able to delete their accounts
 
 <div align="right"> <a href="#team-entrecodeurs-csc-senior-project">Back to top</a> </div>
 
