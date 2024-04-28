@@ -83,6 +83,10 @@ cd Senior-Project/front-end/fresh-cuts
 
 npm test
 ```
+In the package.json file, find the “scripts” section, then locate “test” in the “scripts” section and modify it to the following:
+```
+"test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!axios)/'"
+```
 
 ## Application Views
 
