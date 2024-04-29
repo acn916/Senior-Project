@@ -124,7 +124,7 @@ If a stylist goes into the settings page it will first display the profile of th
 
 On the settings page there is a subpage where there is an option to add or remove stylists to the website.
 
-<a href="https://ibb.co/rcVLXtm"><img src="https://i.ibb.co/D8Z6jbt/Add-Or-Remove-Services.png" alt="Add-Or-Remove-Services" border="0" /></a>
+<a href="https://ibb.co/rcVLXtm"><img src="https://i.ibb.co/rcVLXtm/Add-Or-Remove-Services.png" alt="Add-Or-Remove-Services" border="0" /></a>
 
 There is another subpage on the settings page where services can be added or removed from the website.
 
