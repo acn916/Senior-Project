@@ -126,7 +126,7 @@ On the settings page there is a subpage where there is an option to add or remov
 
 <a href="https://ibb.co/rcVLXtm"><img src="https://i.ibb.co/D8Z6jbt/Add-Or-Remove-Services.png" alt="Add-Or-Remove-Services" border="0" /></a>
 
-There is another subpageon the settings page where services can be added or removed from the website.
+There is another subpage on the settings page where services can be added or removed from the website.
 
 <a href="https://ibb.co/Yp4sZkZ"><img src="https://i.ibb.co/xJKTHjH/Admin-Request-Acception-Or-Rejection-Or-Rebooking.png" alt="Admin-Request-Acception-Or-Rejection-Or-Rebooking" border="0" /></a>
 
