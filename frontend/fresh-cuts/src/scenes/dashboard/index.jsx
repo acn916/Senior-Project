@@ -31,7 +31,6 @@ import PopupForm from './AddAppointments';
 import dayjs from 'dayjs';
 
 
-
 // Component start
 function Dashboard() {
 
