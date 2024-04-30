@@ -15,6 +15,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import PopupForm from "./components/EditStylistsPopup";
 import ConfirmDeleteDialog from "./components/DeleteStylistsPopup";
+import UserPool from '../signup/UserPool';
 
 const StylistEditor = () => {
     const [stylists, setStylists] = useState([]);
@@ -66,6 +67,36 @@ const StylistEditor = () => {
     const handleFormSubmit = async (results) => {
         if(action === 'add'){
             await addUserToDatabase(results);
+            const formatNum = reformatNumber(results.phoneNumber);
+            const attributes = [
+                {
+                    Name: "given_name",
+                    Value: results.firstName,
+                },
+                {
+                    Name: "family_name",
+                    Value: results.lastName,
+                },
+                {
+                    Name: "phone_number",
+                    Value: formatNum,
+                },
+                {
+                    Name: "custom:user_role",
+                    Value: "Stylist",
+                },
+            ];
+            const password = "Password123@";
+            UserPool.signUp(results.email, password, attributes, null, (err, data) => {
+                if (err) {
+                    console.error(err);
+                    alert("Invalid information entered.")
+                } else {
+                    console.log("Added successfully");
+                   
+                }
+    
+            })
 
         }
         else if(action === 'edit'){
@@ -76,6 +107,11 @@ const StylistEditor = () => {
         refresh();
         handleClosePopup();
     };
+    
+    function reformatNumber(input) {
+        let phoneNum = `+1${input.replace(/\D/g, '').substring(0, 10)}`;
+        return phoneNum;
+    }
 
     const editUserFromDatabase = async (userData) => {
         const id = userData.id;
