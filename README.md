@@ -127,6 +127,26 @@ The login page is similar to many of its kind, simply requesting an email and pa
 
 On the password reset page, a user may enter their email, after which they will receive a link via that email to be assigned a new password. After resetting their password, they may proceed to the login page as normal.
 
+<a href="https://ibb.co/nr9RQJp"><img src="https://i.ibb.co/F62n8Tp/Admin-Dashboard.png" alt="Admin-Dashboard" border="0" /></a>
+
+When one of the stylists logs into the website they will be brought to this dashboard first. The dashboard displays all of the scheduled appointments of that stylist.
+
+<a href="https://ibb.co/4Wvryvq"><img src="https://i.ibb.co/Zd4Ds4j/Admin-Settings.png" alt="Admin-Settings" border="0" /></a>
+
+If a stylist goes into the settings page it will first display the profile of the stylist.
+
+<a href="https://ibb.co/qF1D5sV"><img src="https://i.ibb.co/PzCrQh0/Removing-Or-Adding-Stylists.png" alt="Removing-Or-Adding-Stylists" border="0" /></a>
+
+On the settings page there is a subpage where there is an option to add or remove stylists to the website.
+
+<a href="https://ibb.co/6mCsQgy"><img src="https://i.ibb.co/W6JKCgH/Add-Or-Remove-Service.png" alt="Add-Or-Remove-Service" border="0" /></a>
+
+There is another subpage on the settings page where services can be added or removed from the website.
+
+<a href="https://ibb.co/Yp4sZkZ"><img src="https://i.ibb.co/xJKTHjH/Admin-Request-Acception-Or-Rejection-Or-Rebooking.png" alt="Admin-Request-Acception-Or-Rejection-Or-Rebooking" border="0" /></a>
+
+In the admin view there is one more page that is available called "Requests". This is the page where a stylist recieves booking requests from customers that they can then choose to accept, reject, or rebook an appointment request.
+
 <div align="right"> <a href="#team-entrecodeurs-csc-senior-project">Back to top</a> </div>
 
 ## Future Roadmap
