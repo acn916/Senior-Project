@@ -42,52 +42,6 @@ Our frontend is constructed using ReactJS, an efficient and flexible JavaScript 
 
 The backend architecture is serverless, built around AWS services. It's exposed through the AWS API Gateway, which triggers events to AWS Lambda. Our Lambda functions are written in Python, providing a responsive and efficient service. The database is handled by AWS Aurora, a cloud-based relational database service compatible with MySQL. This architecture ensures scalability, maintainability, and resilience.
 
-### Database
-
-Database Layout
-
-<a href="https://ibb.co/RBX6sBS"><img src="https://i.ibb.co/ZYQgFYJ/ERD.jpg" alt="ERD" border="0" /></a>
-
-<div align="right"> <a href="#team-entrecodeurs-csc-senior-project">Back to top</a> </div>
-
-## Contributing
-
-Please note that unsolicited pull requests are not allowed for this repository. 
-
-<div align="right"> <a href="#team-entrecodeurs-csc-senior-project">Back to top</a> </div>
-
-## Deployment
-
-Required Technologies
-- npm 
-
-```
-git clone git@github.com:acn916/Senior-Project.git
-
-cd Senior-Project/front-end/fresh-cuts
-
-npm install
-
-npm start
-```
-
-
-<div align="right"> <a href="#team-entrecodeurs-csc-senior-project">Back to top</a> </div>
-
-## Testing
-Jest tests are named *.test.js. Each test will be found in the directory of the component they are testing.
-```
-npm install --save-dev @testing-library/react @testing-library/jest-dom axios-mock-adapter
-
-cd Senior-Project/front-end/fresh-cuts
-
-npm test
-```
-In the package.json file, find the “scripts” section, then locate “test” in the “scripts” section and modify it to the following:
-```
-"test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!axios)/'"
-```
-
 ## Application Views
 
 <a href="https://ibb.co/album/DGKxNV"><img src="https://i.ibb.co/rcWjzmq/Home-Page1.png" alt="Home1" border="0"></a>
@@ -149,31 +103,64 @@ In the admin view there is one more page that is available called "Requests". Th
 
 <div align="right"> <a href="#team-entrecodeurs-csc-senior-project">Back to top</a> </div>
 
-## Future Roadmap
+### Database
 
-Sprint 5 Goals
-- [ ] All public facing pages should be completed
-- [ ] Users will be able to login
-- [ ] Clients will be able to change their password
-- [ ] Clients will be able to schedule an appointment
+Database Layout
 
-Sprint 6 Goals
-- [ ] Clients panel UI will be completed
-- [ ] Stylists panel UI will be completed
-- [ ] Admin panel UI will be completed
-- [ ] Admin will be able to add new stylists
-- [ ] Admin will be able to add new services
-
-Sprint 7 Goals
-- [ ] Stylists will be able to confirm or deny their appointments
-- [ ] Clients will be able to cancel their appointments
-- [ ] Private routing is completed
-
-Sprint 8 Goals
-- [ ] Clients will get a reminder SMS before their appointment
-- [ ] Users will be able to delete their accounts
+<a href="https://ibb.co/RBX6sBS"><img src="https://i.ibb.co/ZYQgFYJ/ERD.jpg" alt="ERD" border="0" /></a>
 
 <div align="right"> <a href="#team-entrecodeurs-csc-senior-project">Back to top</a> </div>
+
+## Deploying the Software
+
+Required Technologies
+- npm
+```
+
+git clone git@github.com:acn916/Senior-Project.git
+
+cd Senior-Project/frontend/fresh-cuts
+
+npm install
+
+npm run build
+```
+
+
+[A build file should be created in the fresh-cuts directory]
+
+For MacOS:
+```
+zip -r build.zip build
+```
+
+For Windows:
+```
+Compress-Archive -Path .\Senior-Project\frontend\fresh-cuts\build -DestinationPath .\Senior-Project\frontend\fresh-cuts\build.zip
+```
+This will create a build file containing all the required javascript, html, css and images needed for deployment.
+
+Depending on what hosting website you would like to use:
+
+Import the build.zip file and extract its contents into the public_html directory
+
+Done!
+
+<div align="right"> <a href="#team-entrecodeurs-csc-senior-project">Back to top</a> </div>
+
+## Testing
+Jest tests are named *.test.js. Each test will be found in the directory of the component they are testing.
+```
+npm install --save-dev @testing-library/react @testing-library/jest-dom axios-mock-adapter
+
+cd Senior-Project/front-end/fresh-cuts
+
+npm test
+```
+In the package.json file, find the “scripts” section, then locate “test” in the “scripts” section and modify it to the following:
+```
+"test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!axios)/'"
+```
 
 ## Team Members
 
@@ -191,5 +178,11 @@ Sprint 8 Goals
 ## Contact
 
 If you have any questions or need further clarification, feel free to reach out to any of the team members.
+
+<div align="right"> <a href="#team-entrecodeurs-csc-senior-project">Back to top</a> </div>
+
+## Contributing
+
+Please note that unsolicited pull requests are not allowed for this repository. 
 
 <div align="right"> <a href="#team-entrecodeurs-csc-senior-project">Back to top</a> </div>
