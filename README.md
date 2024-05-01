@@ -1,7 +1,7 @@
 # Team Entrecodeurs CSC Senior Project
 
 <p align="center">
-<a href="https://ibb.co/xqMtdyc"><img src="https://ibb.co/YP9nN0M" alt="Homepage" border="0"></a>
+<a href="https://ibb.co/xqMtdyc"><img src="https://i.ibb.co/5h5gwdz/Homepage.png" alt="Homepage" border="0"></a>
 </p>
 
 <p align="center">
