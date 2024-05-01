@@ -18,7 +18,6 @@ This repository contains the codebase for an online scheduling system designed f
 </p>
 
 <p align="center">
-<a href="#future-roadmap">Future Roadmap</a> &nbsp;&bull;&nbsp;
 <a href="#team-members">Team Members</a> &nbsp;&bull;&nbsp;
 <a href="#contact">Contact</a>
 </p>
